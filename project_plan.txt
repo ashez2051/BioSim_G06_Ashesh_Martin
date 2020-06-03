@@ -1,0 +1,38 @@
+- Add animals/fauna classes
+	- Herbivores first then generalize to carnivores
+		- Functions like Age, Fitness, Birth etc
+		- Keep in the class fauna since they belong to both animals
+		- Some parameters are specific to cardivores/herbivores
+	- Carinovores
+		- Specific function to "kill/eat" herbivores
+
+
+- Map/island, structure where all the properties of geography, animals etc are stored
+ (array with information on highland, lowland etc)
+	- Property of the cells 
+	- Multiline string with geography
+		- Convert this to an array
+
+- Landscape.py
+	- Class landscape
+		- Common methods in the landscape class
+		- Child classes
+			- Water
+			- Dessert
+			- Highland
+			- Lowland
+
+
+
+
+class fauna:
+	def weight
+	"methods/functions for both classes"
+
+class herbivore(fauna)
+
+	def 
+	"Specific methods/functions for the class"
+
+class carnivore(fauna)
+	def eat_herbivore
