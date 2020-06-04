@@ -102,9 +102,6 @@ class Fauna:
 
 
 
-
-
-
 class Herbivore(Fauna):
     """
     Child class of Fauna
