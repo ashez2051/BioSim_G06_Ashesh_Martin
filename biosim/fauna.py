@@ -7,6 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
+np.random.seed(123)
 
 
 class Fauna:
@@ -54,6 +55,7 @@ class Fauna:
         :param food_eaten: the amount of food eaten by an animal, float
         """
         self.weight += self.parameters['beta'] * food_eaten
+        return self.weight
 
     @property
     def animal_fitness(self):
@@ -61,18 +63,16 @@ class Fauna:
         Calculates the fitness of an animal based on age and weight
         """
         if self.weight > 0:
-            q_pos = 1/(1+np.exp(self.parameters['phi_age'] *
+            q_pos = 1 / (1 + np.exp(self.parameters['phi_age'] *
                                 (self.age - self.parameters['a_half'])))
 
-            q_neg = 1/(1+ np.exp(self.parameters['phi_weight'] *
+            q_neg = 1 / (1 + np.exp(self.parameters['phi_weight'] *
                                  (self.weight - self.parameters['w_half'])))
 
             return q_neg * q_pos
         else:
             return 0
-        #Check if fitness is between 0 and 1
-        #Check if it increases with weight
-        #check if it decreases with age
+
 
     def proba_animal_birth(self,num_animals):
         """
@@ -85,10 +85,8 @@ class Fauna:
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
         if num_animals >= 2 and self.weight >= weight_check:
-            return np.random.random() < min(1, (self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
-        # Something with np.random.random
-        else:
-            return False
+            return np.random.uniform(0,1) < min(1, (self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+
 
 
     def weight_update_after_birth(self, child):
