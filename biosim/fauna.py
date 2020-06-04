@@ -31,7 +31,6 @@ class Fauna:
                                            self.parameters["sigma_birth"])
         else:
             self.weight = weight
-        # Define "things" that applies for both animals
         self.fitness = 0
         self.gives_birth = False
 
@@ -71,7 +70,38 @@ class Fauna:
             return q_neg * q_pos
         else:
             return 0
-        
+        #Check if fitness is between 0 and 1
+        #Check if it increases with weight
+        #check if it decreases with age
+
+    def proba_animal_birth(self,num_animals):
+        """
+        Calculates the probability for an animal to give birth
+        :param num_animals: Number of animals of the same species in a single cell
+        :return: probability of giving birth
+
+        """
+        weight_check = self.parameters["zeta"] * (
+                self.parameters["w_birth"] + self.parameters["sigma_birth"])
+
+        if num_animals >= 2 and self.weight >= weight_check:
+            return np.random.random() < min(1, (self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+        # Something with np.random.random
+        else:
+            return False
+
+
+    def weight_update_after_birth(self, child):
+        """
+        Update the weight of the mother after giving birth
+        :return:
+        """
+        if self.weight > child.weight * child.parameters["xi"]:
+            self.weight -= child.weight * child.parameters["xi"]
+            #Add self.gives_birth or something later
+
+
+
 
 
 
