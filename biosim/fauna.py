@@ -7,6 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
+
 np.random.seed(123)
 
 
@@ -63,18 +64,17 @@ class Fauna:
         Calculates the fitness of an animal based on age and weight
         """
         if self.weight > 0:
-            q_pos = 1 / (1 + np.exp(self.parameters['phi_age'] *
-                                (self.age - self.parameters['a_half'])))
+            q_pos = 1 / (1 + np.exp(
+                self.parameters['phi_age'] * (self.age - self.parameters['a_half'])))
 
-            q_neg = 1 / (1 + np.exp(-1 * self.parameters['phi_weight'] *
-                                 (self.weight - self.parameters['w_half'])))
+            q_neg = 1 / (1 + np.exp(
+                -1 * self.parameters['phi_weight'] * (self.weight - self.parameters['w_half'])))
 
             return q_neg * q_pos
         else:
             return 0
 
-
-    def proba_animal_birth(self,num_animals):
+    def proba_animal_birth(self, num_animals):
         """
         Calculates the probability for an animal to give birth
         :param num_animals: Number of animals of the same species in a single cell
@@ -85,9 +85,8 @@ class Fauna:
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
         if num_animals >= 2 and self.weight >= weight_check:
-            return np.random.uniform(0,1) < min(1, (self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
-
-
+            return np.random.uniform(0, 1) < min(1, (
+                        self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
 
     def weight_update_after_birth(self, child):
         """
@@ -95,9 +94,38 @@ class Fauna:
         :return:
         """
         if self.weight > child.weight * child.parameters["xi"]:
-            self.weight -= child.weight * child.parameters["xi"]
-            #Add self.gives_birth or something later
+            self.weight -= child.weight * child.parameters[
+                "xi"]  # Add self.gives_birth or something later
 
+    def death_probability(self):
+        """
+        Calculates the probability of death based on fitness
+        :return: Boolean value weather an animal dies or survives
+        """
+        if self.animal_fitness == 0:
+            return False
+        else:
+            return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)
+
+    @property
+    def probablity_of_moving(self):
+        pass
+
+    @classmethod
+    def set_parameters(cls, given_params):
+        """
+        Sets the parameters according to the class called
+        :param given_params: a dictionary of the user assigned parameters
+        :return: Assigns parameters to respective classes
+        """
+        for param in given_params:
+            if param in cls.parameters:
+                if given_params[param] <= 0:
+                    raise ValueError('Parameter value should be positive ')
+                else:
+                    cls.parameters[param] = given_params[param]
+            else:
+                raise ValueError("Parameter not in class parameter list")
 
 
 class Herbivore(Fauna):
