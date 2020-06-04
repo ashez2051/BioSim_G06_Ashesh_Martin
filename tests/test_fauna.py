@@ -20,7 +20,6 @@ class TestFauna:
 
     @pytest.fixture()
     def animal_objects(self):
-<<<<<<< Updated upstream
         self.herb_small = Herbivore(5, 20)
         self.herb_large = Herbivore(5, 50)
         self.herb_young = Herbivore(10, 20)
@@ -85,12 +84,4 @@ class TestFauna:
 
 
 
-
-=======
-        np.random.seed(123)
-        herb = Herbivore()
-
-    def test_weight_larger_than_zero(self):
-        assert herb.weight > 0
->>>>>>> Stashed changes
 
