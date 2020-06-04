@@ -66,7 +66,7 @@ class Fauna:
             q_pos = 1 / (1 + np.exp(self.parameters['phi_age'] *
                                 (self.age - self.parameters['a_half'])))
 
-            q_neg = 1 / (1 + np.exp(self.parameters['phi_weight'] *
+            q_neg = 1 / (1 + np.exp(-1 * self.parameters['phi_weight'] *
                                  (self.weight - self.parameters['w_half'])))
 
             return q_neg * q_pos

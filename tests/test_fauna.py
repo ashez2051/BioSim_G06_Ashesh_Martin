@@ -18,7 +18,7 @@ from biosim.fauna import Herbivore, Fauna
 class TestFauna:
     """Tests for various methods in the fauna class"""
 
-    @pytest.fixture()
+    @pytest.fixture(autouse = True)
     def animal_objects(self):
         self.herb_small = Herbivore(5, 20)
         self.herb_large = Herbivore(5, 50)
