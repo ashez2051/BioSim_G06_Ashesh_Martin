@@ -107,9 +107,7 @@ class Landscape:
         """
         for species in self.fauna_dict:
             for animal in self.fauna_dict[species]:
-                animal.
-
-
+                animal.animal_weight_with_age()
 
     def animal_gives_birth(self):
         pass
