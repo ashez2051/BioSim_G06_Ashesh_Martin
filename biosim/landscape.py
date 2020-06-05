@@ -2,21 +2,22 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-from biosim import Fauna #How do we import this?
+from biosim import Fauna  # How do we import this?
+
 
 class Landscape:
     """
     Parent class for various landscapes water, desert, highland and lowland
     """
 
-    parameters ={}
+    parameters = {}
 
     def __init__(self):
-        self.sorted_animal_fitness_dict = {} #needed for when we introduce carnivores
-        self.fauna_dict = {"Hebivore": []} # Add carnivore later
-        self.updated_fauna_dict = {"Hebivore": []} # Add carnivore later
-        self._remaining_food = {'Herbivore': 0, 'Carnivore': 0} #might need to have the same name as the method remaining_food
-
+        self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
+        self.fauna_dict = {"Hebivore": []}  # Add carnivore later
+        self.updated_fauna_dict = {"Hebivore": []}  # Add carnivore later
+        self._remaining_food = {'Herbivore': 0,
+                                'Carnivore': 0}  # might need to have the same name as the method remaining_food
 
     def add_animal(self, animal):
         """
@@ -25,7 +26,6 @@ class Landscape:
         """
         species = animal.__class__.__name__
         self.fauna_dict[species].append(animal)
-
 
     def remove_animal(self, animal):
         """
@@ -36,15 +36,15 @@ class Landscape:
         species = animal.__class__.__name__
         self.fauna_dict[species].remove(animal)
 
-    def update_fitness(self, animal,species):
+    def update_fitness(self, animal, species):
         """
         Updates the fitness of herbivores or carnivores
         :param animal: animal object
         :param species: an animal can be herbivore or a carnivore
         """
-        animal_fitness ={}
+        animal_fitness = {}
         for animal_iter in animal[species]:
-            animal_fitness[animal_iter] =animal.fitness
+            animal_fitness[animal_iter] = animal.fitness
         self.sorted_animal_fitness_dict[species] = animal_fitness
 
     def animal_eats(self):
@@ -53,8 +53,7 @@ class Landscape:
         on herbivores
         """
         self.update_fodder()
-        self.herbivore_eats()
-        #self.carnivore_eats()
+        self.herbivore_eats()  # self.carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -100,8 +99,7 @@ class Landscape:
             self._remaining_food = {"Herbivore": self._remaining_food["Herbivore"]}
         return self._remaining_food
 
-
-    def update_animal_weight(self):
+    def update_animal_weight_and_age(self):
         """
         Each year the animals ages by 1 and loses weight by a factor of eta
         """
@@ -110,23 +108,48 @@ class Landscape:
                 animal.animal_weight_with_age()
 
     def animal_gives_birth(self):
-        pass
+        """
+        Compares the birth_probability of an animal with the randomly generated value between
+        0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
+        species and decreases the weight of an animal
+        """
+        for species, animals in self.updated_fauna_dict.items():  ## why iterate in new updated list?
+            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):  ## explain code
+                animal = animals[i]
+                if animal.proba_animal_birth(len(animals)):
+                    child_species = animal.__class__
+                    child = child_species()  ## ????
+                    animal.weight_update_after_birth(child)
+                    if animal.gives_birth:
+                        self.fauna_dict[species].append(child)
+                        animal.gives_birth = False
 
     def add_children_to_adult_animals(self):
-        pass
+        """
+        After the breeding season, new babies are added to cell animals dictionary and remove it
+        from the baby fauna dictionary.
+        """
+        self.updated_fauna_dict = self.fauna_dict
 
     def animal_dies(self):
-        pass
+        """"
+        If the generated random number is greater than the probability of death, we remove
+        the animal from the dictionary
+        """
+        for species, animals in self.fauna_dict.items():  ##isn't it just the opposite??
+            for animal in animals:
+                if animal.death_probability:
+                    self.remove_animal(animal)
 
-    def grow_all_animals(self): #aging?
-        pass
-
+    @property
     def cell_fauna_count(self):
-        pass
+        """ Returns the number of fauna type as a dictionary"""
+        herb_count = len(self.fauna_dict['Herbivore'])  ## why not count from updated list?
+        # carn_count = len(self.fauna_dict['Carnivore'])
+        return {"Herbivore": herb_count}
 
-    def total_herbivore_weight(self): #not needed before we introduce carnivores
+    def total_herbivore_weight(self):  # not needed before we introduce carnivores
         pass
-
 
 
 class Water(Landscape):
@@ -145,8 +168,33 @@ class Highland(Landscape):
 
 
 class Lowland(Landscape):
-    def __init__(self):
-        pass
+    """ Represents the landscape covered by lowland cells.  Every year the available fodder
+    is set to maximum"""
+    parameters = {'f_max': 800}
+
+    def __init__(self, given_params=None):
+        super().__init__()
+        if given_params is not None:
+            self.set_parameters(given_params)
+        self.parameters = Lowland.parameters
+        self.remaining_food['Herbivore']= self.parameters['f_max']
+        # self.remaining_food['Carnivore']=
+
+    def update_fodder(self):
+        """
+        Updates the annual fodder value back to f_max annually
+        """
+        self.remaining_food["Herbivore"] = self.parameters["f_max"]
+
+    @staticmethod               
+    def set_parameters(given_params):
+        for param in given_params:
+            if param in Lowland.parameters:
+                Lowland.parameters[param] = given_params[param]
+
+            else:
+                raise ValueError('Parameter not set in list' + str(param))
+
 
 if __name__ == "__main__":
-    print(np.random.shuffle(["a","b","c"]))
+    print(np.random.shuffle(["a", "b", "c"]))
