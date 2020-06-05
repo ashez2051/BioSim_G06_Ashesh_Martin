@@ -50,12 +50,12 @@ class Fauna:
         self.weight = self.parameters['eta'] * self.weight
         self.age += 1
 
-    def animal_weight_with_food(self, food_eaten):
+    def animal_weight_with_food(self):
         """
         Updates the weight of an animal based on it's feeding behavior
         :param food_eaten: the amount of food eaten by an animal, float
         """
-        self.weight += self.parameters['beta'] * food_eaten
+        self.weight += self.parameters['beta'] * self.parameters["F"]
         return self.weight
 
     @property
