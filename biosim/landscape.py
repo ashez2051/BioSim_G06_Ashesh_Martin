@@ -7,6 +7,8 @@ class Landscape:
     Parent class for various landscapes water, desert, highland and lowland
     """
 
+    parameters ={}
+
     def __init__(self):
         self.sorted_animal_fitness_dict = {} #needed for when we introduce carnivores
         self.fauna_dict = {"Hebivore": []} # Add carnivore later
@@ -32,15 +34,56 @@ class Landscape:
         species = animal.__class__.__name__
         self.fauna_dict[species].remove(animal)
 
-    def store_fitness(self):
-        pass
-
+    def update_fitness(self, animal,species):
+        """
+        Updates the fitness of herbivores or carnivores
+        :param animal: animal object
+        :param species: an animal can be herbivore or a carnivore
+        """
+        animal_fitness ={}
+        for animal_iter in animal[species]:
+            animal_fitness[animal_iter] =animal.fitness
+        self.sorted_animal_fitness_dict[species] = animal_fitness
 
     def animal_eats(self):
-        pass
+        """
+        The animals in the cells feed, the herbivores feed on fodder and the carnivores
+        on herbivores
+        """
+        self.update_fodder()
+        self.herbivore_eats()
+        #self.carnivore_eats()
+
+    def available_food(self, animal):
+        """
+        Returns the remaining food value in a cell.
+        This is different for the two species
+        :param animal: animal object
+        :return: the remaining amount of food
+        """
+        species = animal.__class__.__name__
+        return self.remaining_food[species]
 
     def herbivore_eats(self):
-        pass
+        """
+        Herbivores eat randomly, and if there is no fodder available in the cell, the animal
+        doesn't eat.
+        If the available fodder is greater than the food the animal requires, we calculate the food
+        that remains.
+        If the fodder available is less than the food required by the animal we update remaining
+        fodder as 0.
+        """
+        for herb in self.fauna_dict['Herbivore']:
+            herb_remaining_fodder = self.remaining_food['Herbivore']
+            if herb_remaining_fodder == 0:
+                break
+            elif herb_remaining_fodder >= herb.parameters['F']:
+                herb.animal_eats(herb.parameters['F'])
+                self.remaining_food['Herbivore'] -= herb.parameters['F']
+            else:
+                self.remaining_food['Herbivore'] = 0
+
+
 
     def update_fodder(self):
         pass
@@ -63,7 +106,7 @@ class Landscape:
     def cell_fauna_count(self):
         pass
 
-    def total_hebivore_weight(self): #not needed before we introduce carnivores
+    def total_herbivore_weight(self): #not needed before we introduce carnivores
         pass
 
     def remaining_food(self):
