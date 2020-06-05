@@ -10,6 +10,7 @@ class Landscape:
     def __init__(self):
 
 
+
     def store_fitness(self):
         pass
 
