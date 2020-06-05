@@ -1,6 +1,8 @@
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
+import numpy as np
+from biosim import Fauna #How do we import this?
 
 class Landscape:
     """
@@ -13,7 +15,7 @@ class Landscape:
         self.sorted_animal_fitness_dict = {} #needed for when we introduce carnivores
         self.fauna_dict = {"Hebivore": []} # Add carnivore later
         self.updated_fauna_dict = {"Hebivore": []} # Add carnivore later
-        self._reset_remaining_food = {'Herbivore': 0, 'Carnivore': 0} #might need to have the same name as the method remaining_food
+        self._remaining_food = {'Herbivore': 0, 'Carnivore': 0} #might need to have the same name as the method remaining_food
 
 
     def add_animal(self, animal):
@@ -73,7 +75,8 @@ class Landscape:
         If the fodder available is less than the food required by the animal we update remaining
         fodder as 0.
         """
-        for herb in self.fauna_dict['Herbivore']:
+        np.random.shuffle(self.fauna_dict["Herbivore"])
+        for herb in fauna_dict["Herbivore"]:
             herb_remaining_fodder = self.remaining_food['Herbivore']
             if herb_remaining_fodder == 0:
                 break
@@ -81,17 +84,34 @@ class Landscape:
                 herb.animal_eats(herb.parameters['F'])
                 self.remaining_food['Herbivore'] -= herb.parameters['F']
             else:
-                self.remaining_food['Herbivore'] = 0
+                self.remaining_food["Herbivore"] = 0
 
+    @property
+    def remaining_food(self):
+        """
+        Gives the remaining food in a cell
+        :return: the remaining amount of food
+        """
+        if isinstance(self, Water):
+            raise ValueError("There is no fodder available in the water")
+        elif isinstance(self, Desert):
+            self._remaining_food = {'Herbivore': 0}
+        else:
+            self._remaining_food = {"Herbivore": self._remaining_food["Herbivore"]}
+        return self._remaining_food
 
-
-    def update_fodder(self):
-        pass
 
     def update_animal_weight(self):
-        pass
+        """
+        Each year the animals ages by 1 and loses weight by a factor of eta
+        """
+        for species in self.fauna_dict:
+            for animal in self.fauna_dict[species]:
+                animal.
 
-    def animal_gives_birth
+
+
+    def animal_gives_birth(self):
         pass
 
     def add_children_to_adult_animals(self):
@@ -109,8 +129,6 @@ class Landscape:
     def total_herbivore_weight(self): #not needed before we introduce carnivores
         pass
 
-    def remaining_food(self):
-        pass
 
 
 class Water(Landscape):
@@ -131,3 +149,6 @@ class Highland(Landscape):
 class Lowland(Landscape):
     def __init__(self):
         pass
+
+if __name__ == "__main__":
+    print(np.random.shuffle(["a","b","c"]))
