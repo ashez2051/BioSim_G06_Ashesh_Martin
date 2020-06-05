@@ -17,7 +17,7 @@ class Landscape:
     def add_animal(self, animal):
         """
         Adds the animal object to the species list of cell
-        :param animal: Input animal object, Herbivore or Carnivore
+        :param animal: Input animal object, #Will specify what this actually is later
         """
         species = animal.__class__.__name__
         self.fauna_dict[species].append(animal)
@@ -26,7 +26,7 @@ class Landscape:
     def remove_animal(self, animal):
         """
         Removes the animal object from the list of species of cell
-        :param animal: Input animal object, Herbivore or Carnivore
+        :param animal: Input animal object, #Will specify what this actually is later
         :return:
         """
         species = animal.__class__.__name__
