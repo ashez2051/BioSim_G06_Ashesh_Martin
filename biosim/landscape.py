@@ -8,6 +8,9 @@ class Landscape:
     """
 
     def __init__(self):
+        self.sorted_animal_fitness_dict = {} #needed for when we introduce carnivores
+        self.fauna_dict = {"Hebivore": []}
+        
 
 
 
