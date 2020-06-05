@@ -9,19 +9,32 @@ class Landscape:
 
     def __init__(self):
         self.sorted_animal_fitness_dict = {} #needed for when we introduce carnivores
-        self.fauna_dict = {"Hebivore": []}
-        
+        self.fauna_dict = {"Hebivore": []} # Add carnivore later
+        self.updated_fauna_dict = {"Hebivore": []} # Add carnivore later
+        self._reset_remaining_food = {'Herbivore': 0, 'Carnivore': 0} #might need to have the same name as the method remaining_food
 
 
+    def add_animal(self, animal):
+        """
+        Adds the animal object to the species list of cell
+        :param animal: Input animal object, Herbivore or Carnivore
+        """
+        species = animal.__class__.__name__
+        self.fauna_dict[species].append(animal)
+
+
+    def remove_animal(self, animal):
+        """
+        Removes the animal object from the list of species of cell
+        :param animal: Input animal object, Herbivore or Carnivore
+        :return:
+        """
+        species = animal.__class__.__name__
+        self.fauna_dict[species].remove(animal)
 
     def store_fitness(self):
         pass
 
-    def add_animal(self):
-        pass
-
-    def remove_animal(self):
-        pass
 
     def animal_eats(self):
         pass
