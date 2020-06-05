@@ -2,6 +2,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
+import math
 from biosim import Fauna  # How do we import this?
 
 
@@ -16,7 +17,7 @@ class Landscape:
         self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
         self.fauna_dict = {"Hebivore": []}  # Add carnivore later
         self.updated_fauna_dict = {"Hebivore": []}  # Add carnivore later
-        self._remaining_food = {'Herbivore': 0,
+        self.food_left = {'Herbivore': 0,
                                 'Carnivore': 0}  # might need to have the same name as the method remaining_food
 
     def add_animal(self, animal):
@@ -53,7 +54,8 @@ class Landscape:
         on herbivores
         """
         self.update_fodder()
-        self.herbivore_eats()  # self.carnivore_eats()
+        self.herbivore_eats()
+        # self.carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -82,8 +84,9 @@ class Landscape:
             elif herb_remaining_fodder >= herb.parameters['F']:
                 herb.animal_eats(herb.parameters['F'])
                 self.remaining_food['Herbivore'] -= herb.parameters['F']
-            else:
-                self.remaining_food["Herbivore"] = 0
+            elif 0 < herb_remaining_fodder < herb.parameters["F"]:
+                herb.animal_eats(herb_remaining_fodder)
+                self.remaining_food['Herbivore'] = 0
 
     @property
     def remaining_food(self):
@@ -94,10 +97,10 @@ class Landscape:
         if isinstance(self, Water):
             raise ValueError("There is no fodder available in the water")
         elif isinstance(self, Desert):
-            self._remaining_food = {'Herbivore': 0}
+            self.food_left = {'Herbivore': 0}
         else:
-            self._remaining_food = {"Herbivore": self._remaining_food["Herbivore"]}
-        return self._remaining_food
+            self.food_left = {"Herbivore": self.food_left["Herbivore"]}
+        return self.food_left
 
     def update_animal_weight_and_age(self):
         """
@@ -113,12 +116,12 @@ class Landscape:
         0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
         species and decreases the weight of an animal
         """
-        for species, animals in self.updated_fauna_dict.items():  ## why iterate in new updated list?
-            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):  ## explain code
+        for species, animals in self.updated_fauna_dict.items():
+            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
                 animal = animals[i]
                 if animal.proba_animal_birth(len(animals)):
                     child_species = animal.__class__
-                    child = child_species()  ## ????
+                    child = child_species()
                     animal.weight_update_after_birth(child)
                     if animal.gives_birth:
                         self.fauna_dict[species].append(child)
@@ -136,7 +139,7 @@ class Landscape:
         If the generated random number is greater than the probability of death, we remove
         the animal from the dictionary
         """
-        for species, animals in self.fauna_dict.items():  ##isn't it just the opposite??
+        for species, animals in self.fauna_dict.items():
             for animal in animals:
                 if animal.death_probability:
                     self.remove_animal(animal)
@@ -144,12 +147,21 @@ class Landscape:
     @property
     def cell_fauna_count(self):
         """ Returns the number of fauna type as a dictionary"""
-        herb_count = len(self.fauna_dict['Herbivore'])  ## why not count from updated list?
+        herb_count = len(self.fauna_dict['Herbivore'])
         # carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count}
 
     def total_herbivore_weight(self):  # not needed before we introduce carnivores
         pass
+
+    @classmethod
+    def set_parameters(cls, given_params):
+        for param in given_params:
+            if param in cls.parameters:
+                cls.parameters[param] = given_params[param]
+
+            else:
+                raise ValueError('Parameter not set in list' + str(param))
 
 
 class Water(Landscape):
@@ -177,7 +189,7 @@ class Lowland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Lowland.parameters
-        self.remaining_food['Herbivore']= self.parameters['f_max']
+        self.remaining_food['Herbivore'] = self.parameters['f_max']
         # self.remaining_food['Carnivore']=
 
     def update_fodder(self):
@@ -186,14 +198,7 @@ class Lowland(Landscape):
         """
         self.remaining_food["Herbivore"] = self.parameters["f_max"]
 
-    @staticmethod               
-    def set_parameters(given_params):
-        for param in given_params:
-            if param in Lowland.parameters:
-                Lowland.parameters[param] = given_params[param]
 
-            else:
-                raise ValueError('Parameter not set in list' + str(param))
 
 
 if __name__ == "__main__":
