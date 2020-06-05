@@ -8,6 +8,48 @@ class Landscape:
     """
 
     def __init__(self):
+
+
+    def store_fitness(self):
+        pass
+
+    def add_animal(self):
+        pass
+
+    def remove_animal(self):
+        pass
+
+    def animal_eats(self):
+        pass
+
+    def herbivore_eats(self):
+        pass
+
+    def update_fodder(self):
+        pass
+
+    def update_animal_weight(self):
+        pass
+
+    def animal_gives_birth
+        pass
+
+    def add_children_to_adult_animals(self):
+        pass
+
+    def animal_dies(self):
+        pass
+
+    def grow_all_animals(self): #aging?
+        pass
+
+    def cell_fauna_count(self):
+        pass
+
+    def total_hebivore_weight(self): #not needed before we introduce carnivores
+        pass
+
+    def remaining_food(self):
         pass
 
 
