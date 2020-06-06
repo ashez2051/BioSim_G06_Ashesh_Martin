@@ -116,8 +116,8 @@ class Landscape:
         0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
         species and decreases the weight of an animal
         """
-        for species, animals in self.updated_fauna_dict.items():
-            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
+        for species, animals in self.fauna_dict.items():
+            for i in range(math.floor(len(self.fauna_dict[species]) / 2)):
                 animal = animals[i]
                 if animal.proba_animal_birth(len(animals)):
                     child_species = animal.__class__
