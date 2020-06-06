@@ -165,23 +165,58 @@ class Landscape:
 
 
 class Water(Landscape):
+    #is_migratable = False
+
     def __init__(self):
-        pass
+        super().__init__()
 
 
 class Desert(Landscape):
-    def __init__(self):
-        pass
+    #is_migratable = True
+    parameters = {'f_max': 0}
 
+    def __init__(self, given_params=None):
+        super().__init__()
+        if given_params is not None:
+            self.set_parameters(given_params)
+        self.parameters = Highland.parameters
+        self.remaining_food['Herbivore'] = self.parameters['f_max']
+        # self.remaining_food['Carnivore'] = sum(herb.weight for herb in
+        #self.fauna_list['Herbivore'])
+
+    def update_fodder(self):
+        """
+        Updates the annual fodder value back to f_max annually
+        """
+        #self.remaining_food["Carnivore"]=
 
 class Highland(Landscape):
-    def __init__(self):
-        pass
+    """
+    Represents the highland covered by highland cells. Every year the available fodder
+    is set to the maximum
+    """
+    #is_migratable = True
+    parameters = {'f_max': 300}
+
+    def __init__(self, given_params = None):
+        super().__init__()
+        if given_params is not None:
+            self.set_parameters(given_params)
+        self.parameters = Highland.parameters
+        self.remaining_food['Herbivore'] = self.parameters['f_max']
+        # self.remaining_food['Carnivore']=
+
+    def update_fodder(self):
+        """
+        Updates the annual fodder value back to f_max annually
+        """
+        self.remaining_food["Herbivore"] = self.parameters["f_max"]
 
 
 class Lowland(Landscape):
     """ Represents the landscape covered by lowland cells.  Every year the available fodder
     is set to maximum"""
+    #is_migratable = True
     parameters = {'f_max': 800}
 
     def __init__(self, given_params=None):
