@@ -133,3 +133,4 @@ if __name__ == "__main__":
                 Island.cell[row, col].add_children_to_adult_animals()
                 Island.cell[row, col].update_animal_weight_and_age()
                 Island.cell[row, col].animal_dies()
+                Island.cells[row, col].update_fodder()
