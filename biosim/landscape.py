@@ -77,7 +77,7 @@ class Landscape:
         fodder as 0.
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
-        for herb in fauna_dict["Herbivore"]:
+        for herb in self.fauna_dict["Herbivore"]:
             herb_remaining_fodder = self.remaining_food['Herbivore']
             if herb_remaining_fodder == 0:
                 break
