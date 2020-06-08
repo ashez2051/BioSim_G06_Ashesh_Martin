@@ -150,3 +150,4 @@ class Carnivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
         self.parameters = Carnivore.parameters
+    
