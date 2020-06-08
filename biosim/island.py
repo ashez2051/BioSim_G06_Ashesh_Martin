@@ -8,6 +8,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 from biosim.landscape import *  # ask about how to import this
+from biosim.fauna import *
 import numpy as np
 import textwrap
 
@@ -130,7 +131,7 @@ if __name__ == "__main__":
             for col in range(cols):
                 Island.cells[row, col].animal_eats()
                 Island.cells[row, col].animal_gives_birth()
-                Island.cell[row, col].add_children_to_adult_animals()
-                Island.cell[row, col].update_animal_weight_and_age()
-                Island.cell[row, col].animal_dies()
+                Island.cells[row, col].add_children_to_adult_animals()
+                Island.cells[row, col].update_animal_weight_and_age()
+                Island.cells[row, col].animal_dies()
                 Island.cells[row, col].update_fodder()
