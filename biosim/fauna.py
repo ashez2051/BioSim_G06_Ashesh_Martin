@@ -50,12 +50,12 @@ class Fauna:
         self.weight = self.parameters['eta'] * self.weight
         self.age += 1
 
-    def animal_weight_with_food(self):
+    def animal_weight_with_food(self, food_eaten):
         """
         Updates the weight of an animal based on it's feeding behavior
         :param food_eaten: the amount of food eaten by an animal, float
         """
-        self.weight += self.parameters['beta'] * self.parameters["F"]
+        self.weight += self.parameters['beta'] * food_eaten
         return self.weight
 
     @property
@@ -138,7 +138,7 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        self.parameters = Herbivore.parameters
+        #self.parameters = Herbivore.parameters Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -149,4 +149,4 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        self.parameters = Carnivore.parameters
+        #self.parameters = Carnivore.parameters

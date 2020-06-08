@@ -7,8 +7,8 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
-from biosim.landscape import *  # ask about how to import this
-from biosim.fauna import *
+from biosim.landscape import Lowland  # ask about how to import this
+from biosim.fauna import Herbivore, Carnivore
 import numpy as np
 import textwrap
 
@@ -55,7 +55,7 @@ class Island:
         :param island_array: Array of the island
         :return: the map edges
         """
-        rows, cols = island_array.shape[0], island_array[1]
+        rows, cols = island_array.shape[0], island_array.shape[1]
         island_edges = island_array[0, :cols], island_array[rows - 1, :cols], island_array[
                                                                               :rows - 1,
                                                                               0], island_array[
@@ -114,9 +114,12 @@ if __name__ == "__main__":
     ini_herbs = [{"loc": (1, 2),
                   "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]}]
 
+    Island(geogr)
+    Island.add_animals(10)
+
     animal_species = {'Carnivore': Carnivore, 'Herbivore': Herbivore}
 
-    lengths = [len(line) for line in Island_map.splitlines()]
+    lengths = [len(line) for line in island_map.splitlines()]
     if len(set(lengths)) > 1:
         raise ValueError('This given string is not uniform')
 
