@@ -15,8 +15,8 @@ class Landscape:
 
     def __init__(self):
         self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
-        self.fauna_dict = {"Hebivore": []}  # Add carnivore later
-        self.updated_fauna_dict = {"Hebivore": []}  # Add carnivore later
+        self.fauna_dict = {"Herbivore": []}  # Add carnivore later
+        self.updated_fauna_dict = {"Herbivore": []}  # Add carnivore later
         self.food_left = {'Herbivore': 0,
                                 'Carnivore': 0}  # might need to have the same name as the method remaining_food
 
