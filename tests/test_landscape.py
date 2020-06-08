@@ -1,6 +1,6 @@
 import pytest
 
-from biosim.landscape import Landscape, Lowland
+from biosim.landscape import Landscape, Lowland,Water,Desert,Highland
 from biosim.fauna import Herbivore
 
 

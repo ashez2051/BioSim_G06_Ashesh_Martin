@@ -3,7 +3,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
-from biosim import Fauna  # How do we import this?
+from .fauna import Fauna  # How do we import this?
 
 
 class Landscape:
