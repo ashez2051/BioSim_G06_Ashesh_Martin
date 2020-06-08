@@ -24,7 +24,7 @@ class Island:
         self.check_edge_cells_is_water(self.map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore, # 'Carnivore': Carnivore
+        self.fauna_dict = {'Herbivore': Herbivore,  # 'Carnivore': Carnivore
                            }
 
         self._cells = self.array_with_landscape_objects()
@@ -47,6 +47,7 @@ class Island:
         map_str_clean = self.map.replace(' ', '')  ## necessary?
         char_map = np.array([[col for col in row] for row in map_str_clean.splitlines()])
         return char_map
+
 
     @staticmethod  # Why is it static?
     def edges(island_array):
@@ -104,37 +105,39 @@ class Island:
                 cell = self._cells[loc]
                 cell.add_animal(animal_object)
 
+    def place_animals_in_list(self, list_of_diction):
+        for animal in list_of_diction:
+            if animal['species'] == "Herbivore":
+                self.fauna_dict["species"].append(Herbivore(age=animal['age'], weight=animal['weight']))
+
 
 if __name__ == "__main__":
-    geogr = """\ 
-    WWW
-    WLW
-    WWW"""
-    geogr = textwrap.dedent(geogr)
-    ini_herbs = [{"loc": (1, 2),
-                  "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]}]
+    import matplotlib.pyplot as plt
+    from biosim.fauna import Herbivore, Carnivore
 
-    Island(geogr)
-    Island.add_animals(10)
+    listof = [{'species': 'Herbivore', 'age': 5, 'weight': 25} for _ in range(5)]
 
-    animal_species = {'Carnivore': Carnivore, 'Herbivore': Herbivore}
+    ini_herbs = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(150)]}]
 
-    lengths = [len(line) for line in island_map.splitlines()]
-    if len(set(lengths)) > 1:
-        raise ValueError('This given string is not uniform')
+    #dict_animals = {[{"species": Herbivore, "age": 5, "weight": 20},
+                    #{"species": Herbivore, "age": 5, "weight": 20}]}
 
-    landscape_dict = Island.landscape_dict
+    l = Lowland()
+    l.add_animal(ini_herbs)
 
-    for _ in range(100):
-        print("New Year")
+    print(0, " Year End Herb numbers :-", len(l.fauna_dict))
 
-        rows, cols = Island.map_dims
+    # Making figure
+    fig = plt.figure(figsize=(8, 6.4))
+    plt.plot(0, len(l.fauna_dict), '*-', color='b', lw=0.5)
+    plt.draw()
+    plt.pause(0.001)
 
-        for row in range(rows):
-            for col in range(cols):
-                Island.cells[row, col].animal_eats()
-                Island.cells[row, col].animal_gives_birth()
-                Island.cells[row, col].add_children_to_adult_animals()
-                Island.cells[row, col].update_animal_weight_and_age()
-                Island.cells[row, col].animal_dies()
-                Island.cells[row, col].update_fodder()
+    # count list
+    count_herb = [len(l.fauna_dict)]
+    for i in range(50):
+        l.animal_eats() #This updates the fodder as well
+        l.animal_gives_birth()
+        l.add_children_to_adult_animals()
+        l.update_animal_weight_and_age()
+        l.animal_dies()

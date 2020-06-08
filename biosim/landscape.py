@@ -22,7 +22,7 @@ class Landscape:
 
     def add_animal(self, animal):
         """
-        Adds the animal object to the species list of cell
+        Adds the animal object to the species list of cell(?)
         :param animal: Input animal object, #Will specify what this actually is later
         """
         species = animal.__class__.__name__
