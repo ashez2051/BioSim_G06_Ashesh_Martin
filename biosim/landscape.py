@@ -82,10 +82,10 @@ class Landscape:
             if herb_remaining_fodder == 0:
                 break
             elif herb_remaining_fodder >= herb.parameters['F']:
-                herb.animal_eats(herb.parameters['F'])
+                herb.animal_weight_with_food(herb.parameters['F'])
                 self.remaining_food['Herbivore'] -= herb.parameters['F']
             elif 0 < herb_remaining_fodder < herb.parameters["F"]:
-                herb.animal_eats(herb_remaining_fodder)
+                herb.animal_weight_with_food(herb_remaining_fodder)
                 self.remaining_food['Herbivore'] = 0
 
     @property
