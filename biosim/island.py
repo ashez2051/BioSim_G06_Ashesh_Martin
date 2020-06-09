@@ -104,13 +104,7 @@ class Island:
                 animal_object = species_class(age=age, weight=weight)
                 cell = self._cells[loc]
                 print(animal_object)
-                # cell.add_animal(animal_object)
-
-    # def place_animals_in_list(self, list_of_diction):
-    #     for animal in list_of_diction:
-    #         if animal['species'] == "Herbivore":
-    #             self.fauna_dict["species"].append(
-    #                 Herbivore(age=animal['age'], weight=animal['weight']))
+                cell.add_animal(animal_object)
 
 
 if __name__ == "__main__":
