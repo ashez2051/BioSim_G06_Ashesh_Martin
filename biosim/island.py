@@ -7,7 +7,7 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
-from biosim.landscape import Lowland  # ask about how to import this
+from biosim.landscape import Landscape, Lowland  # ask about how to import this
 from biosim.fauna import Herbivore, Carnivore
 import numpy as np
 import textwrap
@@ -48,7 +48,6 @@ class Island:
         char_map = np.array([[col for col in row] for row in map_str_clean.splitlines()])
         return char_map
 
-
     @staticmethod  # Why is it static?
     def edges(island_array):
         """
@@ -88,12 +87,12 @@ class Island:
                 landscape_cell_object[row][col] = self.landscape_dict[landscape_type]()
         return landscape_cell_object
 
-    def add_animals(self, pop):
+    def add_animals(self, population):
         """
         Adds animals to the cells in the map
-        :param pop: The number of animals to add
+        #### Change docstring
         """
-        for animal_group in pop:
+        for animal_group in population:
             loc = animal_group["loc"]
             animals = animal_group["pop"]
             for animal in animals:
@@ -108,7 +107,8 @@ class Island:
     def place_animals_in_list(self, list_of_diction):
         for animal in list_of_diction:
             if animal['species'] == "Herbivore":
-                self.fauna_dict["species"].append(Herbivore(age=animal['age'], weight=animal['weight']))
+                self.fauna_dict["species"].append(
+                    Herbivore(age=animal['age'], weight=animal['weight']))
 
 
 if __name__ == "__main__":
@@ -117,10 +117,10 @@ if __name__ == "__main__":
 
     listof = [{'species': 'Herbivore', 'age': 5, 'weight': 25} for _ in range(5)]
 
-    ini_herbs = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(150)]}]
+    ini_herbs = [{"loc": (1, 1),
+                  "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(150)]}]
 
-    #dict_animals = {[{"species": Herbivore, "age": 5, "weight": 20},
-                    #{"species": Herbivore, "age": 5, "weight": 20}]}
+    # dict_animals = {[ "Herbivore": "age": 5, "weight": 20},{"Herbivore", "age": 5, "weight": 20}]}
 
     l = Lowland()
     l.add_animal(ini_herbs)
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     # count list
     count_herb = [len(l.fauna_dict)]
     for i in range(50):
-        l.animal_eats() #This updates the fodder as well
+        l.animal_eats()  # This updates the fodder as well
         l.animal_gives_birth()
         l.add_children_to_adult_animals()
         l.update_animal_weight_and_age()

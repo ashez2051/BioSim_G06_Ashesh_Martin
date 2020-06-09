@@ -3,7 +3,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
-from .fauna import Fauna
+from .fauna import Fauna, Herbivore
 
 
 class Landscape:
@@ -18,7 +18,7 @@ class Landscape:
         self.fauna_dict = {"Herbivore": []}  # Add carnivore later
         self.updated_fauna_dict = {"Herbivore": []}  # Add carnivore later
         self.food_left = {'Herbivore': 0,
-                                'Carnivore': 0}  # might need to have the same name as the method remaining_food
+                          'Carnivore': 0}  # might need to have the same name as the method remaining_food
 
     def add_animal(self, animal):
         """
@@ -54,8 +54,7 @@ class Landscape:
         on herbivores
         """
         self.update_fodder()
-        self.herbivore_eats()
-        # self.carnivore_eats()
+        self.herbivore_eats()  # self.carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -144,6 +143,7 @@ class Landscape:
                 if animal.death_probability:
                     self.remove_animal(animal)
 
+
     @property
     def cell_fauna_count(self):
         """ Returns the number of fauna type as a dictionary"""
@@ -159,20 +159,19 @@ class Landscape:
         for param in given_params:
             if param in cls.parameters:
                 cls.parameters[param] = given_params[param]
-
             else:
                 raise ValueError('Parameter not set in list' + str(param))
 
 
 class Water(Landscape):
-    #is_migratable = False
+    # is_migratable = False
 
     def __init__(self):
         super().__init__()
 
 
 class Desert(Landscape):
-    #is_migratable = True
+    # is_migratable = True
     parameters = {'f_max': 0}
 
     def __init__(self, given_params=None):
@@ -180,31 +179,30 @@ class Desert(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Highland.parameters
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        # self.remaining_food['Carnivore'] = sum(herb.weight for herb in
-        #self.fauna_list['Herbivore'])
+        self.remaining_food['Herbivore'] = self.parameters[
+            'f_max']  # self.remaining_food['Carnivore'] = sum(herb.weight for herb in  # self.fauna_list['Herbivore'])
 
     def update_fodder(self):
         """
         Updates the annual fodder value back to f_max annually
-        """
-        #self.remaining_food["Carnivore"]=
+        """  # self.remaining_food["Carnivore"]=
+
 
 class Highland(Landscape):
     """
     Represents the highland covered by highland cells. Every year the available fodder
     is set to the maximum
     """
-    #is_migratable = True
+    # is_migratable = True
     parameters = {'f_max': 300}
 
-    def __init__(self, given_params = None):
+    def __init__(self, given_params=None):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Highland.parameters
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        # self.remaining_food['Carnivore']=
+        self.remaining_food['Herbivore'] = self.parameters[
+            'f_max']  # self.remaining_food['Carnivore']=
 
     def update_fodder(self):
         """
@@ -216,7 +214,7 @@ class Highland(Landscape):
 class Lowland(Landscape):
     """ Represents the landscape covered by lowland cells.  Every year the available fodder
     is set to maximum"""
-    #is_migratable = True
+    # is_migratable = True
     parameters = {'f_max': 800}
 
     def __init__(self, given_params=None):
@@ -224,16 +222,14 @@ class Lowland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Lowland.parameters
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        # self.remaining_food['Carnivore']=
+        self.remaining_food['Herbivore'] = self.parameters[
+            'f_max']  # self.remaining_food['Carnivore']=
 
     def update_fodder(self):
         """
         Updates the annual fodder value back to f_max annually
         """
         self.remaining_food["Herbivore"] = self.parameters["f_max"]
-
-
 
 
 if __name__ == "__main__":
