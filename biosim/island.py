@@ -132,8 +132,8 @@ if __name__ == "__main__":
     fig = plt.figure(figsize=(8, 6.4))
     plt.plot(0,len( l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
     plt.draw()
-    plt.pause(0.5)
-    #plt.show()
+    plt.pause(0.001)
+    plt.show()
 
 
     # count list
