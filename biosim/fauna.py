@@ -138,7 +138,8 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age,
-                         weight)  # self.parameters = Herbivore.parameters Dont need this, defined in the self
+                         weight)
+        # self.parameters = Herbivore.parameters Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -162,4 +163,4 @@ class Carnivore(Fauna):
         :param herb: Herbivore class object
         :return: probability value
         """
-        pass
+
