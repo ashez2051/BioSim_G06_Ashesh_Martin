@@ -117,19 +117,29 @@ class Landscape:
         """
         for species, animals in self.updated_fauna_dict.items():
             for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
-                print('inside frst loop')
                 animal = animals[i]
                 # print(len(animals))
-                print()
+
                 if animal.proba_animal_birth(len(animals)):
-                    print('second if')
                     child_species = animal.__class__
                     child = child_species()
                     animal.weight_update_after_birth(child)
+
                     if animal.gives_birth:
                         self.updated_fauna_dict[species].append(child)
-                        animal.gives_birth = False
-                        print('3rd if')
+                        animal.gives_birth = True
+
+    def new_animal_gives_birth(self):
+        length = len(self.fauna_dict["Herbivore"])
+        newborn_list = []
+        if length >=2:
+            for anim in self.fauna_dict["Herbivore"]:
+                if anim.proba_animal_birth():
+                    newherb = Herbivore()
+                    if self.params['xi'] * newherb.weight <= self.weight:
+                        self.weight -= self._params['xi'] * new_animal.weight
+
+                    newborn_list.append(newherb)
 
     def add_children_to_adult_animals(self):
         """

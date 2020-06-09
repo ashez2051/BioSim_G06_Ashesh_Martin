@@ -48,7 +48,7 @@ class Fauna:
         """
         Updates the age of an animal and it's weight at the end of the year
         """
-        self.weight = self.parameters['eta'] * self.weight
+        self.weight -= self.parameters['eta'] * self.weight
         self.age += 1
 
     def animal_weight_with_food(self, food_eaten):
@@ -82,10 +82,12 @@ class Fauna:
         :return: true/False probability of giving birth
 
         """
+
         weight_check = self.parameters["zeta"] * (
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
         if (num_animals >= 2) and (self.weight >= weight_check):
+
             return np.random.random() < min(1,
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1))
         else:
@@ -100,8 +102,10 @@ class Fauna:
             self.weight -= child.weight * child.parameters[
                 "xi"]
             self.gives_birth = True
-            print('inside weight update')
+        else:
+            self.gives_birth = False
 
+    @property
     def death_probability(self):
         """
         Calculates the probability of death based on fitness

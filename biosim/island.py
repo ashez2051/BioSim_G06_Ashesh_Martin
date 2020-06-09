@@ -117,26 +117,32 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from biosim.fauna import Herbivore, Carnivore
 
-    dict_animals = [{"species": "Herbivore", "age": 20, "weight": 100} for _ in range(150)]
+    dict_animals = [{"species": "Herbivore", "age": 5, "weight": 25} for _ in range(50)]
     l = Lowland()
     for anim in dict_animals:
         if anim['species'] == "Herbivore":
             animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
+
             l.add_animal(animal_object)
 
-    print(l.fauna_dict['Herbivore'])
+
+
+    # print(l.fauna_dict['Herbivore'])
 
     fig = plt.figure(figsize=(8, 6.4))
-    plt.plot(0, len(l.fauna_dict), '*-', color='b', lw=0.5)
+    plt.plot(0,len( l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
     plt.draw()
-    plt.pause(0.001)
+    plt.pause(0.5)
+    #plt.show()
+
 
     # count list
     count_herb = [len(l.fauna_dict)]
-    for i in range(50):
+    for i in range(200):
         l.animal_eats() # This updates the fodder as well
         l.animal_gives_birth()
         l.add_children_to_adult_animals()
         l.update_animal_weight_and_age()
         l.animal_dies()
-        print("In year: {0} the number of animals is {1}".format(i + 1,  len(l.fauna_dict["Herbivore"])))
+        print("In year: {0} the number of animals is {1}".format(i + 1,
+                                                                 len(l.fauna_dict["Herbivore"])))
