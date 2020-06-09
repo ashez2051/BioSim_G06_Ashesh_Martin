@@ -102,16 +102,18 @@ class Island:
                 species_class = self.fauna_dict[species]
                 animal_object = species_class(age=age, weight=weight)
                 cell = self._cells[loc]
-                cell.add_animal(animal_object)
+                print(animal_object)
+                # cell.add_animal(animal_object)
 
-    def place_animals_in_list(self, list_of_diction):
-        for animal in list_of_diction:
-            if animal['species'] == "Herbivore":
-                self.fauna_dict["species"].append(
-                    Herbivore(age=animal['age'], weight=animal['weight']))
+    # def place_animals_in_list(self, list_of_diction):
+    #     for animal in list_of_diction:
+    #         if animal['species'] == "Herbivore":
+    #             self.fauna_dict["species"].append(
+    #                 Herbivore(age=animal['age'], weight=animal['weight']))
 
 
 if __name__ == "__main__":
+    isl = Island("WWW")
     import matplotlib.pyplot as plt
     from biosim.fauna import Herbivore, Carnivore
 
@@ -120,10 +122,10 @@ if __name__ == "__main__":
     ini_herbs = [{"loc": (1, 1),
                   "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(150)]}]
 
-    # dict_animals = {[ "Herbivore": "age": 5, "weight": 20},{"Herbivore", "age": 5, "weight": 20}]}
+    dict_animals = {"Herbivore": "age": 5, "weight": 20},{"Herbivore", "age": 5, "weight": 20}]
 
     l = Lowland()
-    l.add_animal(ini_herbs)
+    l.add_animals(ini_herbs)
 
     print(0, " Year End Herb numbers :-", len(l.fauna_dict))
 
