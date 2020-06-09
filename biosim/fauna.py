@@ -163,4 +163,10 @@ class Carnivore(Fauna):
         :param herb: Herbivore class object
         :return: probability value
         """
+        if self.animal_fitness <= herb.animal_fitness:
+            return 0
+        elif 0 < (self.animal_fitness - herb.animal_fitness) < self.parameters["delta_phi_max"]:
+            return (self.animal_fitness - herb.animal_fitness)/self.parameters["delta_phi_max"]
+        else:
+            return 1
 
