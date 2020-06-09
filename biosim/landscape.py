@@ -81,10 +81,10 @@ class Landscape:
             if herb_remaining_fodder == 0:
                 break
             elif herb_remaining_fodder >= herb.parameters['F']:
-                herb.animal_eats(herb.parameters['F'])
+                herb.animal_weight_with_food(herb.parameters['F'])
                 self.remaining_food['Herbivore'] -= herb.parameters['F']
             elif 0 < herb_remaining_fodder < herb.parameters["F"]:
-                herb.animal_eats(herb_remaining_fodder)
+                herb.animal_weight_with_food(herb_remaining_fodder)
                 self.remaining_food['Herbivore'] = 0
 
     @property
@@ -115,15 +115,15 @@ class Landscape:
         0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
         species and decreases the weight of an animal
         """
-        for species, animals in self.fauna_dict.items():
-            for i in range(math.floor(len(self.fauna_dict[species]) / 2)):
+        for species, animals in self.updated_fauna_dict.items():
+            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
                 animal = animals[i]
                 if animal.proba_animal_birth(len(animals)):
                     child_species = animal.__class__
                     child = child_species()
                     animal.weight_update_after_birth(child)
                     if animal.gives_birth:
-                        self.fauna_dict[species].append(child)
+                        self.updated_fauna_dict[species].append(child)
                         animal.gives_birth = False
 
     def add_children_to_adult_animals(self):

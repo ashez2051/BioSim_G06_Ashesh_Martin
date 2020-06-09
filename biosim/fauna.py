@@ -9,6 +9,7 @@ import numpy as np
 import math
 
 np.random.seed(123)
+import random
 
 
 class Fauna:
@@ -86,7 +87,9 @@ class Fauna:
 
         if num_animals >= 2 and self.weight >= weight_check:
             return np.random.uniform(0, 1) < min(1, (
-                        self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+                    self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+        else:
+            return False
 
     def weight_update_after_birth(self, child):
         """
@@ -95,7 +98,8 @@ class Fauna:
         """
         if self.weight > child.weight * child.parameters["xi"]:
             self.weight -= child.weight * child.parameters[
-                "xi"]  # Add self.gives_birth or something later
+                "xi"]
+        self.gives_birth = True
 
     def death_probability(self):
         """
@@ -138,7 +142,7 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        #self.parameters = Herbivore.parameters Dont need this, defined in the self
+        # self.parameters = Herbivore.parameters Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -149,4 +153,4 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        #self.parameters = Carnivore.parameters
+        # self.parameters = Carnivore.parameters
