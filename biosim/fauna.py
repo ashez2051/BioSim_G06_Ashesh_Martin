@@ -84,7 +84,9 @@ class Fauna:
         weight_check = self.parameters["zeta"] * (
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
-        if (num_animals >= 2) and (self.weight >= weight_check):
+        if num_animals >= 2 and self.weight >= weight_check:
+            return np.random.uniform(0, 1) < min(1, (
+                    self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
 
             return np.random.uniform(0,1) < min(1,
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1))
@@ -140,20 +142,38 @@ class Herbivore(Fauna):
     Child class of Fauna
     """
     parameters = {"w_birth": 8.0, "sigma_birth": 1.5, "beta": 0.9, "eta": 0.05, "a_half": 40.0,
-                  "phi_age": 0.6, "w_half": 10.0, "phi_weight": 0.1, "mu": 0.25, "lambda": 1.0,
-                  "gamma": 0.2, "zeta": 3.5, "xi": 1.2, "omega": 0.4, "F": 10.0}
+                  "phi_age": 0.6, "w_half": 10.0, "phi_weight": 0.1, "mu": 0.25, "gamma": 0.2,
+                  "lambda": 1, "zeta": 3.5, "xi": 1.2, "omega": 0.4, "F": 10.0}
 
     def __init__(self, age=None, weight=None):
-        super().__init__(age, weight)
-        #self.parameters = Herbivore.parameters #Dont need this, defined in the self
+        super().__init__(age,
+                         weight)  # self.parameters = Herbivore.parameters Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
     """
     Child class of Fauna
     """
-    parameters = {}
+    parameters = {"w_birth": 6.0, "sigma_birth": 1, "beta": 0.75, "eta": 0.125, "a_half": 40.0,
+                  "phi_age": 0.3, "w_half": 4.0, "phi_weight": 0.4, "mu": 0.4, "gamma": 0.8,
+                  "lambda": 1, "zeta": 3.5, "xi": 1.1, "omega": 0.8, "F": 50.0,
+                  "delta_phi_max": 10.0}
 
     def __init__(self, age=None, weight=None):
-        super().__init__(age, weight)
-        # self.parameters = Carnivore.parameters
+        super().__init__(age, weight)  # self.parameters = Carnivore.parameters
+
+    def probability_of_killing(self, herb):
+        """"
+        Returns the probability with which a carnivore kills a herbivore
+        If the fitness of the carnivore is less than that of a herbivore we return 0
+        If the difference in fitness is > 0 and < delta_phi_max then it is calculated
+        as (difference / delta_phi_max)
+        :param herb: Herbivore class object
+        :return: probability value
+        """
+        if self.animal_fitness <= herb.animal_fitness:
+            return 0
+        elif 0 < (self.animal_fitness - herb.animal_fitness) < self.parameters["delta_phi_max"]:
+            return (self.animal_fitness - herb.animal_fitness)/self.parameters["delta_phi_max"]
+        else:
+            return 1
