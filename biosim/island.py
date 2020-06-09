@@ -7,11 +7,11 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
-from biosim.landscape import Landscape, Lowland  # ask about how to import this
+from biosim.landscape import Lowland
 #from .fauna import Herbivore
 #from .fauna import Fauna
 import numpy as np
-import textwrap
+
 
 
 class Island:
@@ -25,7 +25,7 @@ class Island:
         self.check_edge_cells_is_water(self.map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore,  # 'Carnivore': Carnivore
+        self.fauna_dict = {'Herbivore': Herbivore,  'Carnivore': Carnivore
                            }
 
         self._cells = self.array_with_landscape_objects()
@@ -105,6 +105,22 @@ class Island:
                 cell = self._cells[loc]
                 print(animal_object)
                 cell.add_animal(animal_object)
+
+    def number_of_animals_per_species(self, species):
+        """
+        Calculates the total amount of animals per species on the island
+        :param species: dictionary of
+        :return: The total number of animals on the island
+        """
+        num_animals = 0
+        rows, cols = self.map_dims
+        for row in range(rows):
+            for col in range(cols):
+                cell = self._cells[row, col]
+                num_animals += len(cell.fauna_dict[species])
+        return num_animals
+
+
 
 
 if __name__ == "__main__":
