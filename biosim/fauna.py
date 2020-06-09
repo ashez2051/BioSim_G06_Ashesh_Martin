@@ -9,7 +9,6 @@ import numpy as np
 import math
 
 np.random.seed(123)
-import random
 
 
 class Fauna:
@@ -80,7 +79,6 @@ class Fauna:
         Calculates the probability for an animal to give birth
         :param num_animals: Number of animals of the same species in a single cell
         :return: true/False probability of giving birth
-
         """
 
         weight_check = self.parameters["zeta"] * (
@@ -88,7 +86,7 @@ class Fauna:
 
         if (num_animals >= 2) and (self.weight >= weight_check):
 
-            return np.random.random() < min(1,
+            return np.random.uniform(0,1) < min(1,
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1))
         else:
             return False
