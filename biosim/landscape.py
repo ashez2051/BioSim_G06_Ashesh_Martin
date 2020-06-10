@@ -18,8 +18,7 @@ class Landscape:
         self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Hebivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Hebivore": [], "Carnivore": []}
-        self.food_left = {'Herbivore': 0,
-                          'Carnivore': 0}
+        self.food_left = {'Herbivore': 0, 'Carnivore': 0}
 
     def add_animal(self, animal):
         """
@@ -43,8 +42,7 @@ class Landscape:
         Sorts the animal by their fitness
         """
         self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
-        self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"),
-                                          reverse=True)
+        self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"), reverse=True)
 
     def update_fitness(self, animal, species):
         """
@@ -98,11 +96,34 @@ class Landscape:
                 self.remaining_food['Herbivore'] = 0
 
     def carnivore_eats(self):
+        """
+        The carnivores eat in the order of fitness. The carnivore with the highest fitness
+        eats first and preys on the herbivore with the least fitness. If, there is enough
+        weight for a carnivore to eat, it eats according to it's appetite, else it eats the
+        food according to the weight of the herbivore.
+        :return:
+        """
         self.sort_by_fitness()
         for carnivore in self.fauna_dict["Carnivore"]:
-            appetite_carnivore = carnivore.parameters["F"]
-            amount_eaten = 0
-            # continue tomorrow
+            appetite_of_carnivore = carnivore.parameters["F"]
+            available_food = 0
+            animals_that_dont_get_eaten = []
+            for i, herb in enumerate(self.fauna_dict["Herbivore"]):
+                if appetite_of_carnivore <= available_food:
+                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][:i])
+                    break
+
+                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+                    if appetite_of_carnivore - available_food < herb.weight:
+                        available_food += herb.weight
+                    elif appetite_of_carnivore - available_food > herb.weight:
+                        available_food += appetite_of_carnivore - available_food
+
+                else:
+                    animals_that_dont_get_eaten.append(herb)
+                carnivore.animal_weight_with_food(available_food)
+                self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
+
 
     @property
     def remaining_food(self):
@@ -115,8 +136,8 @@ class Landscape:
         elif isinstance(self, Desert):
             self.food_left = {'Herbivore': 0, 'Carnivore': self.total_herbivore_weight}
         else:
-            self.food_left = {"Herbivore": self.food_left["Herbivore"], "Carnivore":
-                self.total_herbivore_weight}
+            self.food_left = {"Herbivore": self.food_left["Herbivore"],
+                              "Carnivore": self.total_herbivore_weight}
         return self.food_left
 
     def update_animal_weight_and_age(self):
@@ -207,7 +228,7 @@ class Desert(Landscape):
             self.set_parameters(given_params)
         self.parameters = Highland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food["Carnivore"]= self.total_herbivore_weight()
+        self.remaining_food["Carnivore"] = self.total_herbivore_weight()
 
 
 class Highland(Landscape):
@@ -224,7 +245,7 @@ class Highland(Landscape):
             self.set_parameters(given_params)
         self.parameters = Highland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food['Carnivore']= self.total_herbivore_weight()
+        self.remaining_food['Carnivore'] = self.total_herbivore_weight()
 
     def update_fodder(self):
         """
@@ -245,8 +266,8 @@ class Lowland(Landscape):
             self.set_parameters(given_params)
         self.parameters = Lowland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food['Carnivore'] = self.total_herbivore_weight() #Might be without
-                                                                        # parenthesis
+        self.remaining_food[
+            'Carnivore'] = self.total_herbivore_weight()  # Might be without  # parenthesis
 
     def update_fodder(self):
         """
