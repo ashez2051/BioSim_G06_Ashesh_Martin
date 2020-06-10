@@ -126,8 +126,8 @@ class Landscape:
 
                 else:
                     animals_that_dont_get_eaten.append(herb)
-                carnivore.animal_weight_with_food(available_food)
-                self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
+                    carnivore.animal_weight_with_food(available_food)
+                    self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
 
     @property
