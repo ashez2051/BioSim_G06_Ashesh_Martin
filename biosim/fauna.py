@@ -8,7 +8,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
 import math
 
-np.random.seed(123)
+np.random.seed(1)
 
 
 class Fauna:
@@ -149,7 +149,6 @@ class Herbivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age,
                          weight)
-        #self.parameters = Herbivore.parameters ,Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -163,7 +162,7 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        #self.parameters = Carnivore.parameters
+
 
     def probability_of_killing(self, herb):
         """"
