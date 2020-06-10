@@ -7,11 +7,10 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
-from biosim.landscape import Lowland
-#from .fauna import Herbivore
-#from .fauna import Fauna
+from biosim.landscape import Lowland, Water, Desert, Highland
+# from .fauna import Herbivore
+# from .fauna import Fauna
 import numpy as np
-
 
 
 class Island:
@@ -25,8 +24,7 @@ class Island:
         self.check_edge_cells_is_water(self.map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore,  'Carnivore': Carnivore
-                           }
+        self.fauna_dict = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
 
         self._cells = self.array_with_landscape_objects()
 
@@ -45,11 +43,11 @@ class Island:
         """
         Gets numpy array from multidimensional string
         """
-        map_str_clean = self.map.replace(' ', '')  ## necessary?
+        map_str_clean = self.map.replace(' ', '')
         char_map = np.array([[col for col in row] for row in map_str_clean.splitlines()])
         return char_map
 
-    @staticmethod  # Why is it static?
+    @staticmethod
     def edges(island_array):
         """
         Finds the edges of the map for later use
@@ -98,24 +96,43 @@ class Island:
         rows, cols = self.map_dims
         adjacent_cell_list = []
         if n_rows > 0:
-            adjacent_cell_list.append(self._cells[n_rows-1,n_cols])
-        if n_rows + 1 > n_rows:
-            adjacent_cell_list.append(self._cells[n_rows+1, n_cols])
+            adjacent_cell_list.append(self._cells[n_rows - 1, n_cols])
+        if n_rows + 1 > rows:
+            adjacent_cell_list.append(self._cells[n_rows + 1, n_cols])
         if n_cols > 0:
-            adjacent_cell_list.append(self._cells[n_rows, n_cols -1])
-        if n_cols +1 < n_cols:
-            adjacent_cell_list.append(self._cells[n_rows, n_cols +1])
+            adjacent_cell_list.append(self._cells[n_rows, n_cols - 1])
+        if n_cols + 1 < cols:
+            adjacent_cell_list.append(self._cells[n_rows, n_cols + 1])
         return adjacent_cell_list
 
-    def life_cycle(self):
+    def life_cycle_in_rossumoya(self):
         """
         Iterates through all the cells and performs life cycle events. This should be called
         every year
         """
         print("New year")
-        self.restart_migration() #write this function in landscape
+        self.restart_migration_bool()  # write this function in landscape
         rows, cols = self.map_dims
 
+        for row in range(rows):
+            for col in range(cols):
+                if self._cells[row, col].is_migratable:
+                    self._cells[row, col].animal_eats()
+                    self._cells[row, col].animal_gives_birth()
+                    self._cells[row, col].add_children_to_adult_animals()
+                    self._cells[row, col].migration(
+                        self.adjacent_cells((row, col)))  # Need to write the method
+                    self._cells[row, col].update_animal_weight_and_age()
+                    self._cells[row, col].animal_dies()
+
+    def restart_migration_bool_in_cell(self):
+        """
+        Iterates through the landscape cells and resets the migration boolean
+        """
+        rows, cols = self.map_dims
+        for row in range(rows):
+            for col in range(cols):
+                self._cells[row, col].restart_migration_bool()
 
     def add_animals(self, population):
         """
@@ -150,11 +167,11 @@ class Island:
         return num_animals
 
 
-
 ## SIMULATION FOR HERBIVORES AND CARNIVORES
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     plt.ion()
     from biosim.fauna import Herbivore, Carnivore
 
@@ -167,21 +184,22 @@ if __name__ == "__main__":
             animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
             l.add_animal(animal_object)
 
+
     def add_carn_population(dict_animals):
         for anim in dict_animals_carn:
             if anim["species"] == "Carnivore":
                 animal_object_carn = Carnivore(age=anim["age"], weight=anim["weight"])
                 l.add_animal(animal_object_carn)
 
+
     fig = plt.figure(figsize=(8, 6.4))
-    plt.plot(0,len( l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
+    plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
     plt.draw()
     plt.pause(0.001)
 
-
     for i in range(200):
         asd = 0
-        l.animal_eats() # This updates the fodder as well
+        l.animal_eats()  # This updates the fodder as well
         l.animal_gives_birth()
         l.add_children_to_adult_animals()
         l.update_animal_weight_and_age()
@@ -191,7 +209,6 @@ if __name__ == "__main__":
             add_carn_population(dict_animals_carn)
 
         print("In year: {0} the number of herbivores is {1}".format(i + 1,
-                                                                 len(l.fauna_dict["Herbivore"])))
-        print("In year: {0} the number of carnivores is {1}".format(i + 1,
-                                                                 len(l.fauna_dict["Carnivore"])))
-    #print("Average number of animals is: {0}".format(len(l.fauna_dict["Herbivore"])))
+                                                                    len(l.fauna_dict["Herbivore"])))
+        print("In year: {0} the number of carnivores is {1}".format(i + 1, len(l.fauna_dict[
+                                                                                   "Carnivore"])))  # print("Average number of animals is: {0}".format(len(l.fauna_dict["Herbivore"])))
