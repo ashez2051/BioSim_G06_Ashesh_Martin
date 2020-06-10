@@ -122,6 +122,7 @@ class Island:
 
 
 
+## SIMULATION FOR HERBIVORES AND CARNIVORES
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -132,6 +133,7 @@ if __name__ == "__main__":
     for anim in dict_animals:
         if anim['species'] == "Herbivore":
             animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
+
 
             l.add_animal(animal_object)
 
