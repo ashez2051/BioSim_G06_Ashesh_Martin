@@ -88,8 +88,9 @@ class Fauna:
             return np.random.uniform(0, 1) < min(1, (
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
 
-            return np.random.uniform(0,1) < min(1,
-                    self.parameters["gamma"] * self.animal_fitness * (num_animals - 1))
+            return np.random.uniform(0, 1) < min(1,
+                                                 self.parameters["gamma"] * self.animal_fitness * (
+                                                             num_animals - 1))
         else:
             return False
 
@@ -99,8 +100,7 @@ class Fauna:
         :return:
         """
         if self.weight > child.weight * child.parameters["xi"]:
-            self.weight -= child.weight * child.parameters[
-                "xi"]
+            self.weight -= child.weight * child.parameters["xi"]
             self.gives_birth = True
         else:
             self.gives_birth = False
@@ -117,8 +117,13 @@ class Fauna:
             return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)
 
     @property
-    def probablity_of_moving(self):
-        pass
+    def probability_of_moving(self):
+        """
+        Calculates the probability that an animal moves
+        :return: Boolean if an animal moves or not
+        """
+        moving_probability = self.parameters["mu"] * self.animal_fitness
+        return np.random.uniform(0, 1) < moving_probability
 
     @classmethod
     def set_parameters(cls, given_params):
@@ -147,8 +152,7 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age,
-                         weight)
-        # self.parameters = Herbivore.parameters Dont need this, defined in the self
+                         weight)  # self.parameters = Herbivore.parameters Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -175,7 +179,6 @@ class Carnivore(Fauna):
         if self.animal_fitness <= herb.animal_fitness:
             return 0
         elif 0 < (self.animal_fitness - herb.animal_fitness) < self.parameters["delta_phi_max"]:
-            return (self.animal_fitness - herb.animal_fitness)/self.parameters["delta_phi_max"]
+            return (self.animal_fitness - herb.animal_fitness) / self.parameters["delta_phi_max"]
         else:
             return 1
-
