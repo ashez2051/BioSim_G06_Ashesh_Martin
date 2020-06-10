@@ -88,6 +88,35 @@ class Island:
                 landscape_cell_object[row][col] = self.landscape_dict[landscape_type]()
         return landscape_cell_object
 
+    def adjacent_cells(self, n_rows, n_cols):
+        """
+        Finds the immediate adjacent cells
+        :param n_rows: The number of rows
+        :param n_cols: The number of columns
+        :return: A list for adjacent cells
+        """
+        rows, cols = self.map_dims
+        adjacent_cell_list = []
+        if n_rows > 0:
+            adjacent_cell_list.append(self._cells[n_rows-1,n_cols])
+        if n_rows + 1 > n_rows:
+            adjacent_cell_list.append(self._cells[n_rows+1, n_cols])
+        if n_cols > 0:
+            adjacent_cell_list.append(self._cells[n_rows, n_cols -1])
+        if n_cols +1 < n_cols:
+            adjacent_cell_list.append(self._cells[n_rows, n_cols +1])
+        return adjacent_cell_list
+
+    def life_cycle(self):
+        """
+        Iterates through all the cells and performs life cycle events. This should be called
+        every year
+        """
+        print("New year")
+        self.restart_migration() #write this function in landscape
+        rows, cols = self.map_dims
+
+
     def add_animals(self, population):
         """
         Adds animals to the cells in the map

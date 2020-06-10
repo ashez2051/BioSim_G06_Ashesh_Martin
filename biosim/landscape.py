@@ -165,14 +165,14 @@ class Landscape:
 
 
 class Water(Landscape):
-    # is_migratable = False
+    is_migratable = False
 
     def __init__(self):
         super().__init__()
 
 
 class Desert(Landscape):
-    # is_migratable = True
+    is_migratable = True
     parameters = {'f_max': 0}
 
     def __init__(self, given_params=None):
@@ -194,7 +194,7 @@ class Highland(Landscape):
     Represents the highland covered by highland cells. Every year the available fodder
     is set to the maximum
     """
-    # is_migratable = True
+    is_migratable = True
     parameters = {'f_max': 300}
 
     def __init__(self, given_params=None):
@@ -215,7 +215,7 @@ class Highland(Landscape):
 class Lowland(Landscape):
     """ Represents the landscape covered by lowland cells.  Every year the available fodder
     is set to maximum"""
-    # is_migratable = True
+    is_migratable = True
     parameters = {'f_max': 800}
 
     def __init__(self, given_params=None):
