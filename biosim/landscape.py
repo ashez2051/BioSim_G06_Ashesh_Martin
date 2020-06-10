@@ -160,7 +160,7 @@ class Landscape:
         species and decreases the weight of an animal
         """
         for species, animals in self.updated_fauna_dict.items():
-            for i in range(math.floor(len(self.updated_fauna_dict[species])/2)):
+            for i in range(math.floor(len(self.updated_fauna_dict[species]))):
                 animal = animals[i]
 
                 if animal.proba_animal_birth(len(animals)):
@@ -222,7 +222,6 @@ class Landscape:
 class Water(Landscape):
     is_migratable = False
 
-
     def __init__(self):
         super().__init__()
 
@@ -236,7 +235,7 @@ class Desert(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.parameters = Highland.parameters
+        #self.parameters = Desert.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food["Carnivore"] = self.total_herbivore_weight()
 
@@ -254,8 +253,7 @@ class Highland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.parameters = Highland.parameters
-
+        #self.parameters = Highland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food['Carnivore'] = self.total_herbivore_weight()
 
@@ -278,7 +276,7 @@ class Lowland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.parameters = Lowland.parameters
+        #self.parameters = Lowland.parameters
         
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food[
@@ -290,7 +288,3 @@ class Lowland(Landscape):
         Updates the annual fodder value back to f_max annually
         """
         self.remaining_food["Herbivore"] = self.parameters["f_max"]
-
-
-if __name__ == "__main__":
-    print(np.random.shuffle(["a", "b", "c"]))

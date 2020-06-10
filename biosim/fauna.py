@@ -87,10 +87,6 @@ class Fauna:
         if num_animals >= 2 and self.weight >= weight_check:
             return np.random.uniform(0, 1) < min(1, (
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
-
-            return np.random.uniform(0, 1) < min(1,
-                                                 self.parameters["gamma"] * self.animal_fitness * (
-                                                             num_animals - 1))
         else:
             return False
 
