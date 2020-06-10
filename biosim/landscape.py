@@ -8,7 +8,6 @@ import operator
 from .fauna import Fauna, Herbivore
 
 
-
 class Landscape:
     """
     Parent class for various landscapes water, desert, highland and lowland
@@ -19,10 +18,9 @@ class Landscape:
     def __init__(self):
 
         self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
-        self.fauna_dict = {"Herbivore": [],"Carnivore": []}
-        self.updated_fauna_dict = {"Herbivore": [],"Carnivore": []}
-        self.food_left = {'Herbivore': 0,
-                          'Carnivore': 0}
+        self.fauna_dict = {"Herbivore": [], "Carnivore": []}
+        self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
+        self.food_left = {'Herbivore': 0, 'Carnivore': 0}
 
     def add_animal(self, animal):
         """
@@ -65,7 +63,6 @@ class Landscape:
         on herbivores
         """
         self.update_fodder()
-
         self.herbivore_eats()
         self.carnivore_eats()
 
@@ -113,6 +110,7 @@ class Landscape:
             appetite_of_carnivore = carnivore.parameters["F"]
             available_food = 0
             animals_that_dont_get_eaten = []
+
             for i, herb in enumerate(self.fauna_dict["Herbivore"]):
                 if appetite_of_carnivore <= available_food:
                     animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][:i])
@@ -126,9 +124,9 @@ class Landscape:
 
                 else:
                     animals_that_dont_get_eaten.append(herb)
-                carnivore.animal_weight_with_food(available_food)
-                self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
+            carnivore.animal_weight_with_food(available_food)
+            self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
     @property
     def remaining_food(self):
@@ -205,9 +203,9 @@ class Landscape:
         Calculates the weight of all herbivores in a single cell
         :return: The total weight of all herbivores in a single cell
         """
-        #for herbivore in self.fauna_dict["Herbivore"]:
-            #sum_herb_weight = sum(herbivore.weight)
-        #return sum_herb_weight
+        # for herbivore in self.fauna_dict["Herbivore"]:
+        # sum_herb_weight = sum(herbivore.weight)
+        # return sum_herb_weight
         return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
 
     @classmethod
@@ -235,7 +233,7 @@ class Desert(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Desert.parameters
+        # self.parameters = Desert.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food["Carnivore"] = self.total_herbivore_weight()
 
@@ -253,7 +251,7 @@ class Highland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Highland.parameters
+        # self.parameters = Highland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food['Carnivore'] = self.total_herbivore_weight()
 
@@ -267,7 +265,7 @@ class Highland(Landscape):
 class Lowland(Landscape):
     """ Represents the landscape covered by lowland cells.  Every year the available fodder
     is set to maximum"""
-    
+
     is_migratable = True
 
     parameters = {'f_max': 800}
@@ -276,12 +274,11 @@ class Lowland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Lowland.parameters
-        
+        # self.parameters = Lowland.parameters
+
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food[
             'Carnivore'] = self.total_herbivore_weight  # Might be without  # parenthesis
-
 
     def update_fodder(self):
         """

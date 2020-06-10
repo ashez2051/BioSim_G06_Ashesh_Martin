@@ -148,7 +148,8 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age,
-                         weight)  # self.parameters = Herbivore.parameters Dont need this, defined in the self
+                         weight)
+        #self.parameters = Herbivore.parameters ,Dont need this, defined in the self
 
 
 class Carnivore(Fauna):
@@ -161,7 +162,8 @@ class Carnivore(Fauna):
                   "delta_phi_max": 10.0}
 
     def __init__(self, age=None, weight=None):
-        super().__init__(age, weight)  # self.parameters = Carnivore.parameters
+        super().__init__(age, weight)
+        #self.parameters = Carnivore.parameters
 
     def probability_of_killing(self, herb):
         """"
