@@ -155,35 +155,43 @@ class Island:
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+    plt.ion()
     from biosim.fauna import Herbivore, Carnivore
 
-    dict_animals = [{"species": "Herbivore", "age": 5, "weight": 25} for _ in range(50)]
+    dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 25} for _ in range(50)]
+    dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 25} for _ in range(50)]
+
     l = Lowland()
-    for anim in dict_animals:
+    for anim in dict_animals_herb:
         if anim['species'] == "Herbivore":
             animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
-
-
             l.add_animal(animal_object)
 
-
-
-    # print(l.fauna_dict['Herbivore'])
+    def add_carn_population(dict_animals):
+        for anim in dict_animals_carn:
+            if anim["species"] == "Carnivore":
+                animal_object_carn = Carnivore(age=anim["age"], weight=anim["weight"])
+                l.add_animal(animal_object_carn)
 
     fig = plt.figure(figsize=(8, 6.4))
     plt.plot(0,len( l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
     plt.draw()
     plt.pause(0.001)
-    plt.show()
 
 
-    # count list
-    count_herb = [len(l.fauna_dict)]
     for i in range(200):
+        asd = 0
         l.animal_eats() # This updates the fodder as well
         l.animal_gives_birth()
         l.add_children_to_adult_animals()
         l.update_animal_weight_and_age()
         l.animal_dies()
-        print("In year: {0} the number of animals is {1}".format(i + 1,
+        asd += 1
+        if asd == 50:
+            add_carn_population(dict_animals_carn)
+
+        print("In year: {0} the number of herbivores is {1}".format(i + 1,
                                                                  len(l.fauna_dict["Herbivore"])))
+        print("In year: {0} the number of carnivores is {1}".format(i + 1,
+                                                                 len(l.fauna_dict["Carnivore"])))
+    #print("Average number of animals is: {0}".format(len(l.fauna_dict["Herbivore"])))

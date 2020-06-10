@@ -3,6 +3,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
+import operator
 
 from .fauna import Fauna, Herbivore
 
@@ -18,16 +19,15 @@ class Landscape:
     def __init__(self):
 
         self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
-        self.fauna_dict = {"Herbivore": []}  # Add carnivore later
-        self.updated_fauna_dict = {"Herbivore": []}  # Add carnivore later
+        self.fauna_dict = {"Herbivore": [],"Carnivore": []}
+        self.updated_fauna_dict = {"Herbivore": [],"Carnivore": []}
         self.food_left = {'Herbivore': 0,
-                          'Carnivore': 0}  # might need to have the same name as the method remaining_food
-
+                          'Carnivore': 0}
 
     def add_animal(self, animal):
         """
         Adds the animal object to the species list of cell(?)
-        :param animal: Input animal object, #Will specify what this actually is later
+        :param animal: Input animal object
         """
         species = animal.__class__.__name__
         self.fauna_dict[species].append(animal)
@@ -160,7 +160,7 @@ class Landscape:
         species and decreases the weight of an animal
         """
         for species, animals in self.updated_fauna_dict.items():
-            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
+            for i in range(math.floor(len(self.updated_fauna_dict[species])/2)):
                 animal = animals[i]
 
                 if animal.proba_animal_birth(len(animals)):
@@ -205,9 +205,10 @@ class Landscape:
         Calculates the weight of all herbivores in a single cell
         :return: The total weight of all herbivores in a single cell
         """
-        for herbivore in self.fauna_dict["Herbivore"]:
-            sum_herb_weight = sum(herbivore.weight)
-        return sum_herb_weight
+        #for herbivore in self.fauna_dict["Herbivore"]:
+            #sum_herb_weight = sum(herbivore.weight)
+        #return sum_herb_weight
+        return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
 
     @classmethod
     def set_parameters(cls, given_params):
@@ -281,7 +282,7 @@ class Lowland(Landscape):
         
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food[
-            'Carnivore'] = self.total_herbivore_weight()  # Might be without  # parenthesis
+            'Carnivore'] = self.total_herbivore_weight  # Might be without  # parenthesis
 
 
     def update_fodder(self):
