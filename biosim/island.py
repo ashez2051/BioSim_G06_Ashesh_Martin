@@ -172,6 +172,7 @@ class Island:
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from biosim.fauna import Herbivore, Carnivore
+    np.random.seed(1)
 
     dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]
     dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 20} for _ in range(20)]
