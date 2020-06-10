@@ -3,8 +3,10 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import math
+
 import operator
 from .fauna import Fauna  # How do we import this?
+
 
 
 class Landscape:
@@ -15,10 +17,12 @@ class Landscape:
     parameters = {}
 
     def __init__(self):
+
         self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Hebivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Hebivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
+
 
     def add_animal(self, animal):
         """
@@ -89,10 +93,10 @@ class Landscape:
             if herb_remaining_fodder == 0:
                 break
             elif herb_remaining_fodder >= herb.parameters['F']:
-                herb.animal_eats(herb.parameters['F'])
+                herb.animal_weight_with_food(herb.parameters['F'])
                 self.remaining_food['Herbivore'] -= herb.parameters['F']
             elif 0 < herb_remaining_fodder < herb.parameters["F"]:
-                herb.animal_eats(herb_remaining_fodder)
+                herb.animal_weight_with_food(herb_remaining_fodder)
                 self.remaining_food['Herbivore'] = 0
 
     def carnivore_eats(self):
