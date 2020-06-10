@@ -176,7 +176,7 @@ if __name__ == "__main__":
     from biosim.fauna import Herbivore, Carnivore
 
     dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 25} for _ in range(50)]
-    dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 25} for _ in range(5)]
+    dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 25} for _ in range(50)]
 
     l = Lowland()
     for anim in dict_animals_herb:
@@ -206,6 +206,7 @@ if __name__ == "__main__":
         carn_counter += 1
         if carn_counter == 50:
             add_carn_population(dict_animals_carn)
+            print("Added 5 carnivores")
 
         print("In year: {0} the number of herbivores is {1}".format(i + 1,
                                                                     len(l.fauna_dict["Herbivore"])))
