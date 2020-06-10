@@ -115,7 +115,7 @@ class Landscape:
             animals_that_dont_get_eaten = []
             for i, herb in enumerate(self.fauna_dict["Herbivore"]):
                 if appetite_of_carnivore <= available_food:
-                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][:i])
+                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][i:])
                     break
 
                 elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
@@ -126,8 +126,8 @@ class Landscape:
 
                 else:
                     animals_that_dont_get_eaten.append(herb)
-                    carnivore.animal_weight_with_food(available_food)
-                    self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
+            carnivore.animal_weight_with_food(available_food)
+            self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
 
     @property
@@ -235,7 +235,6 @@ class Desert(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Desert.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food["Carnivore"] = self.total_herbivore_weight()
 
@@ -253,7 +252,6 @@ class Highland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Highland.parameters
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food['Carnivore'] = self.total_herbivore_weight()
 
@@ -276,11 +274,10 @@ class Lowland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        #self.parameters = Lowland.parameters
-        
+
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food[
-            'Carnivore'] = self.total_herbivore_weight  # Might be without  # parenthesis
+            'Carnivore'] = self.total_herbivore_weight
 
 
     def update_fodder(self):
