@@ -4,8 +4,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
 import math
 
-import operator
-from .fauna import Fauna  # How do we import this?
+from .fauna import Fauna, Herbivore
 
 
 
@@ -18,15 +17,16 @@ class Landscape:
 
     def __init__(self):
 
-        self.sorted_animal_fitness_dict = {}
-        self.fauna_dict = {"Hebivore": [], "Carnivore": []}
-        self.updated_fauna_dict = {"Hebivore": [], "Carnivore": []}
-        self.food_left = {'Herbivore': 0, 'Carnivore': 0}
+        self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
+        self.fauna_dict = {"Herbivore": []}  # Add carnivore later
+        self.updated_fauna_dict = {"Herbivore": []}  # Add carnivore later
+        self.food_left = {'Herbivore': 0,
+                          'Carnivore': 0}  # might need to have the same name as the method remaining_food
 
 
     def add_animal(self, animal):
         """
-        Adds the animal object to the species list of cell
+        Adds the animal object to the species list of cell(?)
         :param animal: Input animal object, #Will specify what this actually is later
         """
         species = animal.__class__.__name__
@@ -65,6 +65,7 @@ class Landscape:
         on herbivores
         """
         self.update_fodder()
+
         self.herbivore_eats()
         self.carnivore_eats()
 
@@ -158,16 +159,18 @@ class Landscape:
         0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
         species and decreases the weight of an animal
         """
-        for species, animals in self.fauna_dict.items():
-            for i in range(math.floor(len(self.fauna_dict[species]) / 2)):
+        for species, animals in self.updated_fauna_dict.items():
+            for i in range(math.floor(len(self.updated_fauna_dict[species]) / 2)):
                 animal = animals[i]
+
                 if animal.proba_animal_birth(len(animals)):
                     child_species = animal.__class__
                     child = child_species()
                     animal.weight_update_after_birth(child)
+
                     if animal.gives_birth:
                         self.fauna_dict[species].append(child)
-                        animal.gives_birth = False
+                        animal.gives_birth = True
 
     def add_children_to_adult_animals(self):
         """
@@ -216,14 +219,16 @@ class Landscape:
 
 
 class Water(Landscape):
-    # is_migratable = False
+    is_migratable = False
+
 
     def __init__(self):
         super().__init__()
 
 
 class Desert(Landscape):
-    # is_migratable = True
+    is_migratable = True
+
     parameters = {'f_max': 0}
 
     def __init__(self, given_params=None):
@@ -240,7 +245,8 @@ class Highland(Landscape):
     Represents the highland covered by highland cells. Every year the available fodder
     is set to the maximum
     """
-    # is_migratable = True
+    is_migratable = True
+
     parameters = {'f_max': 300}
 
     def __init__(self, given_params=None):
@@ -248,6 +254,7 @@ class Highland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Highland.parameters
+
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food['Carnivore'] = self.total_herbivore_weight()
 
@@ -261,7 +268,9 @@ class Highland(Landscape):
 class Lowland(Landscape):
     """ Represents the landscape covered by lowland cells.  Every year the available fodder
     is set to maximum"""
-    # is_migratable = True
+    
+    is_migratable = True
+
     parameters = {'f_max': 800}
 
     def __init__(self, given_params=None):
@@ -269,9 +278,11 @@ class Lowland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.parameters = Lowland.parameters
+        
         self.remaining_food['Herbivore'] = self.parameters['f_max']
         self.remaining_food[
             'Carnivore'] = self.total_herbivore_weight()  # Might be without  # parenthesis
+
 
     def update_fodder(self):
         """

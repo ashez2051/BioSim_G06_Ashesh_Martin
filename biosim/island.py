@@ -7,10 +7,11 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
-from biosim.landscape import Lowland  # ask about how to import this
-from biosim.fauna import Herbivore, Carnivore
+from biosim.landscape import Lowland
+#from .fauna import Herbivore
+#from .fauna import Fauna
 import numpy as np
-import textwrap
+
 
 
 class Island:
@@ -24,7 +25,7 @@ class Island:
         self.check_edge_cells_is_water(self.map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore, # 'Carnivore': Carnivore
+        self.fauna_dict = {'Herbivore': Herbivore,  'Carnivore': Carnivore
                            }
 
         self._cells = self.array_with_landscape_objects()
@@ -87,12 +88,41 @@ class Island:
                 landscape_cell_object[row][col] = self.landscape_dict[landscape_type]()
         return landscape_cell_object
 
-    def add_animals(self, pop):
+    def adjacent_cells(self, n_rows, n_cols):
+        """
+        Finds the immediate adjacent cells
+        :param n_rows: The number of rows
+        :param n_cols: The number of columns
+        :return: A list for adjacent cells
+        """
+        rows, cols = self.map_dims
+        adjacent_cell_list = []
+        if n_rows > 0:
+            adjacent_cell_list.append(self._cells[n_rows-1,n_cols])
+        if n_rows + 1 > n_rows:
+            adjacent_cell_list.append(self._cells[n_rows+1, n_cols])
+        if n_cols > 0:
+            adjacent_cell_list.append(self._cells[n_rows, n_cols -1])
+        if n_cols +1 < n_cols:
+            adjacent_cell_list.append(self._cells[n_rows, n_cols +1])
+        return adjacent_cell_list
+
+    def life_cycle(self):
+        """
+        Iterates through all the cells and performs life cycle events. This should be called
+        every year
+        """
+        print("New year")
+        self.restart_migration() #write this function in landscape
+        rows, cols = self.map_dims
+
+
+    def add_animals(self, population):
         """
         Adds animals to the cells in the map
-        :param pop: The number of animals to add
+        #### Change docstring
         """
-        for animal_group in pop:
+        for animal_group in population:
             loc = animal_group["loc"]
             animals = animal_group["pop"]
             for animal in animals:
@@ -102,39 +132,58 @@ class Island:
                 species_class = self.fauna_dict[species]
                 animal_object = species_class(age=age, weight=weight)
                 cell = self._cells[loc]
+                print(animal_object)
                 cell.add_animal(animal_object)
 
-
-if __name__ == "__main__":
-    geogr = """\ 
-    WWW
-    WLW
-    WWW"""
-    geogr = textwrap.dedent(geogr)
-    ini_herbs = [{"loc": (1, 2),
-                  "pop": [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]}]
-
-    Island(geogr)
-    Island.add_animals(10)
-
-    animal_species = {'Carnivore': Carnivore, 'Herbivore': Herbivore}
-
-    lengths = [len(line) for line in island_map.splitlines()]
-    if len(set(lengths)) > 1:
-        raise ValueError('This given string is not uniform')
-
-    landscape_dict = Island.landscape_dict
-
-    for _ in range(100):
-        print("New Year")
-
-        rows, cols = Island.map_dims
-
+    def number_of_animals_per_species(self, species):
+        """
+        Calculates the total amount of animals per species on the island
+        :param species: dictionary of
+        :return: The total number of animals on the island
+        """
+        num_animals = 0
+        rows, cols = self.map_dims
         for row in range(rows):
             for col in range(cols):
-                Island.cells[row, col].animal_eats()
-                Island.cells[row, col].animal_gives_birth()
-                Island.cells[row, col].add_children_to_adult_animals()
-                Island.cells[row, col].update_animal_weight_and_age()
-                Island.cells[row, col].animal_dies()
-                Island.cells[row, col].update_fodder()
+                cell = self._cells[row, col]
+                num_animals += len(cell.fauna_dict[species])
+        return num_animals
+
+
+
+## SIMULATION FOR HERBIVORES AND CARNIVORES
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    from biosim.fauna import Herbivore, Carnivore
+
+    dict_animals = [{"species": "Herbivore", "age": 5, "weight": 25} for _ in range(50)]
+    l = Lowland()
+    for anim in dict_animals:
+        if anim['species'] == "Herbivore":
+            animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
+
+
+            l.add_animal(animal_object)
+
+
+
+    # print(l.fauna_dict['Herbivore'])
+
+    fig = plt.figure(figsize=(8, 6.4))
+    plt.plot(0,len( l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
+    plt.draw()
+    plt.pause(0.001)
+    plt.show()
+
+
+    # count list
+    count_herb = [len(l.fauna_dict)]
+    for i in range(200):
+        l.animal_eats() # This updates the fodder as well
+        l.animal_gives_birth()
+        l.add_children_to_adult_animals()
+        l.update_animal_weight_and_age()
+        l.animal_dies()
+        print("In year: {0} the number of animals is {1}".format(i + 1,
+                                                                 len(l.fauna_dict["Herbivore"])))
