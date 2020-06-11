@@ -5,8 +5,8 @@ import numpy as np
 import math
 import operator
 
-#np.random.seed(1)
-# from .fauna import Fauna, Herbivore
+# np.random.seed(1)
+#from biosim.fauna import Herbivore,Carnivore
 import random
 
 
@@ -104,7 +104,6 @@ class Landscape:
             elif 0 < herb_remaining_fodder < herb.parameters["F"]:
                 herb.animal_weight_with_food(herb_remaining_fodder)
                 self.remaining_food['Herbivore'] = 0
-
 
     def carnivore_eats(self):
         """
