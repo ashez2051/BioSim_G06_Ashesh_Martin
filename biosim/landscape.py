@@ -120,9 +120,11 @@ class Landscape:
             for herb in self.fauna_dict["Herbivore"]:
                 if food_eaten <= appetite_of_carnivore:
                     if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
-                        carnivore.animal_weight_with_food(herb.weight)
+
+                        eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
+                        carnivore.animal_weight_with_food(eaten)
                         dead_animals.append(herb)
-                        food_eaten += herb.weight
+                        food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
 

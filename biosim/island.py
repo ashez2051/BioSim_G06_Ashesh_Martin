@@ -200,7 +200,8 @@ if __name__ == "__main__":
     add_carn_population(dict_animals_carn)
     num_herbs = []
     num_carns = []
-
+    #for j in range(10):
+       # np.random.seed(j)
     for i in range(200):
         num_herbs.append(len(l.fauna_dict["Herbivore"]))
         num_carns.append(len(l.fauna_dict["Carnivore"]))
@@ -211,10 +212,14 @@ if __name__ == "__main__":
         l.animal_dies()
 
         print("In year: {0} the number of herbivores is {1}".format(i + 1,
-                                                                    len(l.fauna_dict["Herbivore"])))
+                                                                     len(l.fauna_dict["Herbivore"])))
         print("In year: {0} the number of carnivores is {1}".format(i + 1, len(l.fauna_dict[
-                                                                                   "Carnivore"])))
+                                                                                    "Carnivore"])))
+            #num_herbs.append(len(l.fauna_dict["Herbivore"]))
+            #num_carns.append(len(l.fauna_dict["Carnivore"]))
 
+        #print(np.mean(num_herbs))
+        #print(np.mean(num_carns))
     #plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
 
 plt.plot(num_herbs, 'b')
