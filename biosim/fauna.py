@@ -56,7 +56,6 @@ class Fauna:
         :param food_eaten: the amount of food eaten by an animal, float
         """
         self.weight += self.parameters['beta'] * food_eaten
-        return self.weight
 
     @property
     def animal_fitness(self):
@@ -147,8 +146,7 @@ class Herbivore(Fauna):
                   "zeta": 3.5, "xi": 1.2, "omega": 0.4, "F": 10.0}
 
     def __init__(self, age=None, weight=None):
-        super().__init__(age,
-                         weight)
+        super().__init__(age, weight)
 
 
 class Carnivore(Fauna):
@@ -157,8 +155,7 @@ class Carnivore(Fauna):
     """
     parameters = {"w_birth": 6.0, "sigma_birth": 1, "beta": 0.75, "eta": 0.125, "a_half": 40.0,
                   "phi_age": 0.3, "w_half": 4.0, "phi_weight": 0.4, "mu": 0.4, "gamma": 0.8,
-                  "zeta": 3.5, "xi": 1.1, "omega": 0.8, "F": 50.0,
-                  "delta_phi_max": 10.0}
+                  "zeta": 3.5, "xi": 1.1, "omega": 0.8, "F": 50.0, "delta_phi_max": 10.0}
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)

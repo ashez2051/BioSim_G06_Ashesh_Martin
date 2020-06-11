@@ -72,7 +72,7 @@ class Landscape:
         """
         self.update_fodder()
         self.herbivore_eats()
-        self.carnivore_eats()
+        self.new_carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -118,14 +118,16 @@ class Landscape:
             appetite_of_carnivore = carnivore.parameters["F"]
             available_food = 0
             animals_that_dont_get_eaten = []
-            for i, herb in enumerate(self.fauna_dict["Herbivore"]): # Skip enumerate
-                if appetite_of_carnivore <= available_food: # Keep this if test
-                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][i:]) # Drop this one
+            for i, herb in enumerate(self.fauna_dict["Herbivore"]):  # Skip enumerate
+                if appetite_of_carnivore <= available_food:  # Keep this if test
+                    animals_that_dont_get_eaten.extend(
+                        self.fauna_dict['Herbivore'][i:])  # Drop this one
                     # Adds every animal except the ith herb
                     break
 
-                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb): # Keep this one
-                    if appetite_of_carnivore - available_food < herb.weight: #
+                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(
+                        herb):  # Keep this one
+                    if appetite_of_carnivore - available_food < herb.weight:  #
                         available_food += herb.weight
 
                     elif appetite_of_carnivore - available_food > herb.weight:
@@ -136,22 +138,20 @@ class Landscape:
             carnivore.animal_weight_with_food(available_food)
             self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
-    def asd_carnivore_eats(self):
+    def new_carnivore_eats(self):
         self.sort_by_fitness()
         for carnivore in self.fauna_dict["Carnivore"]:
             appetite_of_carnivore = carnivore.parameters["F"]
             food_eaten = 0
-            animals_that_dont_get_eaten = []
+            dead_animals = []
             for herb in self.fauna_dict["Herbivore"]:
-                if appetite_of_carnivore <= food_eaten:
-                    break
-                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
-                    if appetite_of_carnivore - food_eaten < herb.weight:
+                if food_eaten <= appetite_of_carnivore:
+                    if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+                        carnivore.animal_weight_with_food(herb.weight)
+                        dead_animals.append(herb)
                         food_eaten += herb.weight
-                        carnivore.animal_weight_with_food(food_eaten)
-                    elif appetite_of_carnivore - food_eaten > herb.weight:
-                        food_eaten += appetite_of_carnivore - food_eaten
-                        carnivore.animal_weight_with_food(available_food)
+            self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
+                                            if herbivore not in dead_animals]
 
     @property
     def remaining_food(self):
@@ -248,7 +248,6 @@ class Landscape:
         carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count, "Carnivore": carn_count}
 
-    @property #Works now, but why/why not is this a property?
     def total_herbivore_weight(self):
         """
         Calculates the weight of all herbivores in a single cell
@@ -257,8 +256,7 @@ class Landscape:
         sum_herb_weight = 0
         for herbivore in self.fauna_dict["Herbivore"]:
             sum_herb_weight += herbivore.weight
-        return sum_herb_weight
-        #return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
+        return sum_herb_weight  # return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
 
     @classmethod
     def set_parameters(cls, given_params):
@@ -326,8 +324,7 @@ class Lowland(Landscape):
             self.set_parameters(given_params)
 
         self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food[
-            'Carnivore'] = self.total_herbivore_weight
+        self.remaining_food['Carnivore'] = self.total_herbivore_weight
 
     def update_fodder(self):
         """
