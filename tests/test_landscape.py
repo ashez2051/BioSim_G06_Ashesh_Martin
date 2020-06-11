@@ -7,19 +7,18 @@ from biosim.fauna import Herbivore, Carnivore
 
 class TestLandscape:
 
-    @pytest.fixture(autouse = True)
+    @pytest.fixture(autouse=True)
     def animal_objects(self):
         self.herb1 = Herbivore()
         self.herb2 = Herbivore()
         self.carn1 = Carnivore()
         self.carn2 = Carnivore()
-        print(self.herb1.weight, self.herb2.weight, self.carn1.weight, self.carn2.weight)
-        return self.herb1, self.herb2, self.carn1, self.carn2
+        return self.herb1,self.herb2, self.carn1, self.carn2
 
     @pytest.fixture
     def landscape_data(self, animal_objects):
-        self.herb1, self.herb2, self.carn1, self.carn2 = animal_objects
-        animals = {'Herbivore': [self.herb1, self.herb2], 'Carnivore': [self.carn1, self.carn2]}
+        herb1, herb2, carn1, carn2 = animal_objects
+        animals = {'Herbivore': [herb1, herb2], 'Carnivore': [carn1, carn2]}
 
         landscapes_dict = {'W': Water(), 'H': Highland(), 'L': Lowland(), 'D': Desert()}
         for species, animals in animals.items():

@@ -6,7 +6,6 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-import math
 
 np.random.seed(1)
 
@@ -109,7 +108,7 @@ class Fauna:
         :return: Boolean value weather an animal dies or survives
         """
         if self.animal_fitness == 0:
-            return False
+            return True
         else:
             return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)
 
@@ -163,7 +162,6 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-
 
     def probability_of_killing(self, herb):
         """"

@@ -5,7 +5,8 @@ import numpy as np
 import math
 import operator
 
-from .fauna import Fauna, Herbivore
+np.random.seed(1)
+# from .fauna import Fauna, Herbivore
 import random
 
 
@@ -57,6 +58,12 @@ class Landscape:
         for animal_iter in animal[species]:
             animal_fitness[animal_iter] = animal.fitness
         self.sorted_animal_fitness_dict[species] = animal_fitness
+
+    def update_fodder(self):
+        """
+        Method to update fodder in cells, which is overridden in Lowland and Highland
+        """
+        pass
 
     def animal_eats(self):
         """
@@ -111,24 +118,40 @@ class Landscape:
             appetite_of_carnivore = carnivore.parameters["F"]
             available_food = 0
             animals_that_dont_get_eaten = []
-
-            for i, herb in enumerate(self.fauna_dict["Herbivore"]):
-                if appetite_of_carnivore <= available_food:
-                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][i:])
+            for i, herb in enumerate(self.fauna_dict["Herbivore"]): # Skip enumerate
+                if appetite_of_carnivore <= available_food: # Keep this if test
+                    animals_that_dont_get_eaten.extend(self.fauna_dict['Herbivore'][i:]) # Drop this one
+                    # Adds every animal except the ith herb
                     break
 
-                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
-                    if appetite_of_carnivore - available_food < herb.weight:
+                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb): # Keep this one
+                    if appetite_of_carnivore - available_food < herb.weight: #
                         available_food += herb.weight
+
                     elif appetite_of_carnivore - available_food > herb.weight:
                         available_food += appetite_of_carnivore - available_food
-
                 else:
                     animals_that_dont_get_eaten.append(herb)
 
             carnivore.animal_weight_with_food(available_food)
             self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
+    def asd_carnivore_eats(self):
+        self.sort_by_fitness()
+        for carnivore in self.fauna_dict["Carnivore"]:
+            appetite_of_carnivore = carnivore.parameters["F"]
+            food_eaten = 0
+            animals_that_dont_get_eaten = []
+            for herb in self.fauna_dict["Herbivore"]:
+                if appetite_of_carnivore <= food_eaten:
+                    break
+                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+                    if appetite_of_carnivore - food_eaten < herb.weight:
+                        food_eaten += herb.weight
+                        carnivore.animal_weight_with_food(food_eaten)
+                    elif appetite_of_carnivore - food_eaten > herb.weight:
+                        food_eaten += appetite_of_carnivore - food_eaten
+                        carnivore.animal_weight_with_food(available_food)
 
     @property
     def remaining_food(self):
@@ -170,7 +193,7 @@ class Landscape:
 
                     if animal.gives_birth:
                         self.fauna_dict[species].append(child)
-                        animal.gives_birth = True
+                        animal.gives_birth = False
 
     def add_children_to_adult_animals(self):
         """
@@ -189,11 +212,11 @@ class Landscape:
             for animal in animals:
                 if animal.probability_of_moving:
                     cell_to_migrate = random.choice(random.choices(adj_cells))
-                if cell_to_migrate.is_migratable:
-                    if animal.has_already_moved is False:
-                        cell_to_migrate.add_animal(animal)
-                        self.remove_animal(animal)
-                        animal.has_animal_already_moved = True
+                    if cell_to_migrate.is_migratable:
+                        if animal.has_already_moved is False:
+                            cell_to_migrate.add_animal(animal)
+                            self.remove_animal(animal)
+                            animal.has_animal_already_moved = True
 
     def reset_migration_bool_in_cell(self):
         """
@@ -201,10 +224,9 @@ class Landscape:
         migrates once a year.
         :return: Boolean
         """
-        for species,animals in self.fauna_dict.items():
+        for species, animals in self.fauna_dict.items():
             for animal in animals:
                 animal.has_animal_already_moved = False
-
 
     def animal_dies(self):
         """"
@@ -226,16 +248,17 @@ class Landscape:
         carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count, "Carnivore": carn_count}
 
-    @property
+    @property #Works now, but why/why not is this a property?
     def total_herbivore_weight(self):
         """
         Calculates the weight of all herbivores in a single cell
         :return: The total weight of all herbivores in a single cell
         """
-        # for herbivore in self.fauna_dict["Herbivore"]:
-        # sum_herb_weight = sum(herbivore.weight)
-        # return sum_herb_weight
-        return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
+        sum_herb_weight = 0
+        for herbivore in self.fauna_dict["Herbivore"]:
+            sum_herb_weight += herbivore.weight
+        return sum_herb_weight
+        #return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
 
     @classmethod
     def set_parameters(cls, given_params):
