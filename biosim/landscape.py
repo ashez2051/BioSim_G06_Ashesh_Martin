@@ -6,6 +6,7 @@ import math
 import operator
 
 from .fauna import Fauna, Herbivore
+import random
 
 
 class Landscape:
@@ -124,11 +125,10 @@ class Landscape:
 
                 else:
                     animals_that_dont_get_eaten.append(herb)
-            carnivore.animal_weight_with_food(available_food)
-            self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
 
             carnivore.animal_weight_with_food(available_food)
             self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
+
 
     @property
     def remaining_food(self):
@@ -178,6 +178,33 @@ class Landscape:
         from the baby fauna dictionary.
         """
         self.updated_fauna_dict = self.fauna_dict
+
+    def migration(self, adj_cells):
+        """
+        Animal migrates to any of the adjacent cells with equal probability. We also add the animal
+        the newly moved cell and remove it from old cell.
+        :param adj_cells: list of adjacent cells that animal can move in
+        """
+        for species, animals in self.fauna_dict.items():
+            for animal in animals:
+                if animal.probability_of_moving:
+                     cell_to_migrate = random.choice(random.choices(adj_cells))
+                if cell_to_migrate.is_migratable:
+                    if animal.has_already_moved is False:
+                        cell_to_migrate.add_animal(animal)
+                        self.remove_animal(animal)
+                        animal.has_animal_already_moved = True
+
+    def reset_migration_bool_in_cell(self):
+        """
+        Resets the boolean if animal has moved or not after a year. Ensures that the animal
+        migrates once a year.
+        :return: Boolean
+        """
+        for species,animals in self.fauna_dict.items():
+            for animal in animals:
+                animal.has_animal_already_moved = False
+
 
     def animal_dies(self):
         """"

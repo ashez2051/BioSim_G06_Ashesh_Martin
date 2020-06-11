@@ -35,6 +35,7 @@ class Fauna:
             self.weight = weight
         self.fitness = 0
         self.gives_birth = False
+        self.has_animal_already_moved = False
 
     @property
     def animal_weight(self):

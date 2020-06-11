@@ -111,7 +111,7 @@ class Island:
         every year
         """
         print("New year")
-        self.restart_migration_bool_in_cell()
+        self.restart_migration_bool_in_all_cells()
         rows, cols = self.map_dims
 
         for row in range(rows):
@@ -125,7 +125,7 @@ class Island:
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
 
-    def restart_migration_bool_in_cell(self):
+    def restart_migration_bool_in_all_cells(self):
         """
         Iterates through the landscape cells and resets the migration boolean
         """
