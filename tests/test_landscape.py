@@ -9,9 +9,9 @@ class TestLandscape:
     @pytest.fixture(autouse=True)
     def animal_objects(self):
         self.herb1 = Herbivore(10, 50)
-        self.herb2 = Herbivore(20,35)
+        self.herb2 = Herbivore(20, 35)
         self.carn1 = Carnivore(5, 50)
-        self.carn2 = Carnivore(20,35)
+        self.carn2 = Carnivore(20, 40)
         return self.herb1, self.herb2, self.carn1, self.carn2
 
     @pytest.fixture
@@ -46,7 +46,6 @@ class TestLandscape:
         herb1_weight_before_eat = self.herb1.weight
         lowland.animal_eats()
         herb1_weight_after_eat = self.herb1.weight
-
         assert herb1_weight_after_eat > herb1_weight_before_eat
 
     def test_carnivore_eats_herbivore_in_lowland(self, landscape_data):
@@ -58,6 +57,7 @@ class TestLandscape:
         # print("herb", self.herb1.animal_fitness)
         # print("carn", self.carn1.animal_fitness)
         assert self.carn1.weight >= weight_before  ### Ask for help
+
 
     def test_place_carn_and_herb_in_cell(self, landscape_data):
         lowland = landscape_data["L"]
@@ -107,16 +107,17 @@ class TestLandscape:
         """""
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
-        self.herb2 = lowland.fauna_dict["Herbivore"][1]
-        self.carn1 = lowland.fauna_dict["Carnivore"][0]
-        self.carn2 = lowland.fauna_dict["Carnivore"][1]
+        # self.herb2 = lowland.fauna_dict["Herbivore"][1]
+        # self.carn1 = lowland.fauna_dict["Carnivore"][0]
+        # self.carn2 = lowland.fauna_dict["Carnivore"][1]
         initial_herb_count = lowland.cell_fauna_count['Herbivore']
-        print(initial_herb_count)
-        initial_carn_count = lowland.cell_fauna_count["Carnivore"]
-        for _ in range(5000):
+        herb1.set_parameter
+        # initial_carn_count = lowland.cell_fauna_count["Carnivore"]
+        for _ in range(10):
+            lowland.carnivore_eats()
             lowland.animal_dies()
         assert lowland.cell_fauna_count["Herbivore"] == 0
-        assert lowland.cell_fauna_count["Carnivore"] == 0  ### Ask help
+        assert lowland.cell_fauna_count["Carnivore"] == 2  ### Ask help
 
     def test_animal_count_increases_when_animal_is_born(self, landscape_data):
         lowland = landscape_data["L"]
@@ -168,10 +169,8 @@ class TestLandscape:
             assert water.is_migratable is False
 
         def test_water_food_available(self, water):
-            #assert self.water.remaining_food['Herbivore'] == 0
-            #assert self.water.remaining_food['Carnivore'] == 0 ## Has no attribute remaining_food,
-            ## but how do we check the test?
-            pass
+            with pytest.raises(ValueError):
+                water.remaining_food()
 
     class TestDesert:
         @pytest.fixture
