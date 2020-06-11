@@ -5,7 +5,7 @@ import numpy as np
 import math
 import operator
 
-np.random.seed(1)
+#np.random.seed(1)
 # from .fauna import Fauna, Herbivore
 import random
 
@@ -72,7 +72,7 @@ class Landscape:
         """
         self.update_fodder()
         self.herbivore_eats()
-        self.new_carnivore_eats()
+        self.carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -105,40 +105,14 @@ class Landscape:
                 herb.animal_weight_with_food(herb_remaining_fodder)
                 self.remaining_food['Herbivore'] = 0
 
+
     def carnivore_eats(self):
         """
         The carnivores eat in the order of fitness. The carnivore with the highest fitness
         eats first and preys on the herbivore with the least fitness. If, there is enough
         weight for a carnivore to eat, it eats according to it's appetite, else it eats the
         food according to the weight of the herbivore.
-        :return:
         """
-        self.sort_by_fitness()
-        for carnivore in self.fauna_dict["Carnivore"]:
-            appetite_of_carnivore = carnivore.parameters["F"]
-            available_food = 0
-            animals_that_dont_get_eaten = []
-            for i, herb in enumerate(self.fauna_dict["Herbivore"]):  # Skip enumerate
-                if appetite_of_carnivore <= available_food:  # Keep this if test
-                    animals_that_dont_get_eaten.extend(
-                        self.fauna_dict['Herbivore'][i:])  # Drop this one
-                    # Adds every animal except the ith herb
-                    break
-
-                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(
-                        herb):  # Keep this one
-                    if appetite_of_carnivore - available_food < herb.weight:  #
-                        available_food += herb.weight
-
-                    elif appetite_of_carnivore - available_food > herb.weight:
-                        available_food += appetite_of_carnivore - available_food
-                else:
-                    animals_that_dont_get_eaten.append(herb)
-
-            carnivore.animal_weight_with_food(available_food)
-            self.fauna_dict["Herbivore"] = animals_that_dont_get_eaten
-
-    def new_carnivore_eats(self):
         self.sort_by_fitness()
         for carnivore in self.fauna_dict["Carnivore"]:
             appetite_of_carnivore = carnivore.parameters["F"]
@@ -256,7 +230,7 @@ class Landscape:
         sum_herb_weight = 0
         for herbivore in self.fauna_dict["Herbivore"]:
             sum_herb_weight += herbivore.weight
-        return sum_herb_weight  # return sum(herbivore.weight for herbivore in self.fauna_dict["Herbivore"])
+        return sum_herb_weight
 
     @classmethod
     def set_parameters(cls, given_params):

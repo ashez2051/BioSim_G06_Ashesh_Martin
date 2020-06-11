@@ -9,9 +9,9 @@ class TestLandscape:
 
     @pytest.fixture(autouse=True)
     def animal_objects(self):
-        self.herb1 = Herbivore()
+        self.herb1 = Herbivore(10,20)
         self.herb2 = Herbivore()
-        self.carn1 = Carnivore()
+        self.carn1 = Carnivore(5,50)
         self.carn2 = Carnivore()
         return self.herb1,self.herb2, self.carn1, self.carn2
 
@@ -47,10 +47,25 @@ class TestLandscape:
         herb1_weight_before_eat = self.herb1.weight
         lowland.animal_eats()
         herb1_weight_after_eat = self.herb1.weight
+
+
         assert herb1_weight_after_eat >= herb1_weight_before_eat
 
     def test_carnivore_eats_herbivore_in_lowland(self, landscape_data):
-        pass
+        """
+
+        :param landscape_data:
+        :return:
+        """
+        lowland = landscape_data["L"]
+        self.herb1 = lowland.fauna_dict["Herbivore"][0]
+        weight_before = self.carn1.weight
+        self.carn1 = lowland.fauna_dict["Carnivore"][0]
+        lowland.animal_eats()
+        # print("herb", self.herb1.animal_fitness)
+        # print("carn", self.carn1.animal_fitness)
+        assert self.carn1.weight >= weight_before
+        # Ask for help on how to set age/weight or set the kill probability
 
     def test_place_carn_and_herb_in_cell(self):
         pass

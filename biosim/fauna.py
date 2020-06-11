@@ -7,7 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 
-np.random.seed(1)
+#np.random.seed(1)
 
 
 class Fauna:
