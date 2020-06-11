@@ -5,7 +5,7 @@ import numpy as np
 import math
 import operator
 
-# np.random.seed(1)
+np.random.seed(1)
 #from biosim.fauna import Herbivore,Carnivore
 import random
 

@@ -7,7 +7,7 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
-#np.random.seed(1)
+np.random.seed(1)
 from biosim.landscape import Lowland, Water, Desert, Highland
 # from .fauna import Herbivore
 # from .fauna import Fauna
