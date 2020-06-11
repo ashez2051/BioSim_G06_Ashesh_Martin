@@ -18,18 +18,17 @@ from biosim.fauna import Herbivore, Carnivore
 class TestFauna:
     """Tests for various methods in the fauna class"""
 
-    @pytest.fixture(autouse = True)
+    @pytest.fixture(autouse=True)
     def animal_objects(self):
         self.herb_small = Herbivore(5, 20)
         self.herb_large = Herbivore(5, 50)
         self.herb_young = Herbivore(10, 20)
         self.herb_old = Herbivore(50, 20)
 
-        self.carn_small = Carnivore(5,20)
-        self.carn_large = Carnivore(5,50)
-        self.carn_young = Carnivore(10,20)
-        self.carn_old = Carnivore(50,20)
-
+        self.carn_small = Carnivore(5, 20)
+        self.carn_large = Carnivore(5, 50)
+        self.carn_young = Carnivore(10, 20)
+        self.carn_old = Carnivore(50, 20)
 
     def test_animal_weight(self):
         """
@@ -60,7 +59,6 @@ class TestFauna:
         assert self.herb_small.animal_fitness < self.herb_large.animal_fitness
         assert self.carn_small.animal_fitness < self.carn_large.animal_fitness
 
-
     def test_fitness_decreases_with_age(self):
         """
         Tests if the animal fitness decreases with age. Assumption is that a young animal will have
@@ -74,10 +72,10 @@ class TestFauna:
         Tests if the weight of an animal that has eaten is larger than the weight
         of an animal that didnt eat
         """
-        assert self.herb_small.animal_weight_with_food(0) < \
-               self.herb_small.animal_weight_with_food(10)
-        assert self.carn_small.animal_weight_with_food(0) < \
-               self.carn_small.animal_weight_with_food(10)
+        assert self.herb_small.animal_weight_with_food(0) < self.herb_small.animal_weight_with_food(
+            10)
+        assert self.carn_small.animal_weight_with_food(0) < self.carn_small.animal_weight_with_food(
+            10)
 
 
     def test_age_increases_by_one_per_year(self):
@@ -97,15 +95,8 @@ class TestFauna:
     def test_weight_decreases_at_end_of_the_year(self):
         pass
 
-
     def test_no_birth_when_mother_loses_more_than_her_weight(self):
         pass
 
     def test_weight_after_breeding_is_decreased(self):
         pass
-
-
-
-
-
-

@@ -56,6 +56,7 @@ class Fauna:
         :param food_eaten: the amount of food eaten by an animal, float
         """
         self.weight += self.parameters['beta'] * food_eaten
+        return self.weight
 
     @property
     def animal_fitness(self):
