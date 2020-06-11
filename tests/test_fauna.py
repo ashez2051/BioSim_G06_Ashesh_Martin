@@ -77,6 +77,17 @@ class TestFauna:
         assert self.carn_small.animal_weight_with_food(0) < self.carn_small.animal_weight_with_food(
             10)
 
+    def test_probability_of_birth_if_only_one_animal(self):
+        """
+        Testing probability of birth returns False when only
+        one animal is present
+        """
+        assert self.herb_small.proba_animal_birth(1) is False
+        assert self.carn_young.proba_animal_birth(1) is False
+
+    def test_probability_of_birth_for_more_than_two_animal(self):
+        assert self.herb_small.proba_animal_birth(20) is False
+        assert self.carn_young.proba_animal_birth(10) is False
 
     def test_age_increases_by_one_per_year(self):
         """
@@ -89,9 +100,6 @@ class TestFauna:
         assert self.herb_small.age == 7
         assert self.carn_small.age == 7
 
-    def test_age_equals_zero_when_born(self):
-        pass
-
     def test_weight_decreases_at_end_of_the_year(self):
         pass
 
@@ -100,3 +108,19 @@ class TestFauna:
 
     def test_weight_after_breeding_is_decreased(self):
         pass
+
+
+class TestCarnivore(TestFauna):
+    """
+    Tests for Carnivore class
+    """
+
+    def test_probability_of_killing(self):
+        """
+        The given weights shows that the herb is more fit than the carn.
+        so, the probability should be false.
+
+        """
+        carn = Carnivore(weight=0)
+        herb = Herbivore(weight=100)
+        assert not carn.probability_of_killing(herb)

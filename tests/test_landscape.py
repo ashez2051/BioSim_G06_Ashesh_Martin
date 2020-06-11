@@ -10,7 +10,7 @@ class TestLandscape:
     def animal_objects(self):
         self.herb1 = Herbivore(10, 50)
         self.herb2 = Herbivore(20, 35)
-        self.carn1 = Carnivore(5, 50)
+        self.carn1 = Carnivore(5, 60)
         self.carn2 = Carnivore(20, 40)
         return self.herb1, self.herb2, self.carn1, self.carn2
 
@@ -51,13 +51,12 @@ class TestLandscape:
     def test_carnivore_eats_herbivore_in_lowland(self, landscape_data):
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
-        weight_before = self.carn1.weight
         self.carn1 = lowland.fauna_dict["Carnivore"][0]
-        lowland.animal_eats()
+        weight_before = self.carn1.weight
+        lowland.carnivore_eats()
         # print("herb", self.herb1.animal_fitness)
         # print("carn", self.carn1.animal_fitness)
-        assert self.carn1.weight >= weight_before  ### Ask for help
-
+        assert self.carn1.weight > weight_before  ### Ask for help
 
     def test_place_carn_and_herb_in_cell(self, landscape_data):
         lowland = landscape_data["L"]
