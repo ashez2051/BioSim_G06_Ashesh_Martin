@@ -188,7 +188,7 @@ class Landscape:
         for species, animals in self.fauna_dict.items():
             for animal in animals:
                 if animal.probability_of_moving:
-                     cell_to_migrate = random.choice(random.choices(adj_cells))
+                    cell_to_migrate = random.choice(random.choices(adj_cells))
                 if cell_to_migrate.is_migratable:
                     if animal.has_already_moved is False:
                         cell_to_migrate.add_animal(animal)

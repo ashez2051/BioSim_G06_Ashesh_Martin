@@ -9,7 +9,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import pytest
 import numpy as np
 
-from biosim.fauna import Herbivore
+from biosim.fauna import Herbivore, Carnivore
 
 
 # Check if it increases with weight
@@ -25,17 +25,25 @@ class TestFauna:
         self.herb_young = Herbivore(10, 20)
         self.herb_old = Herbivore(50, 20)
 
-    def test_herb_weight(self):
+        self.carn_small = Carnivore(5,20)
+        self.carn_large = Carnivore(5,50)
+        self.carn_young = Carnivore(10,20)
+        self.carn_old = Carnivore(50,20)
+
+
+    def test_animal_weight(self):
         """
         Tests if the weight of an animal is larger than zero when its set to 5
         """
         assert self.herb_small.weight > 0
+        assert self.carn_small.weight > 0
 
     def test_herb_age(self):
         """
         Tests if the age of an animal is larger than zero when its set to 20
         """
         assert self.herb_small.age > 0
+        assert self.carn_small.age > 0
 
     def test_fitness_between_zero_one(self):
         """
@@ -43,16 +51,23 @@ class TestFauna:
         function
         """
         assert 0 <= self.herb_small.animal_fitness <= 1
+        assert 0 <= self.carn_small.animal_fitness <= 1
 
     def test_fitness_increases_with_weight(self):
         """
         Tests if the fitness of an animal increases as their weight increases
         """
         assert self.herb_small.animal_fitness < self.herb_large.animal_fitness
-        #fails for some reason
+        assert self.carn_small.animal_fitness < self.carn_large.animal_fitness
+
 
     def test_fitness_decreases_with_age(self):
+        """
+        Tests if the animal fitness decreases with age. Assumption is that a young animal will have
+        better fitness than an older animal assuming equal weight.
+        """
         assert self.herb_young.animal_fitness > self.herb_old.animal_fitness
+        assert self.carn_young.animal_fitness > self.carn_old.animal_fitness
 
     def test_weight_increases_after_eating(self):
         """
@@ -61,12 +76,9 @@ class TestFauna:
         """
         assert self.herb_small.animal_weight_with_food(0) < \
                self.herb_small.animal_weight_with_food(10)
+        assert self.carn_small.animal_weight_with_food(0) < \
+               self.carn_small.animal_weight_with_food(10)
 
-    def test_age_equals_zero_when_born(self):
-        pass
-
-    def test_weight_decreases_at_end_of_the_year(self):
-        pass
 
     def test_age_increases_by_one_per_year(self):
         """
@@ -75,11 +87,23 @@ class TestFauna:
         """
         for _ in range(2):
             self.herb_small.animal_weight_with_age()
+            self.carn_small.animal_weight_with_age()
         assert self.herb_small.age == 7
+        assert self.carn_small.age == 7
+
+    def test_age_equals_zero_when_born(self):
+        pass
+
+    def test_weight_decreases_at_end_of_the_year(self):
+        pass
 
 
     def test_no_birth_when_mother_loses_more_than_her_weight(self):
         pass
+
+    def test_weight_after_breeding_is_decreased(self):
+        pass
+
 
 
 

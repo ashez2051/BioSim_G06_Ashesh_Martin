@@ -2,7 +2,7 @@ import pytest
 
 
 from biosim.landscape import Landscape, Lowland, Water, Highland, Desert
-from biosim.fauna import Herbivore
+from biosim.fauna import Herbivore, Carnivore
 
 
 class TestLandscape:
@@ -11,13 +11,16 @@ class TestLandscape:
     def animal_objects(self):
         self.herb1 = Herbivore()
         self.herb2 = Herbivore()
-        print(self.herb1.weight, self.herb2.weight)
-        return self.herb1, self.herb2
+        self.carn1 = Carnivore()
+        self.carn2 = Carnivore()
+        print(self.herb1.weight, self.herb2.weight, self.carn1.weight, self.carn2.weight)
+        return self.herb1, self.herb2, self.carn1, self.carn2
 
     @pytest.fixture
     def landscape_data(self, animal_objects):
-        self.herb1, self.herb2 = animal_objects
-        animals = {'Herbivore': [self.herb1, self.herb2]}
+        self.herb1, self.herb2, self.carn1, self.carn2 = animal_objects
+        animals = {'Herbivore': [self.herb1, self.herb2], 'Carnivore': [self.carn1, self.carn2]}
+
         landscapes_dict = {'W': Water(), 'H': Highland(), 'L': Lowland(), 'D': Desert()}
         for species, animals in animals.items():
             for animal in animals:
@@ -46,4 +49,56 @@ class TestLandscape:
         lowland.animal_eats()
         herb1_weight_after_eat = self.herb1.weight
         assert herb1_weight_after_eat >= herb1_weight_before_eat
+
+    def test_carnivore_eats_herbivore_in_lowland(self, landscape_data):
+        pass
+
+    def test_place_carn_and_herb_in_cell(self):
+        pass
+
+    def test_animals_cannot_migrate_in_water(self):
+        pass
+
+    def test_herbivore_doesnt_eat_in_the_desert(self):
+        pass
+
+    def test_place_carn_in_cell_without_food(self):
+        """
+        Check if they all die
+        :return:
+        """
+        pass
+
+    def test_equal_probability_of_migration_to_each_cell(self):
+        pass
+
+    def test_resets_fodder_each_year(self):
+        pass
+
+    def test_animal_count_reduces_when_animal_dies(self):
+        pass
+
+    def test_animal_count_increases_when_animal_is_born(self):
+        pass
+
+    def test_calculation_of_total_herbivore_weight(self):
+        pass
+
+    def test_remaining_food_for_herbs_is_correctly_calculated(self):
+        pass
+
+    #Statistical tests
+    #Things that has to do with probability
+
+    def test_order_by_fitness(self):
+        pass
+
+    def test_animal_migrates_maximum_once_per_year(self):
+        pass
+
+    def test_carnivore_eats_least_fit_herbivore(self):
+        pass
+
+
+
 
