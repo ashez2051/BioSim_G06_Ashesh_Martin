@@ -119,7 +119,7 @@ class Landscape:
             dead_animals = []
             for herb in self.fauna_dict["Herbivore"]:
                 if food_eaten <= appetite_of_carnivore:
-                    if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+                    if np.random.uniform(0,1) < carnivore.probability_of_killing(herb):
 
                         eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
                         carnivore.animal_weight_with_food(eaten)
@@ -127,6 +127,7 @@ class Landscape:
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
+            self.sort_by_fitness()
 
 
     @property
@@ -159,7 +160,7 @@ class Landscape:
         species and decreases the weight of an animal
         """
         for species, animals in self.updated_fauna_dict.items():
-            for i in range(math.floor(len(self.updated_fauna_dict[species]))):
+            for i in range(len(self.updated_fauna_dict[species])):
                 animal = animals[i]
 
                 if animal.proba_animal_birth(len(animals)):
@@ -186,7 +187,7 @@ class Landscape:
         """
         for species, animals in self.fauna_dict.items():
             for animal in animals:
-                if animal.probability_of_moving:
+                if animal.animal_moves_bool:
                     cell_to_migrate = random.choice(random.choices(adj_cells))
                     if cell_to_migrate.is_migratable:
                         if animal.has_already_moved is False:

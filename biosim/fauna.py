@@ -113,7 +113,7 @@ class Fauna:
             return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)
 
     @property
-    def probability_of_moving(self):
+    def animal_moves_bool(self):
         """
         Calculates the probability that an animal moves
         :return: Boolean if an animal moves or not

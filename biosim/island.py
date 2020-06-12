@@ -199,33 +199,38 @@ if __name__ == "__main__":
     # plt.pause(0.001)
 
     carn_counter = 0
-    add_carn_population(dict_animals_carn)
+    # add_carn_population(dict_animals_carn)
     num_herbs = []
     num_carns = []
 
-    for j in range(5):
+    for j in range(1):
         np.random.seed(j)
         for i in range(250):
             carn_counter += 1
-            num_herbs.append(len(l.fauna_dict["Herbivore"]))
+
             l.animal_eats()  # This updates the fodder as well
             l.animal_gives_birth()
             l.add_children_to_adult_animals()
             l.update_animal_weight_and_age()
             l.animal_dies()
             if carn_counter == 50:
-                num_carns.append(len(l.fauna_dict["Carnivore"]))
+                add_carn_population(dict_animals_carn)
+
+            num_carns.append(len(l.fauna_dict["Carnivore"]))
+            num_herbs.append(len(l.fauna_dict["Herbivore"]))
+
+            print('Herbs, Carns: ', len(l.fauna_dict["Herbivore"]), len(l.fauna_dict["Carnivore"]) )
 
         # print("In year: {0} the number of herbivores is {1}".format(i + 1,
         # len(l.fauna_dict["Herbivore"])))
         # print("In year: {0} the number of carnivores is {1}".format(i + 1, len(l.fauna_dict[
         # "Carnivore"])))
-        num_herbs.append(len(l.fauna_dict["Herbivore"]))
-        num_carns.append(len(l.fauna_dict["Carnivore"]))
+        # num_herbs.append(len(l.fauna_dict["Herbivore"]))
+        # num_carns.append(len(l.fauna_dict["Carnivore"]))
 
-        print(np.mean(num_herbs))
-        print(np.mean(
-            num_carns))  # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
+        # print(np.mean(num_herbs))
+        # print(np.mean( num_carns))
+        # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
 
 # plt.plot(num_herbs, 'b')
 # plt.plot(num_carns, 'r')
