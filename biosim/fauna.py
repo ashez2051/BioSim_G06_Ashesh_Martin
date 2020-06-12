@@ -107,7 +107,7 @@ class Fauna:
         Calculates the probability of death based on fitness
         :return: Boolean value weather an animal dies or survives
         """
-        if self.weight == 0:
+        if self.animal_fitness == 0:
             return True
         else:
             return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)

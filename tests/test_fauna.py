@@ -24,11 +24,13 @@ class TestFauna:
         self.herb_large = Herbivore(5, 50)
         self.herb_young = Herbivore(10, 20)
         self.herb_old = Herbivore(50, 20)
+        self.herb = Herbivore()
 
         self.carn_small = Carnivore(5, 20)
         self.carn_large = Carnivore(5, 50)
         self.carn_young = Carnivore(10, 20)
         self.carn_old = Carnivore(50, 20)
+        self.carn = Carnivore()
 
     def test_animal_weight(self):
         """
@@ -106,6 +108,26 @@ class TestFauna:
             self.herb_small.animal_weight_with_age()
         assert self.herb_small.weight < weight_before
 
+    def test_animal_dies(self):
+        """
+        test that animal dies when it's weight/fitness is 0
+        """
+        self.herb.weight = 0
+        assert self.herb.death_probability is True
 
+    def test_animal_migration_chances(self):
+        """
+        test the probability of migration is zero if
+        weight/ fitness is zero
+        """
+        self.carn_young.weight = 0
+        assert self.carn_young.animal_moves_bool is False
 
-
+    def test_carnivore_kills(self, mocker):
+        """
+        Test that carnivore kills herbivore if
+            1. carnivore fitness is greater than
+            herbivore fitness.
+        """
+        mocker.patch('numpy.random.random', return_value=0.05)
+        assert self.carn_young.probability_of_killing(self.herb_old)
