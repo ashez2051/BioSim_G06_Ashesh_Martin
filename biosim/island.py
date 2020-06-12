@@ -23,10 +23,10 @@ class Island:
     def __init__(self, map):
         self.map = map
         self.island_map = self.convert_string_to_array()
-        self.check_edge_cells_is_water(self.map)
+        self.check_edge_cells_is_water(self.island_map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
+        self.fauna_dict = {'Herbivore': [], 'Carnivore': []}
 
         self._cells = self.array_with_landscape_objects()
 
@@ -81,10 +81,10 @@ class Island:
         objects corresponding to the landscape letter instead of a string
         :return: an array with the landscape objects
         """
-        landscape_cell_object = np.empty(self.map.shape, dtype=object)
-        for row in np.arange(self.map.shape[0]):
-            for col in np.arange(self.map.shape[1]):
-                landscape_type = self.map[row][col]
+        landscape_cell_object = np.empty(self.island_map.shape, dtype=object)
+        for row in np.arange(self.island_map.shape[0]):
+            for col in np.arange(self.island_map.shape[1]):
+                landscape_type = self.island_map[row][col]
                 landscape_cell_object[row][col] = self.landscape_dict[landscape_type]()
         return landscape_cell_object
 
@@ -148,10 +148,9 @@ class Island:
                 age = animal["age"]
                 weight = animal["weight"]
                 species_class = self.fauna_dict[species]
-                animal_object = species_class(age=age, weight=weight)
+                animal_obj = species_class(age=age, weight=weight)
                 cell = self._cells[loc]
-                print(animal_object)
-                cell.add_animal(animal_object)
+                cell.add_animal(animal_obj)
 
     def number_of_animals_per_species(self, species):
         """

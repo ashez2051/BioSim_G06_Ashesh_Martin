@@ -115,18 +115,27 @@ class TestFauna:
         self.herb.weight = 0
         assert self.herb.death_probability is True
 
-    def test_animal_migration_chances(self):
+    def test_animal_migration_chances(self, mocker):
         """
-        test the probability of migration is zero if
+        test that the bool of migration is False if
         weight/ fitness is zero
         """
+        mocker.patch('numpy.random.uniform', return_value=0)
         self.carn_young.weight = 0
         assert self.carn_young.animal_moves_bool is False
+
+    def test_animal_migration_chances_for_fit_animal(self, mocker):
+        """
+        test the probability of migration is True if
+        fitness is high
+        """
+        mocker.patch('numpy.random.uniform', return_value=0)
+        assert self.herb_young.animal_moves_bool
 
     def test_carnivore_kills(self, mocker):
         """
         Test that carnivore kills herbivore if carnivore fitness is greater than
             herbivore fitness.
         """
-        mocker.patch('numpy.random.random', return_value=0.05)
+        mocker.patch('numpy.random.uniform', return_value=0)
         assert self.carn_young.probability_of_killing(self.herb_old)

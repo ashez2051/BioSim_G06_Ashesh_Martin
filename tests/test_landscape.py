@@ -4,6 +4,7 @@ from biosim.landscape import Landscape, Lowland, Water, Highland, Desert
 from biosim.fauna import Herbivore, Carnivore
 import os
 
+
 class TestLandscape:
 
     @pytest.fixture(autouse=True)
@@ -49,7 +50,7 @@ class TestLandscape:
         assert herb1_weight_after_eat > herb1_weight_before_eat
 
     def test_carnivore_eats_herbivore_in_lowland(self, landscape_data, mocker):
-        mocker.patch("numpy.random.uniform", return_value = 0)
+        mocker.patch("numpy.random.uniform", return_value=0)
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         self.carn1 = lowland.fauna_dict["Carnivore"][0]
@@ -57,12 +58,10 @@ class TestLandscape:
         lowland.carnivore_eats()
         assert self.carn1.weight > weight_before  ### Ask for help
 
-
     def test_place_carn_and_herb_in_cell(self, landscape_data):
         lowland = landscape_data["L"]
         count = lowland.cell_fauna_count
         assert count['Herbivore'] == 2 and count["Carnivore"] == 2
-
 
     def test_herbivore_doesnt_eat_in_the_desert(self, landscape_data):
         desert = landscape_data["D"]
@@ -87,8 +86,6 @@ class TestLandscape:
         weight_after = self.carn1.weight
         assert weight_before == weight_after
 
-
-
     def test_resets_fodder_each_year(self, landscape_data):
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
@@ -101,7 +98,7 @@ class TestLandscape:
         """
         This test might not pass always because of the probability 
         """""
-        mocker.patch("numpy.random.uniform", return_value = 0)
+        mocker.patch("numpy.random.uniform", return_value=0)
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         self.herb2 = lowland.fauna_dict["Herbivore"][1]
@@ -114,10 +111,9 @@ class TestLandscape:
 
         assert lowland.cell_fauna_count["Herbivore"] == 0
 
-
     def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
-        #mocker.patch("landscape.proba_animal_birth", return_value = True)
-        #Didnt find the path, will work on this later
+        # mocker.patch("landscape.proba_animal_birth", return_value = True)
+        # Didnt find the path, will work on this later
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         self.herb2 = lowland.fauna_dict["Herbivore"][1]
@@ -127,21 +123,16 @@ class TestLandscape:
         lowland.add_children_to_adult_animals()
         assert initial_count <= lowland.cell_fauna_count["Herbivore"]
 
-
     def test_calculation_of_total_herbivore_weight(self, landscape_data):
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         self.herb2 = lowland.fauna_dict["Herbivore"][1]
         assert lowland.total_herbivore_weight() == (self.herb1.weight + self.herb2.weight)
 
-
-
     def test_remaining_food_for_herbs_is_correctly_calculated(self, landscape_data):
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         lowland.herbivore_eats()
-
-
 
     # Statistical tests
     # Things that has to do with probability
@@ -160,7 +151,6 @@ class TestLandscape:
         self.carn2 = lowland.fauna_dict['Carnivore'][1]
         assert self.carn1.animal_fitness > self.carn2.animal_fitness
 
-
     def test_carnivore_eats_least_fit_herbivore(self, landscape_data, mocker):
         mocker.patch("numpy.random.uniform", return_value=0)
         lowland = landscape_data['L']
@@ -173,27 +163,18 @@ class TestLandscape:
         herb2_fitness = self.herb2.animal_fitness
         assert herb1_fitness > herb2_fitness
         lowland.carnivore_eats()
-        assert self.herb2 not in lowland.fauna_dict["Herbivore"]
-        #Carnivore eats both herbivores. Increase the weight so it only has to eat one
+        assert self.herb2 not in lowland.fauna_dict[
+            "Herbivore"]  # Carnivore eats both herbivores. Increase the weight so it only has to eat one
 
     def test_no_birth_when_mother_loses_more_than_her_weight(self, landscape_data, mocker):
         mocker.patch("numpy.random.uniform", return_value=0)
         lowland = landscape_data['L']
         self.herb1 = lowland.fauna_dict['Herbivore'][0]
         self.herb2 = lowland.fauna_dict['Herbivore'][1]
-        pass
-        ##wait
+        pass  ##wait
 
     def test_weight_after_breeding_is_decreased(self):
         pass
-
-
-
-
-
-
-
-
 
     class TestWater:
         @pytest.fixture
