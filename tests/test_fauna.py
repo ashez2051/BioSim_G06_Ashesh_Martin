@@ -125,8 +125,7 @@ class TestFauna:
 
     def test_carnivore_kills(self, mocker):
         """
-        Test that carnivore kills herbivore if
-            1. carnivore fitness is greater than
+        Test that carnivore kills herbivore if carnivore fitness is greater than
             herbivore fitness.
         """
         mocker.patch('numpy.random.random', return_value=0.05)
