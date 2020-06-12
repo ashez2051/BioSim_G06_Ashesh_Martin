@@ -41,9 +41,8 @@ class TestIsland:
                         WWW"""
         island = Island(map_str)
         island.convert_string_to_array()
-        #for cells in island.adjacent_cells(0,0):
-            #assert cells == [W(), W()]
-        assert all(j in island.adjacent_cells(0, 0) for j in ['W', 'W']) ### Check for help
+        for cells in island.adjacent_cells(0,0):
+            assert type(cells) ==  type( Water())
 
     def test_check_surrounded_by_water(self):
         """

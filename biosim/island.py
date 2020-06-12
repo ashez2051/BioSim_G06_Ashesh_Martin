@@ -9,6 +9,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
 # np.random.seed(1)
 from biosim.landscape import Lowland, Water, Desert, Highland
+from biosim.fauna import Herbivore, Carnivore
 
 
 # from .fauna import Herbivore
@@ -26,7 +27,7 @@ class Island:
         self.check_edge_cells_is_water(self.island_map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': [], 'Carnivore': []}
+        self.fauna_dict = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
 
         self._cells = self.array_with_landscape_objects()
 
