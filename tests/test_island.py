@@ -84,23 +84,25 @@ class TestIsland:
         """
         mocker.patch("numpy.random.uniform", return_value=0)
         map_str = """WWWW
-                 WLHW
-                 WWWW"""
+                     WLHW
+                     WWWW"""
 
         island = Island(map_str)
         island.convert_string_to_array()
         animals = [{"loc": (1, 1),
                     "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0} for _ in
-                            range(100)]}]
+                            range(75)]}]
         island.add_animals(animals)
-        adj_cells = island.adjacent_cells(2, 2)
-        lowland = Lowland()
-        initial_herbs = len(lowland.fauna_dict['Herbivore'])
-        print(initial_herbs)
-        # print(initial_carns)
+        print(island.fauna_dict)
+        #adj_cells = island.adjacent_cells(1, 1)
+        #lowland = Lowland()
+        #initial_herbs = len(lowland.fauna_dict['Herbivore'])
+        #print("asd", initial_herbs)
+        #print(initial_carns)
+        island.life_cycle_in_rossumoya()
         #lowland.migration(adj_cells)
-        herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
-        #assert len(lowland.fauna_dict['Herbivore']) == 75
+        #herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
+        assert island.fauna_dict['Herbivore'] == 75
 
 
     def test_animal_migrates_maximum_once_per_year(self):

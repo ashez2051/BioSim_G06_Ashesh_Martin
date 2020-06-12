@@ -191,7 +191,7 @@ class Landscape:
                 if animal.animal_moves_bool:
                     cell_to_migrate = random.choice(random.choices(adj_cells))
                     if cell_to_migrate.is_migratable:
-                        if animal.has_already_moved is False:
+                        if animal.has_animal_already_moved is False:
                             cell_to_migrate.add_animal(animal)
                             self.remove_animal(animal)
                             animal.has_animal_already_moved = True
