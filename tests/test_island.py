@@ -60,19 +60,30 @@ class TestIsland:
         """
         Testing add_animals and total_animals_per_species methods
         """
-        map_str = """   WWWWWW
-                        WHLLHW
-                        WLLLLW
-                        WWWWWW"""
-
+        map_str = """   WWWWWWWWWWWW
+                        WHLWWWWWDHLW
+                        WWWWWWWWWWWW"""
         island = Island(map_str)
-        ini_pop = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 5, "weight": 20},
-                                           {"species": "Herbivore", "age": 5, "weight": 20},
-                                           {"species": "Carnivore", "age": 5, "weight": 20}]},
-            {"loc": (1, 2), "pop": [{"species": "Herbivore", "age": 5, "weight": 20},
-                                    {"species": "Carnivore", "age": 5, "weight": 20}]}]
 
-        island.add_animals(ini_pop)
+        animals = [
+            {
+                "loc": (1, 1),
+                "pop": [
+                    {"species": "Herbivore", "age": 10, "weight": 10.0},
+                    {"species": "Carnivore", "age": 11, "weight": 11.0},
+                ],
+            },
+
+            {
+                "loc": (1, 2),
+                "pop": [
+                    {"species": "Herbivore", "age": 10, "weight": 10.0},
+                    {"species": "Herbivore", "age": 11, "weight": 11.0},
+                    {"species": "Carnivore", "age": 12, "weight": 12.0},
+                ],
+            },
+        ]
+        island.add_animals(animals)
         assert island.number_of_animals_per_species('Herbivore') == 3
         assert island.number_of_animals_per_species('Carnivore') == 2
 
