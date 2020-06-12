@@ -134,7 +134,7 @@ class Island:
         rows, cols = self.map_dims
         for row in range(rows):
             for col in range(cols):
-                self._cells[row, col].restart_migration_bool()
+                self._cells[row, col].reset_migration_bool_in_cell()
 
     def add_animals(self, population):
         """
