@@ -101,26 +101,11 @@ class TestFauna:
         assert self.carn_small.age == 7
 
     def test_weight_decreases_at_end_of_the_year(self):
-        pass
-
-    def test_no_birth_when_mother_loses_more_than_her_weight(self):
-        pass
-
-    def test_weight_after_breeding_is_decreased(self):
-        pass
+        weight_before = self.herb_small.weight
+        for _ in range(1):
+            self.herb_small.animal_weight_with_age()
+        assert self.herb_small.weight < weight_before
 
 
-class TestCarnivore(TestFauna):
-    """
-    Tests for Carnivore class
-    """
 
-    def test_probability_of_killing(self):
-        """
-        The given weights shows that the herb is more fit than the carn.
-        so, the probability should be false.
 
-        """
-        carn = Carnivore(weight=0)
-        herb = Herbivore(weight=100)
-        assert not carn.probability_of_killing(herb)

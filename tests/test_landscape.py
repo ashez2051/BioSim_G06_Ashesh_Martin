@@ -55,7 +55,6 @@ class TestLandscape:
         self.carn1 = lowland.fauna_dict["Carnivore"][0]
         weight_before = self.carn1.weight
         lowland.carnivore_eats()
-
         assert self.carn1.weight > weight_before  ### Ask for help
 
 
@@ -176,6 +175,17 @@ class TestLandscape:
         lowland.carnivore_eats()
         assert self.herb2 not in lowland.fauna_dict["Herbivore"]
         #Carnivore eats both herbivores. Increase the weight so it only has to eat one
+
+    def test_no_birth_when_mother_loses_more_than_her_weight(self, landscape_data, mocker):
+        mocker.patch("numpy.random.uniform", return_value=0)
+        lowland = landscape_data['L']
+        self.herb1 = lowland.fauna_dict['Herbivore'][0]
+        self.herb2 = lowland.fauna_dict['Herbivore'][1]
+        pass
+        ##wait
+
+    def test_weight_after_breeding_is_decreased(self):
+        pass
 
 
 
