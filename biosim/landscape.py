@@ -5,7 +5,7 @@ import numpy as np
 import math
 import operator
 
-np.random.seed(1)
+#np.random.seed(1)
 #from biosim.fauna import Herbivore,Carnivore
 import random
 
@@ -127,6 +127,7 @@ class Landscape:
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
+
 
     @property
     def remaining_food(self):

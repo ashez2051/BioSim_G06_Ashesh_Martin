@@ -7,7 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 
-np.random.seed(1)
+#np.random.seed(1)
 
 
 class Fauna:
@@ -107,7 +107,7 @@ class Fauna:
         Calculates the probability of death based on fitness
         :return: Boolean value weather an animal dies or survives
         """
-        if self.animal_fitness == 0:
+        if self.weight == 0:
             return True
         else:
             return np.random.uniform(0, 1) < self.parameters['omega'] * (1 - self.animal_fitness)

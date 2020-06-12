@@ -7,8 +7,10 @@ Returns a numpy array with cell information equal to the number of characters in
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
-np.random.seed(1)
+# np.random.seed(1)
 from biosim.landscape import Lowland, Water, Desert, Highland
+
+
 # from .fauna import Herbivore
 # from .fauna import Fauna
 
@@ -55,9 +57,11 @@ class Island:
         :return: the map edges
         """
         rows, cols = island_array.shape[0], island_array.shape[1]
-        island_edges = island_array[0, :cols], \
-                       island_array[rows - 1, :cols], \
-                       island_array[:rows - 1, 0], island_array[:rows - 1, cols - 1]
+        island_edges = island_array[0, :cols], island_array[rows - 1, :cols], island_array[
+                                                                              :rows - 1,
+                                                                              0], island_array[
+                                                                                  :rows - 1,
+                                                                                  cols - 1]
         return island_edges
 
     def check_edge_cells_is_water(self, island_array):
@@ -118,8 +122,7 @@ class Island:
                     self._cells[row, col].animal_eats()
                     self._cells[row, col].animal_gives_birth()
                     self._cells[row, col].add_children_to_adult_animals()
-                    self._cells[row, col].migration(
-                        self.adjacent_cells(row, col))
+                    self._cells[row, col].migration(self.adjacent_cells(row, col))
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
 
@@ -171,7 +174,6 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from biosim.fauna import Herbivore, Carnivore
 
-
     dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]
     dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 20} for _ in range(20)]
 
@@ -191,37 +193,40 @@ if __name__ == "__main__":
                 l.add_animal(animal_object_carn)
 
 
-   # fig = plt.figure(figsize=(8, 6.4))
+    # fig = plt.figure(figsize=(8, 6.4))
     # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
-    #plt.draw()
-    #plt.pause(0.001)
+    # plt.draw()
+    # plt.pause(0.001)
 
     carn_counter = 0
     add_carn_population(dict_animals_carn)
     num_herbs = []
     num_carns = []
-    #for j in range(10):
-       # np.random.seed(j)
-    for i in range(200):
+
+    for j in range(5):
+        np.random.seed(j)
+        for i in range(250):
+            carn_counter += 1
+            num_herbs.append(len(l.fauna_dict["Herbivore"]))
+            l.animal_eats()  # This updates the fodder as well
+            l.animal_gives_birth()
+            l.add_children_to_adult_animals()
+            l.update_animal_weight_and_age()
+            l.animal_dies()
+            if carn_counter == 50:
+                num_carns.append(len(l.fauna_dict["Carnivore"]))
+
+        # print("In year: {0} the number of herbivores is {1}".format(i + 1,
+        # len(l.fauna_dict["Herbivore"])))
+        # print("In year: {0} the number of carnivores is {1}".format(i + 1, len(l.fauna_dict[
+        # "Carnivore"])))
         num_herbs.append(len(l.fauna_dict["Herbivore"]))
         num_carns.append(len(l.fauna_dict["Carnivore"]))
-        l.animal_eats()  # This updates the fodder as well
-        l.animal_gives_birth()
-        l.add_children_to_adult_animals()
-        l.update_animal_weight_and_age()
-        l.animal_dies()
 
-        print("In year: {0} the number of herbivores is {1}".format(i + 1,
-                                                                     len(l.fauna_dict["Herbivore"])))
-        print("In year: {0} the number of carnivores is {1}".format(i + 1, len(l.fauna_dict[
-                                                                                    "Carnivore"])))
-            #num_herbs.append(len(l.fauna_dict["Herbivore"]))
-            #num_carns.append(len(l.fauna_dict["Carnivore"]))
+        print(np.mean(num_herbs))
+        print(np.mean(
+            num_carns))  # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
 
-        #print(np.mean(num_herbs))
-        #print(np.mean(num_carns))
-    #plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
-
-plt.plot(num_herbs, 'b')
-plt.plot(num_carns, 'r')
-plt.show()
+# plt.plot(num_herbs, 'b')
+# plt.plot(num_carns, 'r')
+# plt.show()
