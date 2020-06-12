@@ -113,23 +113,19 @@ class TestLandscape:
         assert lowland.cell_fauna_count["Herbivore"] == 0
 
     def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
-        # mocker.patch("landscape.proba_animal_birth", return_value = True)
-        # Didnt find the path, will work on this later
+        mocker.patch("numpy.random.uniform", return_value = 0)
+        # Didnt find the path, will work on this laterr
         lowland = landscape_data["L"]
-        # for i in range(100):
-        #     print( h.proba_animal_birth())
-
-       # Didnt find the path, will work on this later
-
-        # self.herb1 = lowland.fauna_dict["Herbivore"][0]
-        # self.herb2 = lowland.fauna_dict["Herbivore"][1]
+        self.herb1 = lowland.fauna_dict["Herbivore"][0]
+        self.herb2 = lowland.fauna_dict["Herbivore"][1]
         initial_count = lowland.cell_fauna_count["Herbivore"]
-        # self.herb1.proba_animal_birth(2)
+
         lowland.animal_gives_birth()
-        lowland.add_children_to_adult_animals()
-        print('\n')
+        self.herb1.weight_update_after_birth(child)
+        #lowland.add_children_to_adult_animals()
+
         # print(lowland.fauna_dict['Herbivore'])
-        # assert initial_count < lowland.cell_fauna_count["Herbivore"]
+        assert initial_count < lowland.cell_fauna_count["Herbivore"]
 
     def test_calculation_of_total_herbivore_weight(self, landscape_data):
         lowland = landscape_data["L"]

@@ -11,6 +11,7 @@ import numpy as np
 
 from biosim.island import *
 from biosim.fauna import *
+from biosim.landscape import Landscape, Lowland, Water, Highland, Desert
 
 
 class TestIsland:
@@ -41,8 +42,8 @@ class TestIsland:
                         WWW"""
         island = Island(map_str)
         island.convert_string_to_array()
-        for cells in island.adjacent_cells(0,0):
-            assert type(cells) ==  type( Water())
+        for cells in island.adjacent_cells(0, 0):
+            assert type(cells) == type(Water())
 
     def test_check_surrounded_by_water(self):
         """
@@ -64,36 +65,49 @@ class TestIsland:
                         WWWWWWWWWWWW"""
         island = Island(map_str)
 
-        animals = [
-            {
-                "loc": (1, 1),
-                "pop": [
-                    {"species": "Herbivore", "age": 10, "weight": 10.0},
-                    {"species": "Carnivore", "age": 11, "weight": 11.0},
-                ],
-            },
+        animals = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
+                                           {"species": "Carnivore", "age": 11,
+                                            "weight": 11.0}, ], },
 
-            {
-                "loc": (1, 2),
-                "pop": [
-                    {"species": "Herbivore", "age": 10, "weight": 10.0},
-                    {"species": "Herbivore", "age": 11, "weight": 11.0},
-                    {"species": "Carnivore", "age": 12, "weight": 12.0},
-                ],
-            },
-        ]
+                   {"loc": (1, 2), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
+                                           {"species": "Herbivore", "age": 11, "weight": 11.0},
+                                           {"species": "Carnivore", "age": 12,
+                                            "weight": 12.0}, ], }, ]
         island.add_animals(animals)
         assert island.number_of_animals_per_species('Herbivore') == 3
         assert island.number_of_animals_per_species('Carnivore') == 2
 
+    def test_migration_possible_to_only_one_cell(self, mocker):
+        """
+        Test that ensures only 25% of the animals migrate when there is only
+        single cell for which migration is available
+        """
+        mocker.patch("numpy.random.uniform", return_value=0)
+        map_str = """WWWW
+                 WLHW
+                 WWWW"""
 
-def test_animal_migrates_maximum_once_per_year(self):
-    pass
+        island = Island(map_str)
+        island.convert_string_to_array()
+        animals = [{"loc": (1, 1),
+                    "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0} for _ in
+                            range(100)]}]
+        island.add_animals(animals)
+        adj_cells = island.adjacent_cells(2, 2)
+        lowland = Lowland()
+        initial_herbs = len(lowland.fauna_dict['Herbivore'])
+        print(initial_herbs)
+        # print(initial_carns)
+        #lowland.migration(adj_cells)
+        herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
+        #assert len(lowland.fauna_dict['Herbivore']) == 75
 
 
-def test_equal_probability_of_migration_to_each_cell(self):
-    pass
+    def test_animal_migrates_maximum_once_per_year(self):
+        pass
 
+    def test_equal_probability_of_migration_to_each_cell(self):
+        pass
 
-def test_animals_cannot_migrate_in_water(self):
-    pass
+    def test_animals_cannot_migrate_in_water(self):
+        pass
