@@ -19,7 +19,7 @@ class Landscape:
 
     def __init__(self):
 
-        self.sorted_animal_fitness_dict = {}  # needed for when we introduce carnivores
+        self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
@@ -189,7 +189,7 @@ class Landscape:
         for species, animals in self.fauna_dict.items():
             for animal in animals:
                 if animal.animal_moves_bool:
-                    cell_to_migrate = random.choice(random.choices(adj_cells))
+                    cell_to_migrate = random.choice(adj_cells)
                     if cell_to_migrate.is_migratable:
                         if animal.has_animal_already_moved is False:
                             cell_to_migrate.add_animal(animal)
