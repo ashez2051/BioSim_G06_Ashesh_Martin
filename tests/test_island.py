@@ -90,19 +90,20 @@ class TestIsland:
         island = Island(map_str)
         island.convert_string_to_array()
         animals = [{"loc": (1, 1),
-                    "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0} for _ in
-                            range(75)]}]
+                    "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in
+                            range(100)]}]
         island.add_animals(animals)
-        print(island.fauna_dict)
+        print(island.fauna_dict_island)
         #adj_cells = island.adjacent_cells(1, 1)
         #lowland = Lowland()
         #initial_herbs = len(lowland.fauna_dict['Herbivore'])
         #print("asd", initial_herbs)
         #print(initial_carns)
-        island.life_cycle_in_rossumoya()
+        for _ in range(10):
+            island.life_cycle_in_rossumoya()
         #lowland.migration(adj_cells)
         #herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
-        assert island.number_of_animals_per_species("Herbivore") == 75
+        assert island.cell_fauna_count
 
 
     def test_animal_migrates_maximum_once_per_year(self):

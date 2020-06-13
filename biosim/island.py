@@ -27,7 +27,7 @@ class Island:
         self.check_edge_cells_is_water(self.island_map)
 
         self.landscape_dict = {'W': Water, 'D': Desert, 'L': Lowland, 'H': Highland}
-        self.fauna_dict = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
+        self.fauna_dict_island = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
 
         self._cells = self.array_with_landscape_objects()
 
@@ -148,7 +148,7 @@ class Island:
                 species = animal["species"]
                 age = animal["age"]
                 weight = animal["weight"]
-                species_class = self.fauna_dict[species]
+                species_class = self.fauna_dict_island[species]
                 animal_obj = species_class(age=age, weight=weight)
                 cell = self._cells[loc]
                 cell.add_animal(animal_obj)
