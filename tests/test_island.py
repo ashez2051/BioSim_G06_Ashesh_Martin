@@ -102,7 +102,7 @@ class TestIsland:
         island.life_cycle_in_rossumoya()
         #lowland.migration(adj_cells)
         #herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
-        assert island.fauna_dict['Herbivore'] == 75
+        assert island.number_of_animals_per_species("Herbivore") == 75
 
 
     def test_animal_migrates_maximum_once_per_year(self):

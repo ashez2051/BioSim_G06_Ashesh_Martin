@@ -120,12 +120,12 @@ class Island:
         for row in range(rows):
             for col in range(cols):
                 if self._cells[row, col].is_migratable:
-                    self._cells[row, col].animal_eats()
-                    self._cells[row, col].animal_gives_birth()
-                    self._cells[row, col].add_children_to_adult_animals()
+                    #self._cells[row, col].animal_eats()
+                    #self._cells[row, col].animal_gives_birth()
+                    #self._cells[row, col].add_children_to_adult_animals()
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
-                    self._cells[row, col].update_animal_weight_and_age()
-                    self._cells[row, col].animal_dies()
+                    #self._cells[row, col].update_animal_weight_and_age()
+                    #self._cells[row, col].animal_dies()
 
     def restart_migration_bool_in_all_cells(self):
         """
