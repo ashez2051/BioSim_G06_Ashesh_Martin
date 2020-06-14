@@ -153,7 +153,7 @@ class Graphics:
             self.herbivore_dist.imshow(distribution,
                                        interpolation='nearest',
                                        vmin=0, vmax=5)
-            self.herbivore_dist.legend()
+            #self.herbivore_dist.legend()
             self.herbivore_dist.set_title('Herbivore Distribution')
 
     def update_carnivore_distribution(self, distribution):
