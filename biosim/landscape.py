@@ -2,11 +2,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-import math
 import operator
-
-#np.random.seed(1)
-#from biosim.fauna import Herbivore,Carnivore
 import random
 
 
@@ -21,7 +17,7 @@ class Landscape:
         """
         Constructor for the Landscape class
         """
-        #self.sorted_animal_fitness_dict = {}
+        # self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
@@ -128,8 +124,8 @@ class Landscape:
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
-            #self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
-            #self.sort_by_fitness()
+            # self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
+            # self.sort_by_fitness()
 
     def new_carnivore_eats(self):
         self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
@@ -145,7 +141,7 @@ class Landscape:
                 if amount_eaten >= appetite:
                     break
 
-                elif np.random.uniform(0,1) < carnivore.probability_of_killing(herbivore):
+                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herbivore):
                     food_wanted = appetite - amount_eaten
 
                     if herbivore.weight <= food_wanted:
@@ -157,6 +153,7 @@ class Landscape:
                         self.fauna_dict['Herbivore'].remove(herbivore)
 
             carnivore.animal_weight_with_food(amount_eaten)
+
     @property
     def remaining_food(self):
         """

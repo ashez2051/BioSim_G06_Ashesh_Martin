@@ -6,14 +6,13 @@ Returns a numpy array with cell information equal to the number of characters in
 """
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
+
 import numpy as np
-# np.random.seed(1)
 from biosim.landscape import Lowland, Water, Desert, Highland
 from biosim.fauna import Herbivore, Carnivore
 
 
-# from .fauna import Herbivore
-# from .fauna import Fauna
+# Is needed for the fauna_dict_island
 
 
 class Island:
@@ -22,6 +21,11 @@ class Island:
     """
 
     def __init__(self, map):
+        """
+        Constructor for the island class
+        :param map: A string which represents the island. Should only contain the letters
+        W, L, H or D representing Water, Lowland, Highland and Desert respectively
+        """
         self.map = map
         self.island_map = self.convert_string_to_array()
         self.check_edge_cells_is_water(self.island_map)
@@ -38,13 +42,15 @@ class Island:
     @property
     def cells(self):
         """
-         :return: landscape objects
+        Adds landscape objects with the array_with_landscape_objects function
+        :return: landscape objects
         """
         return self._cells
 
     def convert_string_to_array(self):
         """
-        Gets numpy array from multidimensional string
+        Converts a multidimensional string to a numpy array from
+        :return: a numpy array with the converted string
         """
         map_str_clean = self.map.replace(' ', '')
         char_map = np.array([[col for col in row] for row in map_str_clean.splitlines()])
@@ -69,7 +75,7 @@ class Island:
         """
         Checks if the edge cells is water. Raises ValueError if the edges contain something
         else than water
-        :param island_array:
+        :param island_array: an island array
         """
         edges = self.edges(island_array)
         for edge in edges:
@@ -91,9 +97,9 @@ class Island:
 
     def adjacent_cells(self, n_rows, n_cols):
         """
-        Finds the immediate adjacent cells
-        :param n_rows: The number of rows
-        :param n_cols: The number of columns
+        Finds the immediate adjacent cells of a cell
+        :param n_rows: The row number
+        :param n_cols: The column number
         :return: A list for adjacent cells
         """
         rows, cols = self.map_dims
@@ -137,8 +143,8 @@ class Island:
 
     def add_animals(self, population):
         """
-        Adds animals to the cells in the map
-        #### Change docstring
+        Adds animals to the given cells on the map
+        :param population: a dictionary with the poulation information to be added to the island
         """
         for animal_group in population:
             loc = animal_group["loc"]
@@ -155,7 +161,7 @@ class Island:
     def number_of_animals_per_species(self, species):
         """
         Calculates the total amount of animals per species on the island
-        :param species: dictionary of
+        :param species: dictionary with the animal classes
         :return: The total number of animals on the island
         """
         num_animals = 0
@@ -167,7 +173,7 @@ class Island:
         return num_animals
 
 
-# SIMULATION FOR HERBIVORES AND CARNIVORES
+# SIMULATION FOR HERBIVORES AND CARNIVORES IN ONE CELL
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -176,7 +182,8 @@ if __name__ == "__main__":
     dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]
     dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 20} for _ in range(20)]
 
-    # animals = {'Herbivore':{"species": "Herbivore", "age": 5, "weight": 20} , 'Carnivore': {"species": "Carnivore", "age": 5, "weight": 20}} for _ in range(50)
+    # animals = {'Herbivore':{"species": "Herbivore", "age": 5, "weight": 20} ,
+    # 'Carnivore': {"species": "Carnivore", "age": 5, "weight": 20}} for _ in range(50)
 
     l = Lowland()
     for anim in dict_animals_herb:
@@ -218,7 +225,8 @@ if __name__ == "__main__":
             num_carns.append(len(l.fauna_dict["Carnivore"]))
             num_herbs.append(len(l.fauna_dict["Herbivore"]))
 
-            print("Year :", i+1, 'Herbs, Carns: ', len(l.fauna_dict["Herbivore"]), len(l.fauna_dict["Carnivore"]))
+            print("Year :", i + 1, 'Herbs, Carns: ', len(l.fauna_dict["Herbivore"]),
+                  len(l.fauna_dict["Carnivore"]))
 
         # print("In year: {0} the number of herbivores is {1}".format(i + 1,
         # len(l.fauna_dict["Herbivore"])))
@@ -231,6 +239,6 @@ if __name__ == "__main__":
         # print(np.mean( num_carns))
         # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
 
-plt.plot(num_herbs, 'b')
-plt.plot(num_carns, 'r')
-plt.show()
+# plt.plot(num_herbs, 'b')
+# plt.plot(num_carns, 'r')
+# plt.show()
