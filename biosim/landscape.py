@@ -12,13 +12,15 @@ import random
 
 class Landscape:
     """
-    Parent class for various landscapes water, desert, highland and lowland
+    Parent class for the landscapes classes water, desert, highland and lowland
     """
 
     parameters = {}
 
     def __init__(self):
-
+        """
+        Constructor for the Landscape class
+        """
         #self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
@@ -26,7 +28,7 @@ class Landscape:
 
     def add_animal(self, animal):
         """
-        Adds the animal object to the species list of cell(?)
+        Adds the animal object to the species dictionary
         :param animal: Input animal object
         """
         species = animal.__class__.__name__
@@ -34,8 +36,8 @@ class Landscape:
 
     def remove_animal(self, animal):
         """
-        Removes the animal object from the list of species of cell
-        :param animal: Input animal object, #Will specify what this actually is later
+        Removes the animal object from the species dictionary
+        :param animal: Input animal object
         :return:
         """
         species = animal.__class__.__name__
@@ -43,7 +45,8 @@ class Landscape:
 
     def sort_by_fitness(self):
         """
-        Sorts the animal by their fitness
+        Sorts the animal by their fitness. Herbivores are sorted from low to high while the
+        carnivores are sorted from high to low
         """
         self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
         self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"), reverse=True)
@@ -76,8 +79,7 @@ class Landscape:
 
     def available_food(self, animal):
         """
-        Returns the remaining food value in a cell.
-        This is different for the two species
+        Returns the remaining food value in a cell for the specific species.
         :param animal: animal object
         :return: the remaining amount of food
         """
@@ -108,9 +110,9 @@ class Landscape:
     def carnivore_eats(self):
         """
         The carnivores eat in the order of fitness. The carnivore with the highest fitness
-        eats first and preys on the herbivore with the least fitness. If, there is enough
-        weight for a carnivore to eat, it eats according to it's appetite, else it eats the
-        food according to the weight of the herbivore.
+        eats first and preys on the herbivore with the lowest fitness. If the herbivore is
+        heavy enough or a carnivore to eat, it eats according to it's appetite,
+        else it eats the food according to the weight of the herbivore
         """
         self.sort_by_fitness()
         for carnivore in self.fauna_dict["Carnivore"]:
@@ -120,7 +122,6 @@ class Landscape:
             for herb in self.fauna_dict["Herbivore"]:
                 if food_eaten <= appetite_of_carnivore:
                     if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
-
                         eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
                         carnivore.animal_weight_with_food(eaten)
                         dead_animals.append(herb)
@@ -159,7 +160,8 @@ class Landscape:
     @property
     def remaining_food(self):
         """
-        Gives the remaining food in a cell for herbivores
+        Gives the remaining food in a cell for different landscape types. Return ValueError
+        if the property is called on cells that are not migratable, I.E Water
         :return: the remaining amount of food
         """
         if isinstance(self, Water):
@@ -182,8 +184,8 @@ class Landscape:
     def animal_gives_birth(self):
         """
         Compares the birth_probability of an animal with the randomly generated value between
-        0 and 1 and if it's greater it, the animal gives birth. Creates the child of the same
-        species and decreases the weight of an animal
+        0 and 1 and if it's greater, the animal gives birth. Creates the child of the same
+        species and decreases the weight of the animal
         """
         for species, animals in self.updated_fauna_dict.items():
             for i in range(len(self.updated_fauna_dict[species])):
@@ -200,16 +202,15 @@ class Landscape:
 
     def add_children_to_adult_animals(self):
         """
-        After the breeding season, new babies are added to cell animals dictionary and remove it
-        from the baby fauna dictionary.
+        After the breeding season, new babies are added to the fauna dictionary
         """
         self.updated_fauna_dict = self.fauna_dict
 
     def migration(self, adj_cells):
         """
-        Animal migrates to any of the adjacent cells with equal probability. We also add the animal
-        the newly moved cell and remove it from old cell.
-        :param adj_cells: list of adjacent cells that animal can move in
+        Animal can migrate to any of the adjacent cells with equal probability. The animal
+        is added to the new cell and remove from the old cell.
+        :param adj_cells: list of adjacent cells that animal can move to
         """
         for species, animals in self.fauna_dict.items():
             for animal in animals:
@@ -223,8 +224,8 @@ class Landscape:
 
     def reset_migration_bool_in_cell(self):
         """
-        Resets the boolean if animal has moved or not after a year. Ensures that the animal
-        migrates once a year.
+        Resets the boolean if an animal has moved or not during a year. Ensures that the animal
+        migrates maximum once per year.
         :return: Boolean
         """
         for species, animals in self.fauna_dict.items():
@@ -244,7 +245,7 @@ class Landscape:
     @property
     def cell_fauna_count(self):
         """
-        Calculates the number of herbivores and carnivores seperately
+        Calculates the number of herbivores and carnivores separately
         :return: A dictionary with herbivore and carnivore as key and the count as value
         """
         herb_count = len(self.fauna_dict['Herbivore'])
@@ -271,6 +272,9 @@ class Landscape:
 
 
 class Water(Landscape):
+    """
+    Child class of Landscape. Animals are unable to migrate to Water cells
+    """
     is_migratable = False
 
     def __init__(self):
@@ -278,6 +282,11 @@ class Water(Landscape):
 
 
 class Desert(Landscape):
+    """
+    Child class of Landscape. Animals are able to migrate to Desert cells.
+    There is no fodder in the desert for herbivores to eat, while carnivores can eat the
+    herbivores
+    """
     is_migratable = True
 
     parameters = {'f_max': 0}
@@ -292,8 +301,9 @@ class Desert(Landscape):
 
 class Highland(Landscape):
     """
-    Represents the highland covered by highland cells. Every year the available fodder
-    is set to the maximum
+    Child class of Landscape. Animals are able to migrate to Highland cells.
+    The amount of fodder is reset every year to the default parameter. Carnivores can
+    eat the herbivores in the highland
     """
     is_migratable = True
 
@@ -308,14 +318,17 @@ class Highland(Landscape):
 
     def update_fodder(self):
         """
-        Updates the annual fodder value back to f_max annually
+        Updates the amount of fodder back to f_max annually
         """
         self.remaining_food["Herbivore"] = self.parameters["f_max"]
 
 
 class Lowland(Landscape):
-    """ Represents the landscape covered by lowland cells.  Every year the available fodder
-    is set to maximum"""
+    """
+    Child class of Landscape. Animals are able to migrate to Lowland cells.
+    The amount of fodder is reset every year to the default parameter. Carnivores can
+    eat the herbivores in the Lowland.
+    """
 
     is_migratable = True
 
@@ -331,6 +344,6 @@ class Lowland(Landscape):
 
     def update_fodder(self):
         """
-        Updates the annual fodder value back to f_max annually
+        Updates the amount of fodder back to f_max annually
         """
         self.remaining_food["Herbivore"] = self.parameters["f_max"]
