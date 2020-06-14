@@ -7,6 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import matplotlib.colors as mcolors
+import matplotlib.pylab as plt
 
 
 class Graphics:
@@ -152,6 +153,7 @@ class Graphics:
             self.herbivore_dist.imshow(distribution,
                                        interpolation='nearest',
                                        vmin=0, vmax=5)
+            self.herbivore_dist.legend()
             self.herbivore_dist.set_title('Herbivore Distribution')
 
     def update_carnivore_distribution(self, distribution):
