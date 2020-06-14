@@ -93,8 +93,10 @@ class Fauna:
 
     def weight_update_after_birth(self, child):
         """
-        Update the weight of the mother after giving birth
-        :return:
+        Update the weight of the mother after giving birth and determines if the animal will
+        give birth. If the weight of the child times xi is larger than the weight of the mother
+        the animal wont give birth
+        :param child: The child object
         """
         if self.weight > child.weight * child.parameters["xi"]:
             self.weight -= child.weight * child.parameters["xi"]
@@ -142,6 +144,7 @@ class Fauna:
 class Herbivore(Fauna):
     """
     Child class of Fauna
+    defined with default parameter values
     """
     parameters = {"w_birth": 8.0, "sigma_birth": 1.5, "beta": 0.9, "eta": 0.05, "a_half": 40.0,
                   "phi_age": 0.6, "w_half": 10.0, "phi_weight": 0.1, "mu": 0.25, "gamma": 0.2,
@@ -155,6 +158,7 @@ class Herbivore(Fauna):
 class Carnivore(Fauna):
     """
     Child class of Fauna
+    defined with default parameter values
     """
     parameters = {"w_birth": 6.0, "sigma_birth": 1, "beta": 0.75, "eta": 0.125, "a_half": 40.0,
                   "phi_age": 0.3, "w_half": 4.0, "phi_weight": 0.4, "mu": 0.4, "gamma": 0.8,

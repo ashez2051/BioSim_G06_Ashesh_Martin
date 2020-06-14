@@ -72,7 +72,7 @@ class Landscape:
         """
         self.update_fodder()
         self.herbivore_eats()
-        self.new_carnivore_eats()
+        self.carnivore_eats()
 
     def available_food(self, animal):
         """

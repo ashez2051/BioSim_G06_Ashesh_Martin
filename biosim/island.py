@@ -231,6 +231,6 @@ if __name__ == "__main__":
         # print(np.mean( num_carns))
         # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
 
-# plt.plot(num_herbs, 'b')
-# plt.plot(num_carns, 'r')
-# plt.show()
+plt.plot(num_herbs, 'b')
+plt.plot(num_carns, 'r')
+plt.show()
