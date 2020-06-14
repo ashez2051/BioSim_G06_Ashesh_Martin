@@ -170,7 +170,6 @@ class Landscape:
 
                     if animal.gives_birth:
                         self.fauna_dict[species].append(child)
-                        print('\n Does this run')
                         animal.gives_birth = False
 
     def add_children_to_adult_animals(self):

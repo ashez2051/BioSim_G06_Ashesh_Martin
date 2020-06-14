@@ -113,7 +113,6 @@ class Island:
         Iterates through all the cells and performs life cycle events. This should be called
         every year
         """
-        print("New year")
         self.restart_migration_bool_in_all_cells()
         rows, cols = self.map_dims
 

@@ -134,8 +134,8 @@ class Fauna:
                     raise ValueError('Parameter value should be positive ')
                 else:
                     cls.parameters[param] = given_params[param]
-            # else:
-            #     raise ValueError("Parameter not in class parameter list")
+            #else:
+            #    raise ValueError("Parameter not in class parameter list")
 
 
 class Herbivore(Fauna):
