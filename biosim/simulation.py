@@ -70,7 +70,7 @@ class BioSim:
         self.add_population(ini_pop)
 
         if ymax_animals is None:
-            self.ymax_animals = 10000
+            self.ymax_animals = 25000
         else:
             self.ymax_animals = ymax_animals
 
