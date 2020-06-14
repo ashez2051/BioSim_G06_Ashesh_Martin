@@ -218,7 +218,7 @@ if __name__ == "__main__":
             num_carns.append(len(l.fauna_dict["Carnivore"]))
             num_herbs.append(len(l.fauna_dict["Herbivore"]))
 
-            print('Herbs, Carns: ', len(l.fauna_dict["Herbivore"]), len(l.fauna_dict["Carnivore"]) )
+            print('Herbs, Carns: ', len(l.fauna_dict["Herbivore"]), len(l.fauna_dict["Carnivore"]))
 
         # print("In year: {0} the number of herbivores is {1}".format(i + 1,
         # len(l.fauna_dict["Herbivore"])))

@@ -19,7 +19,7 @@ class Landscape:
 
     def __init__(self):
 
-        self.sorted_animal_fitness_dict = {}
+        #self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
@@ -48,16 +48,16 @@ class Landscape:
         self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
         self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"), reverse=True)
 
-    def update_fitness(self, animal, species):
-        """
-        Updates the fitness of herbivores or carnivores
-        :param animal: animal object
-        :param species: an animal can be herbivore or a carnivore
-        """
-        animal_fitness = {}
-        for animal_iter in animal[species]:
-            animal_fitness[animal_iter] = animal.fitness
-        self.sorted_animal_fitness_dict[species] = animal_fitness
+    # def update_fitness(self, animal, species):
+    #     """
+    #     Updates the fitness of herbivores or carnivores
+    #     :param animal: animal object
+    #     :param species: an animal can be herbivore or a carnivore
+    #     """
+    #     animal_fitness = {}
+    #     for animal_iter in animal[species]:
+    #         animal_fitness[animal_iter] = animal.fitness
+    #     self.sorted_animal_fitness_dict[species] = animal_fitness
 
     def update_fodder(self):
         """
@@ -72,7 +72,7 @@ class Landscape:
         """
         self.update_fodder()
         self.herbivore_eats()
-        self.carnivore_eats()
+        self.new_carnivore_eats()
 
     def available_food(self, animal):
         """
@@ -119,7 +119,7 @@ class Landscape:
             dead_animals = []
             for herb in self.fauna_dict["Herbivore"]:
                 if food_eaten <= appetite_of_carnivore:
-                    if np.random.uniform(0,1) < carnivore.probability_of_killing(herb):
+                    if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
 
                         eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
                         carnivore.animal_weight_with_food(eaten)
@@ -127,9 +127,35 @@ class Landscape:
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
-            self.sort_by_fitness()
+            #self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
+            #self.sort_by_fitness()
 
+    def new_carnivore_eats(self):
+        self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
 
+        self.fauna_dict['Herbivore'].sort(key=lambda h: h.fitness)
+
+        for carnivore in self.fauna_dict['Carnivore']:
+            appetite = carnivore.parameters['F']
+            amount_eaten = 0
+
+            for herbivore in self.fauna_dict['Herbivore']:
+
+                if amount_eaten >= appetite:
+                    break
+
+                elif np.random.uniform(0,1) < carnivore.probability_of_killing(herbivore):
+                    food_wanted = appetite - amount_eaten
+
+                    if herbivore.weight <= food_wanted:
+                        amount_eaten += herbivore.weight
+                        self.fauna_dict['Herbivore'].remove(herbivore)
+
+                    elif herbivore.weight > food_wanted:
+                        amount_eaten += food_wanted
+                        self.fauna_dict['Herbivore'].remove(herbivore)
+
+            carnivore.animal_weight_with_food(amount_eaten)
     @property
     def remaining_food(self):
         """
