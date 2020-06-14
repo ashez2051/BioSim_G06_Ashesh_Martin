@@ -59,8 +59,7 @@ class BioSim:
 
         for char in island_map.replace('\n', ''):
             if char not in self.landscapes:
-                raise ValueError('This given string contains unknown '
-                                 'geographies')
+                raise ValueError('This given string contains unknown geographies')
 
         lengths = [len(line) for line in island_map.splitlines()]
         if len(set(lengths)) > 1:
@@ -121,8 +120,8 @@ class BioSim:
                 raise ValueError(landscape + ' parameter is not valid')
 
         else:
-            raise TypeError(landscape + ' parameters cannot be assigned, '
-                                        'there is no such data type')
+            raise TypeError(landscape + ' parameters cannot be assigned, there is no such '
+                                        'data type')
 
     def simulate(self, num_years, vis_years=200, img_years=None):
         """
@@ -154,7 +153,7 @@ class BioSim:
             self._year += 1
 
             df = self.animal_distribution
-            df.to_csv('results/data.csv', sep='\t', encoding='utf-8')
+            df.to_csv('data.csv', sep='\t', encoding='utf-8')
 
     def setup_graphics(self):
         """

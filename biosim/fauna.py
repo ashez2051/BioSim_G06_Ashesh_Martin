@@ -7,7 +7,8 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 
-#np.random.seed(1)
+
+# np.random.seed(1)
 
 
 class Fauna:
@@ -149,6 +150,7 @@ class Herbivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
         self.parameters = Herbivore.parameters
+
 
 class Carnivore(Fauna):
     """
