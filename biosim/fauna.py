@@ -7,7 +7,8 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 
-#np.random.seed(1)
+
+# np.random.seed(1)
 
 
 class Fauna:
@@ -133,9 +134,10 @@ class Fauna:
                 if given_params[param] <= 0:
                     raise ValueError('Parameter value should be positive ')
                 else:
-                    cls.parameters[param] = given_params[param]
-            # else:
-            #     raise ValueError("Parameter not in class parameter list")
+                    cls.parameters[param] = given_params[
+                        param]
+            else:
+                raise ValueError("Parameter not in class parameter list")
 
 
 class Herbivore(Fauna):
@@ -149,6 +151,7 @@ class Herbivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
         self.parameters = Herbivore.parameters
+
 
 class Carnivore(Fauna):
     """

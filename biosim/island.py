@@ -73,7 +73,7 @@ class Island:
         """
         edges = self.edges(island_array)
         for edge in edges:
-            if np.all(edge != "W"):
+            if not np.all(edge == "W"):
                 raise ValueError("The edges of the island map should only contain water cells")
 
     def array_with_landscape_objects(self):
