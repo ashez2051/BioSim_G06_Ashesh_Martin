@@ -134,8 +134,8 @@ class Fauna:
                     raise ValueError('Parameter value should be positive ')
                 else:
                     cls.parameters[param] = given_params[param]
-            else:
-                raise ValueError("Parameter not in class parameter list")
+            # else:
+            #     raise ValueError("Parameter not in class parameter list")
 
 
 class Herbivore(Fauna):
@@ -148,7 +148,7 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-
+        self.parameters = Herbivore.parameters
 
 class Carnivore(Fauna):
     """
@@ -160,6 +160,7 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
+        self.parameters = Carnivore.parameters
 
     def probability_of_killing(self, herb):
         """"

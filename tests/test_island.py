@@ -88,7 +88,10 @@ class TestIsland:
                      WWWW"""
 
         island = Island(map_str)
-        island.convert_string_to_array()
+        aa= island.convert_string_to_array()[1][1]
+        bb = island.array_with_landscape_objects()[1][1]
+        print((bb))
+        #print(type(aa))
         animals = [{"loc": (1, 1),
                     "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in
                             range(100)]}]
@@ -101,9 +104,8 @@ class TestIsland:
         #print(initial_carns)
         for _ in range(10):
             island.life_cycle_in_rossumoya()
-        #lowland.migration(adj_cells)
-        #herbs_after_migration = len(lowland.fauna_dict['Herbivore'])
-        assert island.cell_fauna_count
+            assert island.array_with_landscape_objects()[1][1].cell_fauna_count['Herbivore'] == 12
+
 
 
     def test_animal_migrates_maximum_once_per_year(self):

@@ -47,20 +47,20 @@ class Graphics:
         if len(lines[-1]) == 0:
             lines = lines[:-1]
 
-            num_cells = len(lines[0])
-            map_array = []
-            for line in lines:
-                map_array.append([])
-                if num_cells != len(line):
-                    raise ValueError(
+        num_cells = len(lines[0])
+        map_array = []
+        for line in lines:
+            map_array.append([])
+            if num_cells != len(line):
+                raise ValueError(
                         "All lines in the map must have the same number of cells."
                     )
-                for letter in line:
-                    if letter not in self.map_colors:
-                        raise ValueError('Not a valid landscape type')
-                    map_array[-1].append(self.map_colors[letter])
+            for letter in line:
+                if letter not in self.map_colors:
+                    raise ValueError('Not a valid landscape type')
+                map_array[-1].append(self.map_colors[letter])
 
-            return map_array
+        return map_array
 
     def create_island_graph(self):
         """
