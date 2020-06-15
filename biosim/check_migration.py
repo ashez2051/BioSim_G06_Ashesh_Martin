@@ -13,8 +13,8 @@ if __name__ == "__main__":
     WWWW"""
 
     i = Island(geogr)
-    i.convert_string_to_array()
-    bb = i.array_with_landscape_objects()
+    #i.convert_string_to_array()
+    #bb = i.array_with_landscape_objects()
     i.add_animals(ini_herbs)
 
     num_herb = []
