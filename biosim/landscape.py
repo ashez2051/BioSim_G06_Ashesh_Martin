@@ -20,6 +20,7 @@ class Landscape:
         # self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
+        self.migrated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
 
     def add_animal(self, animal):
@@ -123,9 +124,8 @@ class Landscape:
                         dead_animals.append(herb)
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
-                                            if herbivore not in dead_animals]
-            # self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
-            # self.sort_by_fitness()
+                                            if
+                                            herbivore not in dead_animals]  # self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))  # self.sort_by_fitness()
 
     def new_carnivore_eats(self):
         self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
@@ -224,8 +224,6 @@ class Landscape:
 
         # remove animals_that_migrated from self.fauna_dict
 
-
-
     def trial_migration_code(self, adj_cells):
         for species, animals in self.migrated_fauna_dict.items():
             for i in range(len(self.migrated_fauna_dict)):
@@ -240,9 +238,6 @@ class Landscape:
 
     def remove_migrated_animals(self):
         self.migrated_fauna_dict = self.fauna_dict
-
-
-
 
     def reset_migration_bool_in_cell(self):
         """

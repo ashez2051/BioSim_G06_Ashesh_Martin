@@ -128,7 +128,8 @@ class Island:
                     self._cells[row, col].animal_eats()
                     self._cells[row, col].animal_gives_birth()
                     self._cells[row, col].add_children_to_adult_animals()
-                    self._cells[row, col].migration(self.adjacent_cells(row, col))
+                    self._cells[row, col].trial_migration_code(self.adjacent_cells(row, col))
+                    self._cells[row,col].remove_migrated_animals()
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
 
