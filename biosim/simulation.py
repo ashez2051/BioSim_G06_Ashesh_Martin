@@ -1,8 +1,9 @@
-"""
-"""
-__author__ = "Ashesh Raj Gnawali, Martin Bø"
-__email__ = "asgn@nmbu.no & mabo@nmbu.no"
+# -*- coding: utf-8 -*-
 
+"""
+"""
+__author__ = "Ashesh Raj Gnawali, Maritn Bø"
+__email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import os
 
 import matplotlib.pyplot as plt

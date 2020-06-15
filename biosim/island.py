@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 """
-Island class which gives a geographical structure of the multiline string provided.
-Returns a numpy array with cell information equal to the number of characters in given string
 """
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
@@ -23,8 +21,8 @@ class Island:
     def __init__(self, map):
         """
         Constructor for the island class
-        :param map: A string which represents the island. Should only contain the letters
-        W, L, H or D representing Water, Lowland, Highland and Desert respectively
+        :param map: A string which represents the island. Should only contain the letters \n
+        W, L, H or D representing Water, Lowland, Highland and Desert respectively \n
         """
         self.map = map
         self.island_map = self.convert_string_to_array()
@@ -42,15 +40,15 @@ class Island:
     @property
     def cells(self):
         """
-        Adds landscape objects with the array_with_landscape_objects function
-        :return: landscape objects
+        Adds landscape objects with the array_with_landscape_objects function \n
+        :return: landscape objects \n
         """
         return self._cells
 
     def convert_string_to_array(self):
         """
-        Converts a multidimensional string to a numpy array from
-        :return: a numpy array with the converted string
+        Converts a multidimensional string to a numpy array from \n
+        :return: a numpy array with the converted string \n
         """
         map_str_clean = self.map.replace(' ', '')
         char_map = np.array([[col for col in row] for row in map_str_clean.splitlines()])
@@ -59,9 +57,9 @@ class Island:
     @staticmethod
     def edges(island_array):
         """
-        Finds the edges of the map for later use
-        :param island_array: Array of the island
-        :return: the map edges
+        Finds the edges of the map for later use \n
+        :param island_array: Array of the island \n
+        :return: the map edges \n
         """
         rows, cols = island_array.shape[0], island_array.shape[1]
         island_edges = [island_array[0, :cols], island_array[rows - 1, :cols], island_array[
@@ -73,9 +71,9 @@ class Island:
 
     def check_edge_cells_is_water(self, island_array):
         """
-        Checks if the edge cells is water. Raises ValueError if the edges contain something
-        else than water
-        :param island_array: an island array
+        Checks if the edge cells is water. Raises ValueError if the edges contain something \n
+        else than water \n
+        :param island_array: an island array \n
         """
         edges = self.edges(island_array)
         for edge in edges:
@@ -84,9 +82,9 @@ class Island:
 
     def array_with_landscape_objects(self):
         """
-        Creates an array similar to the map with the same dimensions, but with the landscape
-        objects corresponding to the landscape letter instead of a string
-        :return: an array with the landscape objects
+        Creates an array similar to the map with the same dimensions, but with the landscape \n
+        objects corresponding to the landscape letter instead of a string \n
+        :return: an array with the landscape objects \n
         """
         landscape_cell_object = np.empty(self.island_map.shape, dtype=object)
         for row in np.arange(self.island_map.shape[0]):
@@ -97,10 +95,10 @@ class Island:
 
     def adjacent_cells(self, n_rows, n_cols):
         """
-        Finds the immediate adjacent cells of a cell
-        :param n_rows: The row number
-        :param n_cols: The column number
-        :return: A list for adjacent cells
+        Finds the immediate adjacent cells of a cell \n
+        :param n_rows: The row number \n
+        :param n_cols: The column number \n
+        :return: A list with the adjacent cells \n
         """
         rows, cols = self.map_dims
         adjacent_cell_list = []
@@ -116,8 +114,8 @@ class Island:
 
     def life_cycle_in_rossumoya(self):
         """
-        Iterates through all the cells and performs life cycle events. This should be called
-        every year
+        Iterates through all the cells and performs life cycle events. This should be called \n
+        every year \n
         """
         self.reset_migration_bool_in_all_cells()
         rows, cols = self.map_dims
@@ -134,7 +132,7 @@ class Island:
 
     def reset_migration_bool_in_all_cells(self):
         """
-        Iterates through the landscape cells and resets the migration boolean
+        Iterates through the landscape cells and resets the migration boolean \n
         """
         rows, cols = self.map_dims
         for row in range(rows):
@@ -143,8 +141,8 @@ class Island:
 
     def add_animals(self, population):
         """
-        Adds animals to the given cells on the map
-        :param population: a dictionary with the poulation information to be added to the island
+        Adds animals to the given cells on the map \n
+        :param population: a dictionary with the poulation information to be added to the island \n
         """
         for animal_group in population:
             loc = animal_group["loc"]
@@ -160,9 +158,9 @@ class Island:
 
     def number_of_animals_per_species(self, species):
         """
-        Calculates the total amount of animals per species on the island
-        :param species: dictionary with the animal classes
-        :return: The total number of animals on the island
+        Calculates the total amount of animals per species on the island \n
+        :param species: dictionary with the animal classes \n
+        :return: The total number of animals on the island \n
         """
         num_animals = 0
         rows, cols = self.map_dims
