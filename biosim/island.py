@@ -39,7 +39,7 @@ class Island:
         cols = self._cells.shape[1]
         self.map_dims = rows, cols
 
-    @property
+    #@property
     def cells(self):
         """
         Adds landscape objects with the array_with_landscape_objects function
@@ -119,20 +119,20 @@ class Island:
         Iterates through all the cells and performs life cycle events. This should be called
         every year
         """
-        self.restart_migration_bool_in_all_cells()
+        self.reset_migration_bool_in_all_cells()
         rows, cols = self.map_dims
 
         for row in range(rows):
             for col in range(cols):
                 if self._cells[row, col].is_migratable:
-                    self._cells[row, col].animal_eats()
-                    self._cells[row, col].animal_gives_birth()
-                    self._cells[row, col].add_children_to_adult_animals()
+                    #self._cells[row, col].animal_eats()
+                    #self._cells[row, col].animal_gives_birth()
+                    #self._cells[row, col].add_children_to_adult_animals()
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
-                    self._cells[row, col].update_animal_weight_and_age()
-                    self._cells[row, col].animal_dies()
+                    #self._cells[row, col].update_animal_weight_and_age()
+                    #self._cells[row, col].animal_dies()
 
-    def restart_migration_bool_in_all_cells(self):
+    def reset_migration_bool_in_all_cells(self):
         """
         Iterates through the landscape cells and resets the migration boolean
         """
