@@ -19,8 +19,8 @@ autoclass_content = 'both'
 # -- Project information -----------------------------------------------------
 
 project = 'biosim'
-copyright = '2020, Ashesh, Martin'
-author = 'Ashesh, Martin'
+copyright = '2020, Ashesh Raj Gnawali, Martin Bø'
+author = 'Ashesh Raj Gnawali, Martin Bø'
 
 # The full version, including alpha/beta/rc tags
 release = '14.06.2020'

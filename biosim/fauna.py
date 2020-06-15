@@ -17,8 +17,8 @@ class Fauna:
 
     def __init__(self, age=None, weight=None):
         """
-        Constructor for the parent class fauna with age and weight of the animals
-        :param age: Age of the animal, integer
+        Constructor for the parent class fauna with age and weight of the animals \n
+        :param age: Age of the animal, integer \n
         :param weight: Weight of the animal, float
         """
         if age is None:
@@ -50,7 +50,7 @@ class Fauna:
 
     def animal_weight_with_food(self, food_eaten):
         """
-        Updates the weight of an animal based on it's feeding behavior
+        Updates the weight of an animal based on it's feeding behavior \n
         :param food_eaten: the amount of food eaten by an animal, float
         """
         self.weight += self.parameters['beta'] * food_eaten
@@ -74,8 +74,8 @@ class Fauna:
 
     def proba_animal_birth(self, num_animals):
         """
-        Calculates the probability for an animal to give birth
-        :param num_animals: Number of animals of the same species in a single cell
+        Calculates the probability for an animal to give birth \n
+        :param num_animals: Number of animals of the same species in a single cell \n
         :return: true/False probability of giving birth
         """
 
@@ -90,9 +90,9 @@ class Fauna:
 
     def weight_update_after_birth(self, child):
         """
-        Update the weight of the mother after giving birth and determines if the animal will
-        give birth. If the weight of the child times xi is larger than the weight of the mother
-        the animal wont give birth
+        Update the weight of the mother after giving birth and determines if the animal will \n
+        give birth. If the weight of the child times xi is larger than the weight of the mother \n
+        the animal wont give birth \n
         :param child: The child object
         """
         if self.weight > child.weight * child.parameters["xi"]:
@@ -104,7 +104,7 @@ class Fauna:
     @property
     def death_probability(self):
         """
-        Calculates the probability of death based on fitness
+        Calculates the probability of death based on fitness \n
         :return: Boolean value weather an animal dies or survives
         """
         if self.animal_fitness == 0:
@@ -115,7 +115,7 @@ class Fauna:
     @property
     def animal_moves_bool(self):
         """
-        Calculates the probability that an animal moves
+        Calculates the probability that an animal moves \n
         :return: Boolean if an animal moves or not
         """
         moving_probability = self.parameters["mu"] * self.animal_fitness
@@ -124,8 +124,8 @@ class Fauna:
     @classmethod
     def set_parameters(cls, given_params):
         """
-        Sets the parameters according to the class called
-        :param given_params: a dictionary of the user assigned parameters
+        Sets the parameters according to the class called \n
+        :param given_params: a dictionary of the user assigned parameters \n
         :return: Assigns parameters to respective classes
         """
         for param in given_params:
@@ -140,8 +140,7 @@ class Fauna:
 
 class Herbivore(Fauna):
     """
-    Child class of Fauna
-    defined with default parameter values
+    Child class of Fauna defined with default parameter values
     """
     parameters = {"w_birth": 8.0, "sigma_birth": 1.5, "beta": 0.9, "eta": 0.05, "a_half": 40.0,
                   "phi_age": 0.6, "w_half": 10.0, "phi_weight": 0.1, "mu": 0.25, "gamma": 0.2,
@@ -154,8 +153,7 @@ class Herbivore(Fauna):
 
 class Carnivore(Fauna):
     """
-    Child class of Fauna
-    defined with default parameter values
+    Child class of Fauna defined with default parameter values
     """
     parameters = {"w_birth": 6.0, "sigma_birth": 1, "beta": 0.75, "eta": 0.125, "a_half": 40.0,
                   "phi_age": 0.3, "w_half": 4.0, "phi_weight": 0.4, "mu": 0.4, "gamma": 0.8,
@@ -167,11 +165,11 @@ class Carnivore(Fauna):
 
     def probability_of_killing(self, herb):
         """"
-        Returns the probability with which a carnivore kills a herbivore
-        If the fitness of the carnivore is less than that of a herbivore we return 0
-        If the difference in fitness is > 0 and < delta_phi_max then it is calculated
-        as (difference / delta_phi_max)
-        :param herb: Herbivore class object
+        Returns the probability with which a carnivore kills a herbivore \n
+        If the fitness of the carnivore is less than that of a herbivore we return 0 \n
+        If the difference in fitness is > 0 and < delta_phi_max then it is calculated \n
+        as (difference / delta_phi_max) \n
+        :param herb: Herbivore class object \n
         :return: probability value
         """
         if self.animal_fitness <= herb.animal_fitness:

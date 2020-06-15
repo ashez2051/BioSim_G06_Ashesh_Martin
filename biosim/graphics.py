@@ -143,10 +143,10 @@ class Graphics:
         else:
             self.herbivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
 
-            self.herbivore_image_axis.figure.colorbar(self.herbivore_image_axis,
-                                                      ax=self.herbivore_dist,
-                                                      orientation='horizontal', fraction=0.07,
-                                                      pad=0.04)
+            # self.herbivore_image_axis.figure.colorbar(self.herbivore_image_axis,
+            #                                           ax=self.herbivore_dist,
+            #                                           orientation='horizontal', fraction=0.07,
+            #                                           pad=0.04)
 
             self.herbivore_dist.set_title('Herbivore Distribution')
 
@@ -158,10 +158,10 @@ class Graphics:
             self.carnivore_image_axis.set_data(distribution)
         else:
             self.carnivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
-            self.carnivore_image_axis.figure.colorbar(self.carnivore_image_axis,
-                                                      ax=self.carnivore_dist,
-                                                      orientation='horizontal', fraction=0.07,
-                                                      pad=0.04)
+            # self.carnivore_image_axis.figure.colorbar(self.carnivore_image_axis,
+            #                                           ax=self.carnivore_dist,
+            #                                           orientation='horizontal', fraction=0.07,
+            #                                           pad=0.04)
 
             self.carnivore_dist.set_title('Carnivore Distribution')
 
