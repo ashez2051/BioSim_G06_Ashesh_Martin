@@ -4,6 +4,7 @@
 
 ### Ignore data directory (images etc)
 */data/*
+*/examples/results*
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

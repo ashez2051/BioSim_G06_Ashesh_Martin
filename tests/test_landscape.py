@@ -113,7 +113,7 @@ class TestLandscape:
         assert lowland.cell_fauna_count["Herbivore"] == 0
 
     def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
-        mocker.patch("numpy.random.uniform", return_value = 0)
+        mocker.patch("", return_value = 0)
         # Didnt find the path, will work on this laterr
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
