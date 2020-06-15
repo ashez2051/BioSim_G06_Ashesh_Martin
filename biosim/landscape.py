@@ -213,14 +213,17 @@ class Landscape:
         for species, animals in self.fauna_dict.items():
 
             for animal in animals:
-                if animal.animal_moves_bool:
-                    cell_to_migrate = random.choice(adj_cells)
-                    if cell_to_migrate.is_migratable:
-                        if animal.has_animal_already_moved is False:
+                if animal.has_animal_already_moved is False:
+                    if animal.animal_moves_bool:
+                        cell_to_migrate = random.choice(adj_cells)
+                        if cell_to_migrate.is_migratable:
                             cell_to_migrate.add_animal(animal)
                             #self.remove_animal(animal)
                             animal.has_animal_already_moved = True
-            animals_that_migrated.append(animal)
+                            animals_that_migrated.append(animal)
+
+        # remove animals_that_migrated from self.fauna_dict
+
 
 
 
