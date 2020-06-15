@@ -155,7 +155,7 @@ class Graphics:
                                        interpolation='nearest',
                                        vmin=0, vmax=5)
 
-            #plt.colorbar(self.herbivore_image_axis, self.herbivore_dist)
+            #plt.colorbar(self.herbivore_image_axis)
 
             self.herbivore_dist.set_title('Herbivore Distribution')
 
