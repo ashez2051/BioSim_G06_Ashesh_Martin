@@ -6,8 +6,9 @@ __author__ = "Ashesh Raj Gnawali, Martin Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-import matplotlib.colors as mcolors
 import matplotlib.pylab as plt
+import matplotlib
+import matplotlib.colors as mcolors
 
 
 class Graphics:
@@ -153,7 +154,9 @@ class Graphics:
             self.herbivore_dist.imshow(distribution,
                                        interpolation='nearest',
                                        vmin=0, vmax=5)
-            #self.herbivore_dist.legend()
+
+            #plt.colorbar(self.herbivore_image_axis, self.herbivore_dist)
+
             self.herbivore_dist.set_title('Herbivore Distribution')
 
     def update_carnivore_distribution(self, distribution):
@@ -166,6 +169,8 @@ class Graphics:
             self.carnivore_dist.imshow(distribution,
                                        interpolation='nearest',
                                        vmin=0, vmax=5)
+            #plt.colorbar(self.carnivore_image_axis, self.carnivore_dist)
+
             self.carnivore_dist.set_title('Carnivore Distribution')
 
     def set_year(self, year):

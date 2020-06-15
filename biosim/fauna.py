@@ -130,7 +130,7 @@ class Fauna:
         """
         for param in given_params:
             if param in cls.parameters:
-                if given_params[param] <= 0:
+                if given_params[param] < 0:
                     raise ValueError('Parameter value should be positive ')
                 else:
                     cls.parameters[param] = given_params[param]

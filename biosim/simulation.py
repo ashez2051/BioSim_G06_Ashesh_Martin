@@ -75,7 +75,7 @@ class BioSim:
             self.ymax_animals = ymax_animals
 
         if cmax_animals is None:
-            self.cmax_animals = {'Herbivore': 5, 'Carnivore': 5}
+            self.cmax_animals = {'Herbivore': 50, 'Carnivore': 20}
         else:
             self.cmax_animals = cmax_animals
 

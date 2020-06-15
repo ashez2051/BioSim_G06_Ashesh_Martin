@@ -64,11 +64,11 @@ class Island:
         :return: the map edges
         """
         rows, cols = island_array.shape[0], island_array.shape[1]
-        island_edges = island_array[0, :cols], island_array[rows - 1, :cols], island_array[
+        island_edges = [island_array[0, :cols], island_array[rows - 1, :cols], island_array[
                                                                               :rows - 1,
                                                                               0], island_array[
                                                                                   :rows - 1,
-                                                                                  cols - 1]
+                                                                                  cols - 1]]
         return island_edges
 
     def check_edge_cells_is_water(self, island_array):
@@ -106,7 +106,7 @@ class Island:
         adjacent_cell_list = []
         if n_rows > 0:
             adjacent_cell_list.append(self._cells[n_rows - 1, n_cols])
-        if n_rows + 1 > rows:
+        if n_rows + 1 < rows:
             adjacent_cell_list.append(self._cells[n_rows + 1, n_cols])
         if n_cols > 0:
             adjacent_cell_list.append(self._cells[n_rows, n_cols - 1])
@@ -125,12 +125,12 @@ class Island:
         for row in range(rows):
             for col in range(cols):
                 if self._cells[row, col].is_migratable:
-                    self._cells[row, col].animal_eats()
-                    self._cells[row, col].animal_gives_birth()
-                    self._cells[row, col].add_children_to_adult_animals()
+                    #self._cells[row, col].animal_eats()
+                    #self._cells[row, col].animal_gives_birth()
+                    #self._cells[row, col].add_children_to_adult_animals()
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
-                    self._cells[row, col].update_animal_weight_and_age()
-                    self._cells[row, col].animal_dies()
+                    #self._cells[row, col].update_animal_weight_and_age()
+                    #self._cells[row, col].animal_dies()
 
     def reset_migration_bool_in_all_cells(self):
         """
