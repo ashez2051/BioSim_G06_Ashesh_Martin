@@ -15,16 +15,10 @@ class Graphics:
     """
     The graphics class contains everything that is needed to plot graphs from Rossumøya
     """
-    map_colors = {"W": mcolors.to_rgba("navy"),
-                  "L": mcolors.to_rgba("forestgreen"),
-                  "H": mcolors.to_rgba("springgreen"),
-                  "D": mcolors.to_rgba("navajowhite")}
+    map_colors = {"W": mcolors.to_rgba("navy"), "L": mcolors.to_rgba("forestgreen"),
+                  "H": mcolors.to_rgba("springgreen"), "D": mcolors.to_rgba("navajowhite")}
 
-    map_labels = {
-        "W": "Water",
-        "L": "Lowland",
-        "H": "Highland",
-        "D": "Desert"}
+    map_labels = {"W": "Water", "L": "Lowland", "H": "Highland", "D": "Desert"}
 
     def __init__(self, map_layout, figure, map_dims):
         self.map_layout = map_layout
@@ -54,9 +48,7 @@ class Graphics:
         for line in lines:
             map_array.append([])
             if num_cells != len(line):
-                raise ValueError(
-                        "All lines in the map must have the same number of cells."
-                    )
+                raise ValueError("All lines in the map must have the same number of cells.")
             for letter in line:
                 if letter not in self.map_colors:
                     raise ValueError('Not a valid landscape type')
@@ -78,8 +70,7 @@ class Graphics:
         Creates a line plot for herbivores by themselves
         """
         if (self.herbivore_curve is None) or recreate:
-            plot = self.mean_ax.plot(np.arange(0, final_year),
-                                     np.full(final_year, np.nan))
+            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan))
             self.herbivore_curve = plot[0]
         else:
             x_data, y_data = self.herbivore_curve.get_data()
@@ -94,8 +85,7 @@ class Graphics:
         Creates a line plot for carnivores by themselves
         """
         if (self.carnivore_curve is None) or recreate:
-            plot = self.mean_ax.plot(np.arange(0, final_year),
-                                     np.full(final_year, np.nan))
+            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan))
             self.carnivore_curve = plot[0]
         else:
             x_data, y_data = self.carnivore_curve.get_data()
@@ -151,11 +141,12 @@ class Graphics:
         if self.herbivore_image_axis is not None:
             self.herbivore_image_axis.set_data(distribution)
         else:
-            self.herbivore_dist.imshow(distribution,
-                                       interpolation='nearest',
-                                       vmin=0, vmax=5)
+            self.herbivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
 
-            #plt.colorbar(self.herbivore_image_axis)
+            self.herbivore_image_axis.figure.colorbar(self.herbivore_image_axis,
+                                                      ax=self.herbivore_dist,
+                                                      orientation='horizontal', fraction=0.07,
+                                                      pad=0.04)
 
             self.herbivore_dist.set_title('Herbivore Distribution')
 
@@ -166,10 +157,11 @@ class Graphics:
         if self.carnivore_image_axis is not None:
             self.carnivore_image_axis.set_data(distribution)
         else:
-            self.carnivore_dist.imshow(distribution,
-                                       interpolation='nearest',
-                                       vmin=0, vmax=5)
-            #plt.colorbar(self.carnivore_image_axis, self.carnivore_dist)
+            self.carnivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
+            self.carnivore_image_axis.figure.colorbar(self.carnivore_image_axis,
+                                                      ax=self.carnivore_dist,
+                                                      orientation='horizontal', fraction=0.07,
+                                                      pad=0.04)
 
             self.carnivore_dist.set_title('Carnivore Distribution')
 

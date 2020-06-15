@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     sim.simulate(num_years=300, vis_years=1, img_years=2000)
 
-    plt.savefig('check_sim_400.pdf')
+    plt.savefig('check_sim_400_1.pdf')
 
 
     input('Press ENTER')
