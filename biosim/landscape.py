@@ -209,15 +209,20 @@ class Landscape:
         is added to the new cell and remove from the old cell.
         :param adj_cells: list of adjacent cells that animal can move to
         """
+        animals_that_migrated = []
         for species, animals in self.fauna_dict.items():
+
             for animal in animals:
                 if animal.animal_moves_bool:
                     cell_to_migrate = random.choice(adj_cells)
                     if cell_to_migrate.is_migratable:
                         if animal.has_animal_already_moved is False:
                             cell_to_migrate.add_animal(animal)
-                            self.remove_animal(animal)
+                            #self.remove_animal(animal)
                             animal.has_animal_already_moved = True
+            animals_that_migrated.append(animal)
+
+
 
     def reset_migration_bool_in_cell(self):
         """
