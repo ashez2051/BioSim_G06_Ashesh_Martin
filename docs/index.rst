@@ -7,10 +7,10 @@ Welcome to biosim's documentation!
 ==================================
 
 .. toctree::
-   :fauna:
-   :landscape:
-   :island:
-   :simulation:
+   :fauna.rst:
+   :landscape.rst:
+   :island.rst:
+   :simulation.rst:
 
    :maxdepth: 2
    :caption: Contents:
