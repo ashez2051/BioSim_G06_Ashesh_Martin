@@ -94,10 +94,10 @@ class BioSim:
 
     def set_animal_parameters(self, species, params):
         """
-        Set parameters for animal species.
+        Set parameters for animal species. \n
 
-        :param species: String, name of animal species
-        :param params: Dict with valid parameter specification for species
+        :param species: String, name of animal species \n
+        :param params: Dict with valid parameter specification for species \n
         """
         if species in self.animal_species:
             species_type = self.animal_species[species]
@@ -108,10 +108,9 @@ class BioSim:
 
     def set_landscape_parameters(self, landscape, params):
         """
-        Set parameters for landscape type.
-
-        :param landscape: String, code letter for landscape
-        :param params: Dict with valid parameter specification for landscape
+        Set parameters for landscape type. \n
+        :param landscape: String, code letter for landscape \n
+        :param params: Dict with valid parameter specification for landscape \n
         """
         if landscape in self.landscapes:
             landscape_type = self.landscapes[landscape]
@@ -126,14 +125,12 @@ class BioSim:
 
     def simulate(self, num_years, vis_years=200, img_years=None):
         """
-        Run simulation while visualizing the result.
-
-        :param num_years: number of years to simulate
-        :param vis_years: years between visualization updates
-        :param img_years: years between visualizations saved to files
-        (default: vis_years)
-
-        Image files will be numbered consecutively.
+        Run simulation while visualizing the result. \n
+        :param num_years: number of years to simulate \n
+        :param vis_years: years between visualization updates \n
+        :param img_years: years between visualizations saved to files \n
+        (default: vis_years) \n
+        Image files will be numbered consecutively. \n
         """
         if img_years is None:
             img_years = vis_years
@@ -158,7 +155,7 @@ class BioSim:
 
     def setup_graphics(self):
         """
-        Setup the graphics
+        Setup the graphics \n
         """
         map_dims = self._map.map_dims
 
@@ -173,7 +170,7 @@ class BioSim:
 
     def update_graphics(self):
         """
-        Updates graphics with current data.
+        Updates graphics with current data. \n
         """
         df = self.animal_distribution
         rows, cols = self._map.map_dims
@@ -192,7 +189,7 @@ class BioSim:
 
     def save_graphics(self):
         """
-        Save the graphics
+        Save the graphics \n
         """
         if self.img_base is None:
             return
@@ -203,16 +200,18 @@ class BioSim:
 
     def add_population(self, population):
         """
-        Add a population to the island
+        Add a population to the island \n
 
-        :param population: List of dictionaries specifying population
+        :param population: List of dictionaries specifying population \n
         """
         self._map.add_animals(population)
 
     def make_movie(self, movie_fmt=DEFAULT_MOVIE_FORMAT):
-        """Create MPEG4 movie from visualization images saved."""
+        """
+        Create MPEG4 movie from visualization images saved. \n
+        """
         if self.img_base is None:
-            raise RuntimeError('No filename defines')
+            raise RuntimeError('No filename defined')
 
         if movie_fmt == 'mp4':
             try:
@@ -234,12 +233,16 @@ class BioSim:
 
     @property
     def year(self):
-        """Last year simulated."""
+        """
+        Last year simulated. \n
+        """
         return self._year
 
     @property
     def num_animals(self):
-        """Total number of animals on island."""
+        """
+        Total number of animals on island. \n
+        """
         animal_count = 0
         for species in self.animal_species:
             animal_count += self._map.number_of_animals_per_species(species)
@@ -247,7 +250,9 @@ class BioSim:
 
     @property
     def num_animals_per_species(self):
-        """Number of animals per species in island, as dictionary."""
+        """
+        Number of animals per species in island, as dictionary. \n
+        """
         num_fauna_per_species = {}
         for species in self.animal_species:
             num_fauna_per_species[species] = self._map.number_of_animals_per_species(species)
@@ -255,8 +260,9 @@ class BioSim:
 
     @property
     def animal_distribution(self):
-        """Pandas DataFrame with animal count per species for each cell
-        on island."""
+        """
+        Pandas DataFrame with animal count per species for each cell on the island. \n
+        """
         animal_df = []
         rows, cols = self._map.map_dims
         for row in range(rows):
