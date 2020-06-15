@@ -218,11 +218,28 @@ class Landscape:
                         cell_to_migrate = random.choice(adj_cells)
                         if cell_to_migrate.is_migratable:
                             cell_to_migrate.add_animal(animal)
-                            #self.remove_animal(animal)
+                            self.remove_animal(animal)
                             animal.has_animal_already_moved = True
                             animals_that_migrated.append(animal)
 
         # remove animals_that_migrated from self.fauna_dict
+
+
+
+    def trial_migration_code(self, adj_cells):
+        for species, animals in self.migrated_fauna_dict.items():
+            for i in range(len(self.migrated_fauna_dict)):
+                animal = animals[i]
+                if animal.animal_moves_bool:
+                    cell_to_migrate = random.choice(adj_cells)
+                    if cell_to_migrate.is_migratable:
+                        if animal.has_animal_already_moved is False:
+                            cell_to_migrate.add_animal(animal)
+                            self.fauna_dict['species'].remove(animal)
+                            animal.has_animal_already_moved = True
+
+    def remove_migrated_animals(self):
+        self.migrated_fauna_dict = self.fauna_dict
 
 
 
