@@ -86,6 +86,7 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
+            food_eaten = 0
             herb_remaining_fodder = self.remaining_food['Herbivore']
             if herb_remaining_fodder == 0:
                 break
@@ -117,34 +118,34 @@ class Landscape:
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if
-                                            herbivore not in dead_animals]  # self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))  # self.sort_by_fitness()
+                                            herbivore not in dead_animals]
 
-    def new_carnivore_eats(self):
-        self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
-
-        self.fauna_dict['Herbivore'].sort(key=lambda h: h.fitness)
-
-        for carnivore in self.fauna_dict['Carnivore']:
-            appetite = carnivore.parameters['F']
-            amount_eaten = 0
-
-            for herbivore in self.fauna_dict['Herbivore']:
-
-                if amount_eaten >= appetite:
-                    break
-
-                elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herbivore):
-                    food_wanted = appetite - amount_eaten
-
-                    if herbivore.weight <= food_wanted:
-                        amount_eaten += herbivore.weight
-                        self.fauna_dict['Herbivore'].remove(herbivore)
-
-                    elif herbivore.weight > food_wanted:
-                        amount_eaten += food_wanted
-                        self.fauna_dict['Herbivore'].remove(herbivore)
-
-            carnivore.animal_weight_with_food(amount_eaten)
+    # def new_carnivore_eats(self):
+    #     self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
+    #
+    #     self.fauna_dict['Herbivore'].sort(key=lambda h: h.fitness)
+    #
+    #     for carnivore in self.fauna_dict['Carnivore']:
+    #         appetite = carnivore.parameters['F']
+    #         amount_eaten = 0
+    #
+    #         for herbivore in self.fauna_dict['Herbivore']:
+    #
+    #             if amount_eaten >= appetite:
+    #                 break
+    #
+    #             elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herbivore):
+    #                 food_wanted = appetite - amount_eaten
+    #
+    #                 if herbivore.weight <= food_wanted:
+    #                     amount_eaten += herbivore.weight
+    #                     self.fauna_dict['Herbivore'].remove(herbivore)
+    #
+    #                 elif herbivore.weight > food_wanted:
+    #                     amount_eaten += food_wanted
+    #                     self.fauna_dict['Herbivore'].remove(herbivore)
+    #
+    #         carnivore.animal_weight_with_food(amount_eaten)
 
     @property
     def remaining_food(self):
