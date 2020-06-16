@@ -12,9 +12,6 @@ import numpy as np
 from biosim.fauna import Herbivore, Carnivore
 
 
-# Check if it increases with weight
-# check if it decreases with age
-
 class TestFauna:
     """
     Tests for various methods in the fauna class \n
@@ -26,7 +23,7 @@ class TestFauna:
         self.herb_large = Herbivore(5, 50)
         self.herb_young = Herbivore(10, 20)
         self.herb_old = Herbivore(50, 20)
-        self.herb_no_weight = Herbivore(20,0)
+        self.herb_no_weight = Herbivore(20, 0)
         self.herb = Herbivore()
 
         self.carn_small = Carnivore(5, 20)
@@ -154,7 +151,7 @@ class TestFauna:
         Tests if valueerror is being raised when a negative age is set as input
         """
         with pytest.raises(ValueError) as err:
-            Herbivore(-5,20)
+            Herbivore(-5, 20)
             assert err.type is ValueError
 
     def test_valueerror_for_negative_weight(self):
@@ -162,7 +159,5 @@ class TestFauna:
         Tests if valueerror is being raised when a negative weight is set as input
         """
         with pytest.raises(ValueError) as err:
-            Herbivore(5,-20)
+            Herbivore(5, -20)
             assert err.type is ValueError
-
-
