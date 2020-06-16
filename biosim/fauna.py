@@ -58,7 +58,7 @@ class Fauna:
         return self.weight
 
     @property
-    # @njit(parallel=True, fastmath=True)
+   # @njit(parallel=True, fastmath=True)
     def animal_fitness(self):
         """"
         Calculates the fitness of an animal based on age and weight

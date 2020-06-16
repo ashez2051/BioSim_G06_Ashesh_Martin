@@ -76,9 +76,9 @@ class Landscape:
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
             #herb_remaining_fodder = self.remaining_food['Herbivore']
-            if self.food_left["Herbivore"] == 0:
-                break
-            elif self.food_left["Herbivore"] >= herb.parameters['F']:
+            # if self.food_left["Herbivore"] == 0:
+            #     break
+            if self.food_left["Herbivore"] >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
                 self.food_left['Herbivore'] -= herb.parameters['F']
             elif 0 < self.food_left["Herbivore"] < herb.parameters["F"]:
@@ -174,7 +174,6 @@ class Landscape:
                         cell_to_migrate = random.choice(adj_cells)
                         if cell_to_migrate.is_migratable:
                             cell_to_migrate.add_animal(animal)
-                            # self.remove_animal(animal)
                             animal.has_animal_already_moved = True
                             animals_that_migrated.append(animal)
 
@@ -257,7 +256,7 @@ class Desert(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.food_left['Herbivore'] = self.parameters['f_max']
-        self.food_left["Carnivore"] = self.total_herbivore_weight()
+        self.food_left["Carnivore"] = self.total_herbivore_weight
 
 
 class Highland(Landscape):
@@ -275,7 +274,7 @@ class Highland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.food_left['Herbivore'] = self.parameters['f_max']
-        self.food_left['Carnivore'] = self.total_herbivore_weight()
+        self.food_left['Carnivore'] = self.total_herbivore_weight
 
     def update_fodder(self):
         """

@@ -10,6 +10,7 @@ class TestLandscape:
     """
     Test class for the landscape
     """
+
     @pytest.fixture(autouse=True)
     def animal_objects(self):
         self.herb1 = Herbivore(10, 50)
@@ -141,22 +142,15 @@ class TestLandscape:
 
         assert lowland.cell_fauna_count["Herbivore"] == 0
 
-    # def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
-    #     mocker.patch(
-    #         ".biosim.fauna." , return_value = 0)
-    #
-    #     # Didnt find the path, will work on this laterr
-    #     lowland = landscape_data["L"]
-    #     self.herb1 = lowland.fauna_dict["Herbivore"][0]
-    #     self.herb2 = lowland.fauna_dict["Herbivore"][1]
-    #     initial_count = lowland.cell_fauna_count["Herbivore"]
-    #
-    #     lowland.animal_gives_birth()
-    #     self.herb1.weight_update_after_birth(child)
-    #     #lowland.add_children_to_adult_animals()
-    #
-    #     # print(lowland.fauna_dict['Herbivore'])
-    #     assert initial_count < lowland.cell_fauna_count["Herbivore"]
+    def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
+        mocker.patch("..biosim.fauna.proba_animal_birth", return_value=True)
+        lowland = landscape_data["L"]
+        self.herb1 = lowland.fauna_dict["Herbivore"][0]
+        self.herb2 = lowland.fauna_dict["Herbivore"][1]
+        initial_count = lowland.cell_fauna_count["Herbivore"]
+
+        lowland.animal_gives_birth()
+        assert initial_count < lowland.cell_fauna_count["Herbivore"]
 
     def test_calculation_of_total_herbivore_weight(self, landscape_data):
         """
@@ -168,13 +162,14 @@ class TestLandscape:
         self.herb2 = lowland.fauna_dict["Herbivore"][1]
         assert lowland.total_herbivore_weight() == (self.herb1.weight + self.herb2.weight)
 
-    # def test_remaining_food_for_herbs_is_correctly_calculated(self, landscape_data):
-    #     """
-    #
-    #     """
-    #     lowland = landscape_data["L"]
-    #     self.herb1 = lowland.fauna_dict["Herbivore"][0]
-    #     lowland.herbivore_eats()
+    def test_remaining_food_for_herbs_is_correctly_calculated(self, landscape_data):
+        """
+        There are two animals
+        """
+        highland = landscape_data["H"]
+        highland.herbivore_eats()
+        assert len(highland.fauna_dict['Herbivore']) == 2
+        assert highland.food_left["Herbivore"] == 280
 
     def test_sort_by_fitness_herb(self, landscape_data):
         """
@@ -221,7 +216,6 @@ class TestLandscape:
     #     self.herb2 = lowland.fauna_dict['Herbivore'][1]
     #     pass  ##wait
 
-
     class TestWater:
         @pytest.fixture
         def water(self):
@@ -239,13 +233,6 @@ class TestLandscape:
             """
             assert water.is_migratable is False
 
-        def test_water_food_available(self, water):
-            """
-            Tests if value error is being raised if we call remaining food on the water object \n
-            as there is no food in the water \n
-            """
-            with pytest.raises(ValueError):
-                water.remaining_food()
 
     class TestDesert:
         @pytest.fixture
@@ -270,8 +257,8 @@ class TestLandscape:
             and for carnivores it should be the total herbivore weight \n
             """
 
-            assert desert.remaining_food['Herbivore'] == 0
-            assert desert.remaining_food['Carnivore'] == desert.total_herbivore_weight
+            assert desert.food_left['Herbivore'] == 0
+            assert desert.food_left['Carnivore'] == desert.total_herbivore_weight
 
     class TestHighland:
         @pytest.fixture
@@ -295,8 +282,8 @@ class TestLandscape:
             Checks the available food in the desert. For herbivores this should be 300 \n
             and for carnivores it should be the total herbivore weight \n
             """
-            assert highland.remaining_food['Herbivore'] == 300
-            assert highland.remaining_food['Carnivore'] == highland.total_herbivore_weight
+            assert highland.food_left['Herbivore'] == 300
+            assert highland.food_left['Carnivore'] == highland.total_herbivore_weight
 
     class TestLowland:
         @pytest.fixture
@@ -320,5 +307,5 @@ class TestLandscape:
             Checks the available food in the desert. For herbivores this should be 800 \n
             and for carnivores it should be the total herbivore weight \n
             """
-            assert lowland.remaining_food['Herbivore'] == 800
-            assert lowland.remaining_food['Carnivore'] == lowland.total_herbivore_weight
+            assert lowland.food_left['Herbivore'] == 800
+            assert lowland.food_left['Carnivore'] == lowland.total_herbivore_weight

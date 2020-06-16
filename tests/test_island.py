@@ -77,42 +77,14 @@ class TestIsland:
         assert island.number_of_animals_per_species('Herbivore') == 3
         assert island.number_of_animals_per_species('Carnivore') == 2
 
-    def test_migration_possible_to_only_one_cell(self, mocker):
-        """
-        Test that ensures only 25% of the animals migrate when there is only
-        single cell for which migration is available
-        """
+    def test_animal_migrates_maximum_once_per_year(self, mocker):
         mocker.patch("numpy.random.uniform", return_value=0)
         map_str = """WWWW
                      WLHW
                      WWWW"""
 
         island = Island(map_str)
-        aa= island.convert_string_to_array()[1][1]
-        bb = island.array_with_landscape_objects()[1][1]
-        print((bb))
-        #print(type(aa))
         animals = [{"loc": (1, 1),
-                    "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in
-                            range(100)]}]
+                    "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in range(100)]}]
         island.add_animals(animals)
-        print(island.fauna_dict_island)
-        #adj_cells = island.adjacent_cells(1, 1)
-        #lowland = Lowland()
-        #initial_herbs = len(lowland.fauna_dict['Herbivore'])
-        #print("asd", initial_herbs)
-        #print(initial_carns)
-        for _ in range(10):
-            island.life_cycle_in_rossumoya()
-            assert island.array_with_landscape_objects()[1][1].cell_fauna_count['Herbivore'] == 12
-
-
-
-    def test_animal_migrates_maximum_once_per_year(self):
-        pass
-
-    def test_equal_probability_of_migration_to_each_cell(self):
-        pass
-
-    def test_animals_cannot_migrate_in_water(self):
         pass
