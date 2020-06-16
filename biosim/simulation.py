@@ -183,8 +183,8 @@ class BioSim:
 
         self.vis.update_herbivore_distribution(dist_matrix_herbivore)
         self.vis.update_carnivore_distribution(dist_matrix_carnivore)
-        #plt.pause(1)
-        plt.pause(1e-6)
+        plt.pause(10)
+       # plt.pause(1e-6)
         self.vis.set_year
 
     def save_graphics(self):

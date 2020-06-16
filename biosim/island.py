@@ -144,7 +144,7 @@ class Island:
         :param population: a dictionary with the poulation information to be added to the island \n
         """
         for animal_group in population:
-            loc = animal_group["loc"]
+            loc = animal_group["loc"]-
             animals = animal_group["pop"]
             for animal in animals:
                 species = animal["species"]

@@ -125,7 +125,7 @@ class TestLandscape:
         for _ in range(10):
             lowland.animal_eats()
             lowland.update_fodder()
-        assert lowland.remaining_food["Herbivore"] == 800
+        assert lowland.food_left["Herbivore"] == 800
 
     def test_herb_count_reduces_when_herb_gets_eaten(self, landscape_data, mocker):
         """
