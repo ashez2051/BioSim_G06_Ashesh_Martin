@@ -34,7 +34,7 @@ if __name__ == '__main__':
                WWWWWWWWWWWWWWWWWWWWW"""
     geogr2 = """\
             WWWWWWWWW
-            WDDDDDDDW
+            WHDDDDDDW
             WDDDDDDDW
             WDDDDDDDW
             WDDDDDDDW
@@ -42,11 +42,11 @@ if __name__ == '__main__':
             WDDDDDDDW
             WDDDDDDDW
             WWWWWWWWW"""
-    geogr = textwrap.dedent(geogr)
+    geogr = textwrap.dedent(geogr2)
 
-    ini_herbs = [{'loc': (10, 10),
+    ini_herbs = [{'loc': (1, 1),
                   'pop': [{'species': 'Herbivore', 'age': 5, 'weight': 20} for _ in range(150)]}]
-    ini_carns = [{'loc': (10, 10),
+    ini_carns = [{'loc': (1, 1),
                   'pop': [{'species': 'Carnivore', 'age': 5, 'weight': 20} for _ in range(40)]}]
 
     sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456,
@@ -58,20 +58,17 @@ if __name__ == '__main__':
     {"zeta": 3.2, "xi": 1.8})
     sim.set_animal_parameters("Carnivore", {"a_half": 70,
     "phi_age": 0.5, "omega": 0.3, "F": 65, "DeltaPhiMax": 9.})
-    # sim.set_animal_parameters("Herbivore",{'mu': 1, 'omega': 0, 'gamma': 0,
-    #                              'a_half': 1000})
-    #
-    # sim.set_animal_parameters('Carnivore',{'mu': 1, 'omega': 0, 'gamma': 0,
-    #                              'F': 0, 'a_half': 1000})
 
     sim.set_landscape_parameters('L', {'f_max': 700})
+
+    sim.simulate(num_years=100, vis_years=1, img_years=2000
+                 )
+
     sim.add_population(population=ini_carns)
 
-    sim.simulate(num_years=50, vis_years=1, img_years=2000
-                 )
     #I think the img_years is how often we save to file
 
-    #sim.simulate(num_years=300, vis_years=1, img_years=2000)
+    sim.simulate(num_years=100, vis_years=1, img_years=2000)
 
     plt.savefig('check_sim.pdf')
 

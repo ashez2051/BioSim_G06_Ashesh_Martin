@@ -21,9 +21,7 @@ class Landscape:
         """
         Constructor for the Landscape class
         """
-        # self.sorted_animal_fitness_dict = {}
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
-        self.updated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.migrated_fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.food_left = {'Herbivore': 0, 'Carnivore': 0}
 
@@ -78,7 +76,7 @@ class Landscape:
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
             herb_remaining_fodder = self.remaining_food['Herbivore']
-            if herb_remaining_fodder == 0:
+            if self.remaining_food['Herbivore'] == 0:
                 break
             elif herb_remaining_fodder >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
@@ -121,8 +119,11 @@ class Landscape:
             raise ValueError("There is no fodder available in the water")
         elif isinstance(self, Desert):
             self.food_left = {'Herbivore': 0, 'Carnivore': self.total_herbivore_weight}
-        else:
-            self.food_left = {"Herbivore": self.food_left["Herbivore"],
+        elif isinstance(self, Lowland):
+            self.food_left = {"Herbivore": self.parameters["f_max"],
+                              "Carnivore": self.total_herbivore_weight}
+        elif isinstance(self, Highland):
+            self.food_left = {"Herbivore": self.parameters["f_max"],
                               "Carnivore": self.total_herbivore_weight}
         return self.food_left
 
@@ -154,12 +155,6 @@ class Landscape:
                         self.fauna_dict[species].append(child)
                         animal.gives_birth = False
             self.fauna_dict[species].extend(newborns)
-
-    def add_children_to_adult_animals(self):
-        """
-        After the breeding season, new babies are added to the fauna dictionary \n
-        """
-        self.updated_fauna_dict = self.fauna_dict
 
     def migration(self, adj_cells):
         """
