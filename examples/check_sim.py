@@ -67,7 +67,7 @@ if __name__ == '__main__':
     sim.simulate(num_years=100, vis_years=1, img_years=2000)
 
     sim.add_population(population=ini_carns)
-    sim.simulate(num_years=5, vis_years=1, img_years=2000)
+    sim.simulate(num_years=300, vis_years=1, img_years=2000)
 
     #I think the img_years is how often we save to file
 

@@ -143,7 +143,7 @@ class TestLandscape:
         assert lowland.cell_fauna_count["Herbivore"] == 0
 
     def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
-        mocker.patch("..biosim.fauna.proba_animal_birth", return_value=True)
+        mocker.patch("biosim.fauna.Fauna.proba_animal_birth", return_value=True)
         lowland = landscape_data["L"]
         self.herb1 = lowland.fauna_dict["Herbivore"][0]
         self.herb2 = lowland.fauna_dict["Herbivore"][1]
@@ -198,13 +198,7 @@ class TestLandscape:
     #     """
     #     mocker.patch("numpy.random.uniform", return_value=0)
     #     lowland = landscape_data['L']
-    #     self.herb1 = lowland.fauna_dict['Herbivore'][0]
-    #     self.herb2 = lowland.fauna_dict['Herbivore'][1]
-    #     self.carn1 = lowland.fauna_dict['Carnivore'][0]
-    #
-    #     lowland.sort_by_fitness()
-    #     herb1_fitness = self.herb1.animal_fitness
-    #     herb2_fitness = self.herb2.animal_fitness
+    #     lowland.add_animal()
     #     assert herb1_fitness > herb2_fitness
     #     lowland.carnivore_eats()
     #     assert self.herb2 not in lowland.fauna_dict["Herbivore"]
