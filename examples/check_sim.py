@@ -42,11 +42,11 @@ if __name__ == '__main__':
             WDDDDDDDW
             WDDDDDDDW
             WWWWWWWWW"""
-    geogr = textwrap.dedent(geogr2)
+    geogr = textwrap.dedent(geogr)
 
-    ini_herbs = [{'loc': (1, 1),
+    ini_herbs = [{'loc': (10, 10),
                   'pop': [{'species': 'Herbivore', 'age': 5, 'weight': 20} for _ in range(150)]}]
-    ini_carns = [{'loc': (1, 1),
+    ini_carns = [{'loc': (10, 10),
                   'pop': [{'species': 'Carnivore', 'age': 5, 'weight': 20} for _ in range(40)]}]
 
     sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456,
@@ -61,14 +61,13 @@ if __name__ == '__main__':
 
     sim.set_landscape_parameters('L', {'f_max': 700})
 
-    sim.simulate(num_years=100, vis_years=1, img_years=2000
-                 )
+    sim.simulate(num_years=100, vis_years=1, img_years=2000)
 
     sim.add_population(population=ini_carns)
+    sim.simulate(num_years=300, vis_years=1, img_years=2000)
 
     #I think the img_years is how often we save to file
 
-    sim.simulate(num_years=100, vis_years=1, img_years=2000)
 
     plt.savefig('check_sim.pdf')
 

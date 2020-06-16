@@ -75,15 +75,15 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            herb_remaining_fodder = self.remaining_food['Herbivore']
-            if self.remaining_food['Herbivore'] == 0:
+            #herb_remaining_fodder = self.remaining_food['Herbivore']
+            if self.food_left["Herbivore"] == 0:
                 break
-            elif herb_remaining_fodder >= herb.parameters['F']:
+            elif self.food_left["Herbivore"] >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
-                self.remaining_food['Herbivore'] -= herb.parameters['F']
-            elif 0 < herb_remaining_fodder < herb.parameters["F"]:
-                herb.animal_weight_with_food(herb_remaining_fodder)
-                self.remaining_food['Herbivore'] = 0
+                self.food_left['Herbivore'] -= herb.parameters['F']
+            elif 0 < self.food_left["Herbivore"] < herb.parameters["F"]:
+                herb.animal_weight_with_food(self.food_left["Herbivore"])
+                self.food_left['Herbivore'] = 0
 
     def carnivore_eats(self):
         """
@@ -108,24 +108,24 @@ class Landscape:
                                             if
                                             herbivore not in dead_animals]
 
-    @property
-    def remaining_food(self):
-        """
-        Gives the remaining food in a cell for different landscape types. Return ValueError \n
-        if the property is called on cells that are not migratable, I.E Water \n
-        :return: the remaining amount of food \n
-        """
-        if isinstance(self, Water):
-            raise ValueError("There is no fodder available in the water")
-        elif isinstance(self, Desert):
-            self.food_left = {'Herbivore': 0, 'Carnivore': self.total_herbivore_weight}
-        elif isinstance(self, Lowland):
-            self.food_left = {"Herbivore": self.parameters["f_max"],
-                              "Carnivore": self.total_herbivore_weight}
-        elif isinstance(self, Highland):
-            self.food_left = {"Herbivore": self.parameters["f_max"],
-                              "Carnivore": self.total_herbivore_weight}
-        return self.food_left
+    # @property
+    # def remaining_food(self):
+    #     """
+    #     Gives the remaining food in a cell for different landscape types. Return ValueError \n
+    #     if the property is called on cells that are not migratable, I.E Water \n
+    #     :return: the remaining amount of food \n
+    #     """
+    #     if isinstance(self, Water):
+    #         raise ValueError("There is no fodder available in the water")
+    #     elif isinstance(self, Desert):
+    #         self.food_left = {'Herbivore': 0, 'Carnivore': self.total_herbivore_weight}
+    #     elif isinstance(self, Lowland):
+    #         self.food_left = {"Herbivore": self.parameters["f_max"],
+    #                           "Carnivore": self.total_herbivore_weight}
+    #     elif isinstance(self, Highland):
+    #         self.food_left = {"Herbivore": self.parameters["f_max"],
+    #                           "Carnivore": self.total_herbivore_weight}
+    #     return self.food_left
 
     def update_animal_weight_and_age(self):
         """
@@ -253,8 +253,8 @@ class Desert(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food["Carnivore"] = self.total_herbivore_weight()
+        self.food_left['Herbivore'] = self.parameters['f_max']
+        self.food_left["Carnivore"] = self.total_herbivore_weight()
 
 
 class Highland(Landscape):
@@ -271,14 +271,14 @@ class Highland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food['Carnivore'] = self.total_herbivore_weight()
+        self.food_left['Herbivore'] = self.parameters['f_max']
+        self.food_left['Carnivore'] = self.total_herbivore_weight()
 
     def update_fodder(self):
         """
         Updates the amount of fodder back to f_max annually \n
         """
-        self.remaining_food["Herbivore"] = self.parameters["f_max"]
+        self.food_left["Herbivore"] = self.parameters["f_max"]
 
 
 class Lowland(Landscape):
@@ -297,11 +297,11 @@ class Lowland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
 
-        self.remaining_food['Herbivore'] = self.parameters['f_max']
-        self.remaining_food['Carnivore'] = self.total_herbivore_weight
+        self.food_left['Herbivore'] = self.parameters['f_max']
+        self.food_left['Carnivore'] = self.total_herbivore_weight
 
     def update_fodder(self):
         """
         Updates the amount of fodder back to f_max annually \n
         """
-        self.remaining_food["Herbivore"] = self.parameters["f_max"]
+        self.food_left["Herbivore"] = self.parameters["f_max"]

@@ -6,6 +6,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
+from numba import njit
 
 
 class Fauna:
@@ -57,6 +58,7 @@ class Fauna:
         return self.weight
 
     @property
+    # @njit(parallel=True, fastmath=True)
     def animal_fitness(self):
         """"
         Calculates the fitness of an animal based on age and weight
@@ -163,6 +165,7 @@ class Carnivore(Fauna):
         super().__init__(age, weight)
         self.parameters = Carnivore.parameters
 
+    # @njit(parallel=True, fastmath=True)
     def probability_of_killing(self, herb):
         """"
         Returns the probability with which a carnivore kills a herbivore \n
