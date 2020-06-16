@@ -85,7 +85,7 @@ class Fauna:
         weight_check = self.parameters["zeta"] * (
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
-        if num_animals >= 2 and self.weight > weight_check: #Removed equal in >=
+        if num_animals >= 2 and self.weight > weight_check:  #Removed equal in >=
             return np.random.uniform(0, 1) < min(1, (
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
         else:
@@ -177,7 +177,7 @@ class Carnivore(Fauna):
         if self.age < 0:
             raise ValueError("Age cannot be negative")
 
-    # @njit(parallel=True, fastmath=True)
+    #@njit(parallel=True, fastmath=True)
     def probability_of_killing(self, herb):
         """"
         Returns the probability with which a carnivore kills a herbivore \n

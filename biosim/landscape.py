@@ -23,7 +23,7 @@ class Landscape:
         """
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
         self.migrated_fauna_dict = {"Herbivore": [], "Carnivore": []}
-        self.food_left = {'Herbivore': 0, 'Carnivore': 0}
+        self.food_left = {'Herbivore': 0}
 
     def add_animal(self, animal):
         """
@@ -75,10 +75,9 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            #herb_remaining_fodder = self.remaining_food['Herbivore']
-            # if self.food_left["Herbivore"] == 0:
-            #     break
-            if self.food_left["Herbivore"] >= herb.parameters['F']:
+            if self.food_left["Herbivore"] == 0:
+                break
+            elif self.food_left["Herbivore"] >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
                 self.food_left['Herbivore'] -= herb.parameters['F']
             elif 0 < self.food_left["Herbivore"] < herb.parameters["F"]:
@@ -98,15 +97,15 @@ class Landscape:
             food_eaten = 0
             dead_animals = []
             for herb in self.fauna_dict["Herbivore"]:
-                if food_eaten < appetite_of_carnivore:
-                    if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+
+                if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
+                    if food_eaten < appetite_of_carnivore:
                         eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
                         carnivore.animal_weight_with_food(eaten)
                         dead_animals.append(herb)
                         food_eaten += eaten
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
-                                            if
-                                            herbivore not in dead_animals]
+                                            if herbivore not in dead_animals]
 
     # @property
     # def remaining_food(self):
@@ -197,6 +196,7 @@ class Landscape:
                     dead_animals.append(animal)
             self.fauna_dict[species] = [animal for animal in self.fauna_dict[species] if
                                         animal not in dead_animals]
+
     @property
     def cell_fauna_count(self):
         """
@@ -253,7 +253,7 @@ class Desert(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.food_left['Herbivore'] = self.parameters['f_max']
-        self.food_left["Carnivore"] = self.total_herbivore_weight
+       # self.food_left["Carnivore"] = self.total_herbivore_weight
 
 
 class Highland(Landscape):
@@ -271,7 +271,7 @@ class Highland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
         self.food_left['Herbivore'] = self.parameters['f_max']
-        self.food_left['Carnivore'] = self.total_herbivore_weight
+        #self.food_left['Carnivore'] = self.total_herbivore_weight
 
     def update_fodder(self):
         """
@@ -297,7 +297,7 @@ class Lowland(Landscape):
             self.set_parameters(given_params)
 
         self.food_left['Herbivore'] = self.parameters['f_max']
-        self.food_left['Carnivore'] = self.total_herbivore_weight
+        #self.food_left['Carnivore'] = self.total_herbivore_weight
 
     def update_fodder(self):
         """
