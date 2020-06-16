@@ -75,7 +75,7 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            #herb_remaining_fodder = self.remaining_food['Herbivore']
+            # herb_remaining_fodder = self.remaining_food['Herbivore']
             # if self.food_left["Herbivore"] == 0:
             #     break
             if self.food_left["Herbivore"] >= herb.parameters['F']:
@@ -197,6 +197,7 @@ class Landscape:
                     dead_animals.append(animal)
             self.fauna_dict[species] = [animal for animal in self.fauna_dict[species] if
                                         animal not in dead_animals]
+
     @property
     def cell_fauna_count(self):
         """
@@ -207,6 +208,7 @@ class Landscape:
         carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count, "Carnivore": carn_count}
 
+    #@property #Should this be a property?
     def total_herbivore_weight(self):
         """
         Calculates the weight of all herbivores in a single cell \n
