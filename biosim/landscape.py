@@ -145,6 +145,9 @@ class Landscape:
             newborns = []
             for i in range(len(self.fauna_dict[species])):
                 animal = animals[i]
+            #Can we change this to
+            #for animal in animals:
+                #if animal.proba etc
 
                 if animal.proba_animal_birth(len(animals)):
                     child_species = animal.__class__
