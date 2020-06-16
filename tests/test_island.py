@@ -71,11 +71,11 @@ class TestIsland:
                         WWWWWWWWWWWW"""
         island = Island(map_str)
 
-        animals = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
+        animals = [{"loc": (2, 2), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
                                            {"species": "Carnivore", "age": 11,
                                             "weight": 11.0}, ], },
 
-                   {"loc": (1, 2), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
+                   {"loc": (2, 3), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
                                            {"species": "Herbivore", "age": 11, "weight": 11.0},
                                            {"species": "Carnivore", "age": 12,
                                             "weight": 12.0}, ], }, ]
@@ -83,17 +83,18 @@ class TestIsland:
         assert island.number_of_animals_per_species('Herbivore') == 3
         assert island.number_of_animals_per_species('Carnivore') == 2
 
-    # def test_animal_migrates_maximum_once_per_year(self, mocker):
-    #     """
-    #
-    #     """
-    #     mocker.patch("numpy.random.uniform", return_value=0)
-    #     map_str = """WWWW
-    #                  WLHW
-    #                  WWWW"""
-    #
-    #     island = Island(map_str)
-    #     animals = [{"loc": (1, 1),
-    #                 "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in range(100)]}]
-    #     island.add_animals(animals)
-    #     pass
+    def test_valueerror_when_placed_in_water(self):
+        """
+        Testing add_animals and total_animals_per_species methods in the island class
+        """
+        map_str = """   WWWWWWWWWWWW
+                        WHLWWWWWDHLW
+                        WWWWWWWWWWWW"""
+        island = Island(map_str)
+
+        animals = [{"loc": (1, 1), "pop": [{"species": "Herbivore", "age": 10, "weight": 10.0},
+                                           {"species": "Carnivore", "age": 11,
+                                            "weight": 11.0}, ], }]
+        with pytest.raises(ValueError) as err:
+            island.add_animals(animals)
+            assert err.type is ValueError
