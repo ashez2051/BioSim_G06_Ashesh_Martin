@@ -141,7 +141,7 @@ class Graphics:
         if self.herbivore_image_axis is not None:
             self.herbivore_image_axis.set_data(distribution)
         else:
-            self.herbivore_image_axis = self.herbivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
+            self.herbivore_image_axis = self.herbivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=20)
 
             self.herbivore_image_axis.figure.colorbar(self.herbivore_image_axis,
                                                       ax=self.herbivore_dist,
@@ -157,7 +157,7 @@ class Graphics:
         if self.carnivore_image_axis is not None:
             self.carnivore_image_axis.set_data(distribution)
         else:
-            self.carnivore_image_axis = self.carnivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=5)
+            self.carnivore_image_axis = self.carnivore_dist.imshow(distribution, interpolation='nearest', vmin=0, vmax=20)
             self.carnivore_image_axis.figure.colorbar(self.carnivore_image_axis,
                                                        ax=self.carnivore_dist,
                                                        orientation='vertical', fraction=0.07,
