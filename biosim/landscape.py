@@ -66,15 +66,6 @@ class Landscape:
         self.herbivore_eats()
         self.carnivore_eats()
 
-    def available_food(self, animal):
-        """
-        Returns the remaining food value in a cell for the specific species. \n
-        :param animal: animal object \n
-        :return: the remaining amount of food \n
-        """
-        species = animal.__class__.__name__
-        return self.remaining_food[species]
-
     def herbivore_eats(self):
         """
         Herbivores eat randomly, and if there is no fodder available in the cell, the animal \n
@@ -86,7 +77,6 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            food_eaten = 0
             herb_remaining_fodder = self.remaining_food['Herbivore']
             if herb_remaining_fodder == 0:
                 break
@@ -120,33 +110,6 @@ class Landscape:
                                             if
                                             herbivore not in dead_animals]
 
-    # def new_carnivore_eats(self):
-    #     self.fauna_dict['Carnivore'].sort(key=lambda h: h.fitness, reverse=True)
-    #
-    #     self.fauna_dict['Herbivore'].sort(key=lambda h: h.fitness)
-    #
-    #     for carnivore in self.fauna_dict['Carnivore']:
-    #         appetite = carnivore.parameters['F']
-    #         amount_eaten = 0
-    #
-    #         for herbivore in self.fauna_dict['Herbivore']:
-    #
-    #             if amount_eaten >= appetite:
-    #                 break
-    #
-    #             elif np.random.uniform(0, 1) < carnivore.probability_of_killing(herbivore):
-    #                 food_wanted = appetite - amount_eaten
-    #
-    #                 if herbivore.weight <= food_wanted:
-    #                     amount_eaten += herbivore.weight
-    #                     self.fauna_dict['Herbivore'].remove(herbivore)
-    #
-    #                 elif herbivore.weight > food_wanted:
-    #                     amount_eaten += food_wanted
-    #                     self.fauna_dict['Herbivore'].remove(herbivore)
-    #
-    #         carnivore.animal_weight_with_food(amount_eaten)
-
     @property
     def remaining_food(self):
         """
@@ -177,8 +140,9 @@ class Landscape:
         0 and 1 and if it's greater, the animal gives birth. Creates the child of the same \n
         species and decreases the weight of the animal \n
         """
-        for species, animals in self.updated_fauna_dict.items():
-            for i in range(len(self.updated_fauna_dict[species])):
+        for species, animals in self.fauna_dict.items():
+            newborns = []
+            for i in range(len(self.fauna_dict[species])):
                 animal = animals[i]
 
                 if animal.proba_animal_birth(len(animals)):
@@ -189,6 +153,7 @@ class Landscape:
                     if animal.gives_birth:
                         self.fauna_dict[species].append(child)
                         animal.gives_birth = False
+            self.fauna_dict[species].extend(newborns)
 
     def add_children_to_adult_animals(self):
         """
@@ -234,10 +199,12 @@ class Landscape:
         the animal from the dictionary \n
         """
         for species, animals in self.fauna_dict.items():
+            dead_animals = []
             for animal in animals:
                 if animal.death_probability:
-                    self.remove_animal(animal)
-
+                    dead_animals.append(animal)
+            self.fauna_dict[species] = [animal for animal in self.fauna_dict[species] if
+                                        animal not in dead_animals]
     @property
     def cell_fauna_count(self):
         """

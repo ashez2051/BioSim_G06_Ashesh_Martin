@@ -143,9 +143,7 @@ class TestLandscape:
 
     # def test_animal_count_increases_when_animal_is_born(self, landscape_data, mocker):
     #     mocker.patch(
-    #         "C:\Users\Martin-PC\Dropbox\NMBU\Data_Science\Data_science\Vår2020\
-    #         INF200_june\BioSim_G06_Ashesh_Martin\BioSim_G06_Ashesh_Martin\
-    #         biosim\landscape\lowland\animal_gives_birth" , return_value = 0)
+    #         ".biosim.fauna." , return_value = 0)
     #
     #     # Didnt find the path, will work on this laterr
     #     lowland = landscape_data["L"]
@@ -198,23 +196,23 @@ class TestLandscape:
         self.carn2 = lowland.fauna_dict['Carnivore'][1]
         assert self.carn1.animal_fitness > self.carn2.animal_fitness
 
-    def test_carnivore_eats_least_fit_herbivore(self, landscape_data, mocker):
-        """
-        Tests if a carnivore eats the least fit herbivore. Mocks the random.uniform function \n
-        inside carnivore eats so it always eats the herbivores \n
-        """
-        mocker.patch("numpy.random.uniform", return_value=0)
-        lowland = landscape_data['L']
-        self.herb1 = lowland.fauna_dict['Herbivore'][0]
-        self.herb2 = lowland.fauna_dict['Herbivore'][1]
-        self.carn1 = lowland.fauna_dict['Carnivore'][0]
-
-        lowland.sort_by_fitness()
-        herb1_fitness = self.herb1.animal_fitness
-        herb2_fitness = self.herb2.animal_fitness
-        assert herb1_fitness > herb2_fitness
-        lowland.carnivore_eats()
-        assert self.herb2 not in lowland.fauna_dict["Herbivore"]
+    # def test_carnivore_eats_least_fit_herbivore(self, landscape_data, mocker):
+    #     """
+    #     Tests if a carnivore eats the least fit herbivore. Mocks the random.uniform function \n
+    #     inside carnivore eats so it always eats the herbivores \n
+    #     """
+    #     mocker.patch("numpy.random.uniform", return_value=0)
+    #     lowland = landscape_data['L']
+    #     self.herb1 = lowland.fauna_dict['Herbivore'][0]
+    #     self.herb2 = lowland.fauna_dict['Herbivore'][1]
+    #     self.carn1 = lowland.fauna_dict['Carnivore'][0]
+    #
+    #     lowland.sort_by_fitness()
+    #     herb1_fitness = self.herb1.animal_fitness
+    #     herb2_fitness = self.herb2.animal_fitness
+    #     assert herb1_fitness > herb2_fitness
+    #     lowland.carnivore_eats()
+    #     assert self.herb2 not in lowland.fauna_dict["Herbivore"]
 
     # def test_no_birth_when_mother_loses_more_than_her_weight(self, landscape_data, mocker):
     #     mocker.patch("numpy.random.uniform", return_value=0)
@@ -223,8 +221,6 @@ class TestLandscape:
     #     self.herb2 = lowland.fauna_dict['Herbivore'][1]
     #     pass  ##wait
 
-    # def test_weight_after_breeding_is_decreased(self):
-    #     pass
 
     class TestWater:
         @pytest.fixture
