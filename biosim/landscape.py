@@ -98,7 +98,7 @@ class Landscape:
             food_eaten = 0
             dead_animals = []
             for herb in self.fauna_dict["Herbivore"]:
-                if food_eaten <= appetite_of_carnivore:
+                if food_eaten < appetite_of_carnivore:
                     if np.random.uniform(0, 1) < carnivore.probability_of_killing(herb):
                         eaten = min(carnivore.parameters['F'] - food_eaten, herb.weight)
                         carnivore.animal_weight_with_food(eaten)
@@ -143,10 +143,10 @@ class Landscape:
         """
         for species, animals in self.fauna_dict.items():
             newborns = []
-            for i in range(len(self.fauna_dict[species])):
-                animal = animals[i]
+            #for i in range(len(self.fauna_dict[species])):
+                #animal = animals[i]
             #Can we change this to
-            #for animal in animals:
+            for animal in animals:
                 #if animal.proba etc
 
                 if animal.proba_animal_birth(len(animals)):
@@ -155,7 +155,7 @@ class Landscape:
                     animal.weight_update_after_birth(child)
 
                     if animal.gives_birth:
-                        self.fauna_dict[species].append(child)
+                        newborns.append(child)
                         animal.gives_birth = False
             self.fauna_dict[species].extend(newborns)
 
@@ -229,6 +229,8 @@ class Landscape:
                 cls.parameters[param] = given_params[param]
             else:
                 raise ValueError('Parameter not set in list' + str(param))
+            if cls.parameters["f_max"] < 0:
+                raise ValueError("Fodder cannot be negative")
 
 
 class Water(Landscape):

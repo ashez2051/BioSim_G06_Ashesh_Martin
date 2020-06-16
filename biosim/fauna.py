@@ -22,6 +22,7 @@ class Fauna:
         :param age: Age of the animal, integer \n
         :param weight: Weight of the animal, float
         """
+
         if age is None:
             self.age = 0
         else:
@@ -84,7 +85,7 @@ class Fauna:
         weight_check = self.parameters["zeta"] * (
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
-        if num_animals >= 2 and self.weight >= weight_check:
+        if num_animals >= 2 and self.weight > weight_check: #Removed equal in >=
             return np.random.uniform(0, 1) < min(1, (
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
         else:
@@ -136,6 +137,8 @@ class Fauna:
                     raise ValueError('Parameter value should be positive ')
                 else:
                     cls.parameters[param] = given_params[param]
+                if cls.parameters["eta"] >= 1:
+                    raise ValueError("eta has to be equal to or less than 1")
             else:
                 raise ValueError("Parameter not in class parameter list")
 
@@ -151,6 +154,11 @@ class Herbivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
         self.parameters = Herbivore.parameters
+        if self.weight < 0:
+            raise ValueError("Weight cannot be negative")
+        if self.age < 0:
+            raise ValueError("Age cannot be negative")
+
 
 
 class Carnivore(Fauna):
@@ -164,6 +172,10 @@ class Carnivore(Fauna):
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
         self.parameters = Carnivore.parameters
+        if self.weight < 0:
+            raise ValueError("Weight cannot be negative")
+        if self.age < 0:
+            raise ValueError("Age cannot be negative")
 
     # @njit(parallel=True, fastmath=True)
     def probability_of_killing(self, herb):
@@ -175,9 +187,12 @@ class Carnivore(Fauna):
         :param herb: Herbivore class object \n
         :return: probability value
         """
-        if self.animal_fitness <= herb.animal_fitness:
-            return 0
-        elif 0 < (self.animal_fitness - herb.animal_fitness) < self.parameters["DeltaPhiMax"]:
-            return (self.animal_fitness - herb.animal_fitness) / self.parameters["DeltaPhiMax"]
+        if self.parameters["DeltaPhiMax"] <= 0:
+            raise ValueError("DeltaPhiMax must be strictly positive")
         else:
-            return 1
+            if self.animal_fitness <= herb.animal_fitness:
+                return 0
+            elif 0 < (self.animal_fitness - herb.animal_fitness) < self.parameters["DeltaPhiMax"]:
+                return (self.animal_fitness - herb.animal_fitness) / self.parameters["DeltaPhiMax"]
+            else:
+                return 1

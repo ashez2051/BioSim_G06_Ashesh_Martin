@@ -149,7 +149,7 @@ class Graphics:
         else:
             self.herbivore_image_axis = self.herbivore_dist.imshow(distribution,
                                                                    interpolation='nearest', vmin=0,
-                                                                   vmax=20)
+                                                                   vmax=100)
 
             self.herbivore_image_axis.figure.colorbar(self.herbivore_image_axis,
                                                       ax=self.herbivore_dist,
@@ -167,7 +167,7 @@ class Graphics:
         else:
             self.carnivore_image_axis = self.carnivore_dist.imshow(distribution,
                                                                    interpolation='nearest', vmin=0,
-                                                                   vmax=20)
+                                                                   vmax=100)
             self.carnivore_image_axis.figure.colorbar(self.carnivore_image_axis,
                                                       ax=self.carnivore_dist,
                                                       orientation='vertical', fraction=0.07,

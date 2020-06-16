@@ -221,9 +221,9 @@ if __name__ == "__main__":
         num_carns.append(len(l.fauna_dict["Carnivore"]))
         num_herbs.append(len(l.fauna_dict["Herbivore"]))
 
-    print(np.mean(num_herbs))
-    print(np.mean(num_carns))
-
-plt.plot(num_herbs, 'b')
-plt.plot(num_carns, 'r')
-plt.show()
+#     print(np.mean(num_herbs))
+#     print(np.mean(num_carns))
+#
+# plt.plot(num_herbs, 'b')
+# plt.plot(num_carns, 'r')
+# plt.show()
