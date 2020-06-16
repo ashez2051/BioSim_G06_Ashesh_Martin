@@ -62,6 +62,8 @@ class Graphics:
             self.map_graph = self.fig.add_subplot(2, 2, 1)
             self.map_graph.imshow(self.create_map())
             self.map_graph.set_title('Island')
+            self.map_graph.set_yticklabels([])
+            self.map_graph.set_xticklabels([])
 
     def create_herbivore_graph(self, final_year, recreate=False):
         """
@@ -70,6 +72,7 @@ class Graphics:
         if (self.herbivore_curve is None) or recreate:
             plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan))
             self.herbivore_curve = plot[0]
+
         else:
             x_data, y_data = self.herbivore_curve.get_data()
             x_new = np.arange(x_data[-1] + 1, final_year)
@@ -127,10 +130,14 @@ class Graphics:
         """
         if self.herbivore_dist is None:
             self.herbivore_dist = self.fig.add_subplot(2, 2, 3)
+            self.herbivore_dist.set_yticklabels([])
+            self.herbivore_dist.set_xticklabels([])
             self.herbivore_image_axis = None
 
         if self.carnivore_dist is None:
             self.carnivore_dist = self.fig.add_subplot(2, 2, 4)
+            self.carnivore_dist.set_yticklabels([])
+            self.carnivore_dist.set_xticklabels([])
             self.carnivore_image_axis = None
 
     def update_herbivore_distribution(self, distribution):

@@ -144,16 +144,21 @@ class Island:
         :param population: a dictionary with the poulation information to be added to the island \n
         """
         for animal_group in population:
-            loc = animal_group["loc"]-
-            animals = animal_group["pop"]
-            for animal in animals:
-                species = animal["species"]
-                age = animal["age"]
-                weight = animal["weight"]
-                species_class = self.fauna_dict_island[species]
-                animal_obj = species_class(age=age, weight=weight)
-                cell = self._cells[loc]
-                cell.add_animal(animal_obj)
+            x = animal_group["loc"][0] -1
+            y = animal_group["loc"][1] -1
+            loc = (x,y)
+            if isinstance(self._cells[loc], Water):
+                raise ValueError("Animals cannot be placed in water")
+            else:
+                animals = animal_group["pop"]
+                for animal in animals:
+                    species = animal["species"]
+                    age = animal["age"]
+                    weight = animal["weight"]
+                    species_class = self.fauna_dict_island[species]
+                    animal_obj = species_class(age=age, weight=weight)
+                    cell = self._cells[loc]
+                    cell.add_animal(animal_obj)
 
     def number_of_animals_per_species(self, species):
         """
@@ -213,7 +218,6 @@ if __name__ == "__main__":
 
             l.animal_eats()  # This updates the fodder as well
             l.animal_gives_birth()
-            l.add_children_to_adult_animals()
             l.update_animal_weight_and_age()
             l.animal_dies()
             if carn_counter == 50:
