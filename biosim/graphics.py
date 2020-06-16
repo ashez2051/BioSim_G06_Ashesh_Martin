@@ -105,6 +105,7 @@ class Graphics:
         carn_ydata = self.carnivore_curve.get_ydata()
         carn_ydata[year] = carn_count
         self.carnivore_curve.set_ydata(carn_ydata)
+        self.fig.suptitle('Graphics for Year: ' + str(year), x=0.5)
 
     def create_animal_graphs(self, final_year, y_lim, recreate=False):
         """
