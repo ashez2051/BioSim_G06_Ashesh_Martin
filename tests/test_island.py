@@ -18,7 +18,7 @@ class TestIsland:
     def test_string_to_array(self):
         """
         testing the string_to_array method by verifying the individual cell
-        and also by looking at the type of output
+        and also by looking at the type of output in specific cells
         """
         map_str = """   WWW
                         WLW
@@ -29,6 +29,10 @@ class TestIsland:
         assert type(island.convert_string_to_array()).__name__ == 'ndarray'
 
     def test_create_array_with_landscape_objects(self):
+        """
+        Test that a landscape object is being created with the array_with_landscape_object \n
+        function with isinstance
+        """
         map_str = """   WWW
                         WLW
                         WWW"""
@@ -37,17 +41,19 @@ class TestIsland:
         assert isinstance(island.array_with_landscape_objects()[1][1], Lowland)
 
     def test_adjacent_cells(self):
+        """
+        Test if the adjacent cells of the top left cell is water
+        """
         map_str = """   WWW
                         WLW
                         WWW"""
         island = Island(map_str)
-        island.convert_string_to_array()
         for cells in island.adjacent_cells(0, 0):
             assert type(cells) == type(Water())
 
     def test_check_surrounded_by_water(self):
         """
-        verifying if value error is raised when edges dont contain water cells
+        Testing if value error is raised when edges dont contain water cells
         """
         map_str = """   LLL
                         LLL
@@ -58,7 +64,7 @@ class TestIsland:
 
     def test_add_animals(self):
         """
-        Testing add_animals and total_animals_per_species methods
+        Testing add_animals and total_animals_per_species methods in the island class
         """
         map_str = """   WWWWWWWWWWWW
                         WHLWWWWWDHLW
@@ -77,14 +83,17 @@ class TestIsland:
         assert island.number_of_animals_per_species('Herbivore') == 3
         assert island.number_of_animals_per_species('Carnivore') == 2
 
-    def test_animal_migrates_maximum_once_per_year(self, mocker):
-        mocker.patch("numpy.random.uniform", return_value=0)
-        map_str = """WWWW
-                     WLHW
-                     WWWW"""
-
-        island = Island(map_str)
-        animals = [{"loc": (1, 1),
-                    "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in range(100)]}]
-        island.add_animals(animals)
-        pass
+    # def test_animal_migrates_maximum_once_per_year(self, mocker):
+    #     """
+    #
+    #     """
+    #     mocker.patch("numpy.random.uniform", return_value=0)
+    #     map_str = """WWWW
+    #                  WLHW
+    #                  WWWW"""
+    #
+    #     island = Island(map_str)
+    #     animals = [{"loc": (1, 1),
+    #                 "pop": [{"species": "Herbivore", "age": 5, "weight": 50} for _ in range(100)]}]
+    #     island.add_animals(animals)
+    #     pass

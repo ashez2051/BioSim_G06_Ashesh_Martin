@@ -148,3 +148,21 @@ class TestFauna:
         """
         mocker.patch('numpy.random.uniform', return_value=0)
         assert self.carn_young.probability_of_killing(self.herb_old)
+
+    def test_valueerror_for_negative_age(self):
+        """
+        Tests if valueerror is being raised when a negative age is set as input
+        """
+        with pytest.raises(ValueError) as err:
+            Herbivore(-5,20)
+            assert err.type is ValueError
+
+    def test_valueerror_for_negative_weight(self):
+        """
+        Tests if valueerror is being raised when a negative weight is set as input
+        """
+        with pytest.raises(ValueError) as err:
+            Herbivore(5,-20)
+            assert err.type is ValueError
+
+
