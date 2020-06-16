@@ -207,6 +207,7 @@ class Landscape:
         carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count, "Carnivore": carn_count}
 
+    #@property #Should this be a property?
     def total_herbivore_weight(self):
         """
         Calculates the weight of all herbivores in a single cell \n
