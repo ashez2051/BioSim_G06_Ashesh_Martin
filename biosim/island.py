@@ -211,27 +211,19 @@ if __name__ == "__main__":
     num_herbs = []
     num_carns = []
     add_carn_population(dict_animals_carn)
-    for j in range(1):
-        np.random.seed(j)
-        for i in range(200):
-            carn_counter += 1
+    np.random.seed(1)
+    for i in range(200):
+        l.animal_eats()  # This updates the fodder as well
+        l.animal_gives_birth()
+        l.update_animal_weight_and_age()
+        l.animal_dies()
 
-            l.animal_eats()  # This updates the fodder as well
-            l.animal_gives_birth()
-            l.update_animal_weight_and_age()
-            l.animal_dies()
+        num_carns.append(len(l.fauna_dict["Carnivore"]))
+        num_herbs.append(len(l.fauna_dict["Herbivore"]))
 
-            num_carns.append(len(l.fauna_dict["Carnivore"]))
-            num_herbs.append(len(l.fauna_dict["Herbivore"]))
+    print(np.mean(num_herbs))
+    print(np.mean(num_carns))
 
-            print("Year :", i + 1, 'Herbs, Carns: ', len(l.fauna_dict["Herbivore"]),
-                  len(l.fauna_dict["Carnivore"]))
-
-
-
-        print(np.mean(num_herbs))
-        print(np.mean(num_carns))
-
-# plt.plot(num_herbs, 'b')
-# plt.plot(num_carns, 'r')
-# plt.show()
+plt.plot(num_herbs, 'b')
+plt.plot(num_carns, 'r')
+plt.show()
