@@ -2,7 +2,7 @@
 
 """
 """
-__author__ = "Ashesh Raj Gnawali, Maritn Bø"
+__author__ = "Ashesh Raj Gnawali, Martin Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np

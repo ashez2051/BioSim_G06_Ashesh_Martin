@@ -7,7 +7,6 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import matplotlib.colors as mcolors
-import matplotlib.pyplot as plt
 
 
 class Graphics:
@@ -59,8 +58,6 @@ class Graphics:
 
         return map_array
 
-
-
     def create_histograms_setup(self):
 
         self.fit_ax = self.fig.add_subplot(6, 3, 16)
@@ -69,7 +66,6 @@ class Graphics:
         self.age_ax.title.set_text('Age Histogram')
         self.wt_ax = self.fig.add_subplot(6, 3, 18)
         self.wt_ax.title.set_text('Weight Histogram')
-
 
     def create_island_graph(self):
         """
@@ -192,25 +188,22 @@ class Graphics:
 
             self.carnivore_dist.set_title('Carnivore Distribution')
 
-
     def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
         self.fit_ax.clear()
         self.fit_ax.title.set_text('Fitness Histogram')
-        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step', color = "r")
-        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step', color = "g")
+        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step', color="r")
+        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step', color="g")
         self.age_ax.clear()
         self.age_ax.title.set_text('Age Histogram')
-        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step', color = "r")
-        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step', color = "g")
+        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step', color="r")
+        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step', color="g")
         self.wt_ax.clear()
         self.wt_ax.title.set_text('Weight Histogram')
-        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step', color = "r")
-        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step', color = "g")
+        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step', color="r")
+        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step', color="g")
 
     def set_year(self, year):
         """
         Set the year on the Figure
         """
         self.fig.suptitle('Graphics for Year: ' + str(year), x=0.5)
-
-
