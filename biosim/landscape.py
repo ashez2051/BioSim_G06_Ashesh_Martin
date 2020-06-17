@@ -8,7 +8,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
 import operator
 import random
-from biosim.fauna import Herbivore, Carnivore
+from biosim.fauna import Herbivore, Carnivore # This is needed even though it says "unused"
 
 
 class Landscape:

@@ -7,7 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 from biosim.landscape import Lowland, Water, Desert, Highland
-from biosim.fauna import Herbivore, Carnivore
+from biosim.fauna import Herbivore, Carnivore  # This is needed even though it says "unused"
 
 
 class Island:
@@ -124,7 +124,6 @@ class Island:
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
 
-
     def reset_migration_bool_in_all_cells(self):
         """
         Iterates through the landscape cells and resets the migration boolean \n
@@ -169,62 +168,3 @@ class Island:
                 cell = self._cells[row, col]
                 num_animals += len(cell.fauna_dict[species])
         return num_animals
-
-
-
-
-
-
-# SIMULATION FOR HERBIVORES AND CARNIVORES IN ONE CELL
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    from biosim.fauna import Herbivore, Carnivore
-
-    dict_animals_herb = [{"species": "Herbivore", "age": 5, "weight": 20} for _ in range(50)]
-    dict_animals_carn = [{"species": "Carnivore", "age": 5, "weight": 20} for _ in range(20)]
-
-    # animals = {'Herbivore':{"species": "Herbivore", "age": 5, "weight": 20} ,
-    # 'Carnivore': {"species": "Carnivore", "age": 5, "weight": 20}} for _ in range(50)
-
-    l = Lowland()
-    for anim in dict_animals_herb:
-        if anim['species'] == "Herbivore":
-            animal_object = Herbivore(age=anim['age'], weight=anim['weight'])
-            l.add_animal(animal_object)
-
-
-    def add_carn_population(carn_dict):
-        for anim in carn_dict:
-            if anim["species"] == "Carnivore":
-                animal_object_carn = Carnivore(age=anim["age"], weight=anim["weight"])
-                l.add_animal(animal_object_carn)
-
-
-    # fig = plt.figure(figsize=(8, 6.4))
-    # plt.plot(0, len(l.fauna_dict['Herbivore']), '*-', color='b', lw=0.5)
-    # plt.draw()
-    # plt.pause(0.001)
-
-    carn_counter = 0
-    # add_carn_population(dict_animals_carn)
-    num_herbs = []
-    num_carns = []
-    add_carn_population(dict_animals_carn)
-    np.random.seed(1)
-    for i in range(200):
-        l.update_fodder()
-        l.animal_eats()  # This updates the fodder as well
-        l.animal_gives_birth()
-        l.update_animal_weight_and_age()
-        l.animal_dies()
-
-        num_carns.append(len(l.fauna_dict["Carnivore"]))
-        num_herbs.append(len(l.fauna_dict["Herbivore"]))
-
-    print(np.mean(num_herbs))
-    print(np.mean(num_carns))
-
-    # plt.plot(num_herbs, 'b')
-    # plt.plot(num_carns, 'r')
-    # plt.show()

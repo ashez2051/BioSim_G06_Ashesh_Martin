@@ -196,16 +196,16 @@ class Graphics:
     def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
         self.fit_ax.clear()
         self.fit_ax.title.set_text('Fitness Histogram')
-        self.fit_ax.hist(fit_list[0], bins=10, histtype='step')
-        self.fit_ax.hist(fit_list[1], bins=10, histtype='step')
+        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step', color = "r")
+        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step', color = "g")
         self.age_ax.clear()
         self.age_ax.title.set_text('Age Histogram')
-        self.age_ax.hist(age_list[0], bins=10, histtype='step')
-        self.age_ax.hist(age_list[1], bins=10, histtype='step')
+        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step', color = "r")
+        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step', color = "g")
         self.wt_ax.clear()
         self.wt_ax.title.set_text('Weight Histogram')
-        self.wt_ax.hist(wt_list[0], bins=10, histtype='step')
-        self.wt_ax.hist(wt_list[1], bins=10, histtype='step')
+        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step', color = "r")
+        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step', color = "g")
 
     def set_year(self, year):
         """

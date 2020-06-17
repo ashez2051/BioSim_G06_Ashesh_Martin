@@ -153,7 +153,7 @@ class Herbivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        self.parameters = Herbivore.parameters
+        #self.parameters = Herbivore.parameters
         if self.weight < 0:
             raise ValueError("Weight cannot be negative")
         if self.age < 0:
@@ -170,7 +170,7 @@ class Carnivore(Fauna):
 
     def __init__(self, age=None, weight=None):
         super().__init__(age, weight)
-        self.parameters = Carnivore.parameters
+        #self.parameters = Carnivore.parameters
         if self.weight < 0:
             raise ValueError("Weight cannot be negative")
         if self.age < 0:

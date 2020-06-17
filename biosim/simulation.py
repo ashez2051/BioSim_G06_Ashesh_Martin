@@ -187,7 +187,8 @@ class BioSim:
         self.vis.update_carnivore_distribution(dist_matrix_carnivore)
 
         # histogram
-        self.vis.update_histogram(animal_weights, )
+        self.vis.update_histogram(fit_list=self.animals_fitness, age_list=self.animal_ages,
+                                   wt_list=self.animal_weights)
         # plt.pause(1)
         plt.pause(1e-6)
         self.vis.set_year
@@ -285,36 +286,40 @@ class BioSim:
         rows, cols = self._map.map_dims
         for row in range(rows):
             for col in range(cols):
-                for species, animals in self._map.map_dims[row, col].fauna_dict["Herbivore"]:
-                    for animal in animals:
-                        weights[species].extend(animal)
+                cell = self._map.cells[row][col]
+                for animal in cell.fauna_dict["Herbivore"]:
+                    weights['Herbivore'].append(animal.weight)
+                for animal in cell.fauna_dict["Carnivore"]:
+                    weights['Carnivore'].append(animal.weight)
 
         return weights
 
     @property
     def animals_fitness(self):
 
-        rows, cols = self.map_dims
-
-        herb_fitness = []
-        carn_fitness = []
-
+        fitness = {"Herbivore": [], "Carnivore": []}
+        rows, cols = self._map.map_dims
         for row in range(rows):
             for col in range(cols):
-                herb_fitness.append(self._cells[row, col].fauna_dict["Herbivore"].animal_fitness)
-                carn_fitness.append(self._cells[row, col].fauna_dict["Carnivore"].animal_fitness)
-        return [herb_fitness, carn_fitness]
+                cell = self._map.cells[row][col]
+                for animal in cell.fauna_dict["Herbivore"]:
+                    fitness['Herbivore'].append(animal.animal_fitness)
+                for animal in cell.fauna_dict["Carnivore"]:
+                    fitness['Carnivore'].append(animal.animal_fitness)
+
+        return fitness
 
     @property
     def animal_ages(self):
 
-        rows, cols = self.map_dims
-
-        herb_age = []
-        carn_age = []
-
+        age = {"Herbivore": [], "Carnivore": []}
+        rows, cols = self._map.map_dims
         for row in range(rows):
             for col in range(cols):
-                herb_age.append(self._cells[row, col].fauna_dict["Herbivore"].age)
-                carn_age.append(self._cells[row, col].fauna_dict["Carnivore"].age)
-        return [herb_age, carn_age]
+                cell =  self._map.cells[row][col]
+                for animal in cell.fauna_dict["Herbivore"]:
+                    age['Herbivore'].append(animal.age)
+                for animal in cell.fauna_dict["Carnivore"]:
+                    age['Carnivore'].append(animal.age)
+
+        return age
