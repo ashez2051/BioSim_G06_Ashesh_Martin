@@ -33,14 +33,6 @@ class Landscape:
         species = animal.__class__.__name__
         self.fauna_dict[species].append(animal)
 
-    # def remove_animal(self, animal):
-    #     """
-    #     Removes the animal object from the species dictionary \n
-    #     :param animal: Input animal object \n
-    #     """
-    #     species = animal.__class__.__name__
-    #     self.fauna_dict[species].remove(animal)
-
     def sort_by_fitness(self):
         """
         Sorts the animal by their fitness. Herbivores are sorted from low to high while the \n
@@ -76,9 +68,10 @@ class Landscape:
         If the fodder available is less than the food required by the animal we update remaining \n
         fodder as 0. \n
         """
+        self.food_left = self.parameters["f_max"]
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            if self.food_left == 0:
+            if self.food_left <= 0:
                 break
             elif self.food_left >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
@@ -118,34 +111,34 @@ class Landscape:
             for animal in self.fauna_dict[species]:
                 animal.animal_weight_with_age()
 
-    # def animal_gives_birth(self):
-    #     """
-    #     Compares the birth_probability of an animal with the randomly generated value between \n
-    #     0 and 1 and if it's greater, the animal gives birth. Creates the child of the same \n
-    #     species and decreases the weight of the animal \n
-    #     """
-    #     for species, animals in self.fauna_dict.items():
-    #         newborns = []
-    #         for animal in animals:
-    #             if animal.proba_animal_birth(len(animals)):
-    #                 child_species = animal.__class__
-    #                 child = child_species()
-    #                 animal.weight_update_after_birth(child)
-    #
-    #                 if animal.gives_birth:
-    #                     newborns.append(child)
-    #                     animal.gives_birth = False
-    #         self.fauna_dict[species].extend(newborns)
-
-    def new_animal_gives_birth(self):
+    def animal_gives_birth(self):
+        """
+        Compares the birth_probability of an animal with the randomly generated value between \n
+        0 and 1 and if it's greater, the animal gives birth. Creates the child of the same \n
+        species and decreases the weight of the animal \n
+        """
         for species, animals in self.fauna_dict.items():
             newborns = []
             for animal in animals:
-                child = animal.create_child(len(animals))
-                if child is not None:
-                    newborns.append(child)
+                if animal.proba_animal_birth(len(animals)):
+                    child_species = animal.__class__
+                    child = child_species()
+                    animal.weight_update_after_birth(child)
 
+                    if animal.gives_birth:
+                        newborns.append(child)
+                        animal.gives_birth = False
             self.fauna_dict[species].extend(newborns)
+
+    # def new_animal_gives_birth(self):
+    #     for species, animals in self.fauna_dict.items():
+    #         newborns = []
+    #         for animal in animals:
+    #             child = animal.create_child(len(animals))
+    #             if child is not None:
+    #                 newborns.append(child)
+    #
+    #         self.fauna_dict[species].extend(newborns)
 
     def migration(self, adj_cells):
         """
@@ -153,9 +146,9 @@ class Landscape:
         is added to the new cell and remove from the old cell. \n
         :param adj_cells: list of adjacent cells that animal can move to \n
         """
-        animals_that_migrated = []
-        for species, animals in self.fauna_dict.items():
 
+        for species, animals in self.fauna_dict.items():
+            animals_that_migrated = []
             for animal in animals:
                 if animal.has_animal_already_moved is False:
                     if animal.animal_moves_bool:

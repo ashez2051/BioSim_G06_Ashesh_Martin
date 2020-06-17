@@ -33,7 +33,7 @@ class Fauna:
         else:
             self.weight = weight
         self.fitness = 0
-        #self.gives_birth = False
+        self.gives_birth = False
         self.has_animal_already_moved = False
 
     @property
@@ -75,64 +75,64 @@ class Fauna:
         else:
             return 0
 
-    # def proba_animal_birth(self, num_animals):
-    #     """
-    #     Calculates the probability for an animal to give birth \n
-    #     :param num_animals: Number of animals of the same species in a single cell \n
-    #     :return: true/False probability of giving birth
-    #     """
-    #
-    #     weight_check = self.parameters["zeta"] * (
-    #             self.parameters["w_birth"] + self.parameters["sigma_birth"])
-    #
-    #     if num_animals >= 2 and self.weight > weight_check:  # Removed equal in >=
-    #         return np.random.uniform(0, 1) < min(1, (
-    #                 self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+    def proba_animal_birth(self, num_animals):
+        """
+        Calculates the probability for an animal to give birth \n
+        :param num_animals: Number of animals of the same species in a single cell \n
+        :return: true/False probability of giving birth
+        """
+
+        weight_check = self.parameters["zeta"] * (
+                self.parameters["w_birth"] + self.parameters["sigma_birth"])
+
+        if num_animals >= 2 and self.weight > weight_check:  # Removed equal in >=
+            return np.random.uniform(0, 1) < min(1, (
+                    self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
+        else:
+            return False
+
+    def weight_update_after_birth(self, child):
+        """
+        Update the weight of the mother after giving birth and determines if the animal will \n
+        give birth. If the weight of the child times xi is larger than the weight of the mother \n
+        the animal wont give birth \n
+        :param child: The child object
+        """
+        if self.weight > child.weight * child.parameters["xi"]:
+            self.weight -= child.weight * child.parameters["xi"]
+            self.gives_birth = True
+        else:
+            self.gives_birth = False
+
+    # def check_mating_weight_conditions(self, num_animals):
+    #     if num_animals >= 2:
+    #         weight_condition = self.parameters['zeta'] * (
+    #                 self.parameters['w_birth'] + self.parameters['sigma_birth'])
+    #         if self.weight > weight_condition:
+    #             return True
+    #         else:
+    #             return False
     #     else:
     #         return False
     #
-    # def weight_update_after_birth(self, child):
-    #     """
-    #     Update the weight of the mother after giving birth and determines if the animal will \n
-    #     give birth. If the weight of the child times xi is larger than the weight of the mother \n
-    #     the animal wont give birth \n
-    #     :param child: The child object
-    #     """
-    #     if self.weight > child.weight * child.parameters["xi"]:
-    #         self.weight -= child.weight * child.parameters["xi"]
-    #         self.gives_birth = True
+    # def check_mother_minus_newborn_weight_conditions(self, child_weight):
+    #     if self.weight >= self.parameters['xi'] * child_weight:
+    #         # Reduce weight of mother by the weight of child * xi
+    #         self.weight -= self.parameters['xi'] * child_weight
+    #         return True
     #     else:
-    #         self.gives_birth = False
-
-    def check_mating_weight_conditions(self, num_animals):
-        if num_animals >= 2:
-            weight_condition = self.parameters['zeta'] * (
-                    self.parameters['w_birth'] + self.parameters['sigma_birth'])
-            if self.weight > weight_condition:
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    def check_mother_minus_newborn_weight_conditions(self, child_weight):
-        if self.weight >= self.parameters['xi'] * child_weight:
-            # Reduce weight of mother by the weight of child * xi
-            self.weight -= self.parameters['xi'] * child_weight
-            return True
-        else:
-            return False
-
-    def create_child(self, num_animals):
-        if self.check_mating_weight_conditions(num_animals):
-            prob = min(1, self.parameters['gamma'] * self.animal_fitness * (num_animals - 1))
-            bool_value = np.random.uniform(0, 1) < prob
-            if bool_value:
-                child = self.__class__()
-                if self.check_mother_minus_newborn_weight_conditions(child.weight):
-                    return child
-            else:
-                return None
+    #         return False
+    #
+    # def create_child(self, num_animals):
+    #     if self.check_mating_weight_conditions(num_animals):
+    #         prob = min(1, self.parameters['gamma'] * self.animal_fitness * (num_animals - 1))
+    #         bool_value = np.random.uniform(0, 1) < prob
+    #         if bool_value:
+    #             child = self.__class__()
+    #             if self.check_mother_minus_newborn_weight_conditions(child.weight):
+    #                 return child
+    #         else:
+    #             return None
 
     @property
     def death_probability(self):

@@ -119,7 +119,7 @@ class TestFauna:
         test that animal dies when it's weight/fitness is 0 \n
         """
         self.herb.weight = 0
-        assert self.herb.death_probability is False
+        assert self.herb.death_probability is True
 
     def test_animal_migration_chances(self, mocker):
         """

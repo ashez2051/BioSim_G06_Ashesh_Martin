@@ -122,7 +122,7 @@ class Island:
                 if self._cells[row, col].is_migratable:
                     self._cells[row, col].update_fodder()
                     self._cells[row, col].animal_eats()
-                    self._cells[row, col].new_animal_gives_birth()
+                    self._cells[row, col].animal_gives_birth()
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     for i in range(200):
         l.update_fodder()
         l.animal_eats()  # This updates the fodder as well
-        l.new_animal_gives_birth()
+        l.animal_gives_birth()
         l.update_animal_weight_and_age()
         l.animal_dies()
 
