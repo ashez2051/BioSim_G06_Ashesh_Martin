@@ -6,7 +6,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-from numba import njit
+from numba import njit, jit
 
 
 class Fauna:
@@ -62,7 +62,8 @@ class Fauna:
     # @njit(parallel=True, fastmath=True)
     def animal_fitness(self):
         """"
-        Calculates the fitness of an animal based on age and weight
+        Calculates the fitness of an animal based on age and weight \n
+        :math: q±(x,x1 2,φ) =1 1+e±φ(x−x1 2)
         """
         if self.weight > 0:
             q_pos = 1 / (1 + np.exp(
@@ -207,6 +208,7 @@ class Carnivore(Fauna):
             raise ValueError("Age cannot be negative")
 
     # @njit(parallel=True, fastmath=True)
+    # @jit
     def probability_of_killing(self, herb):
         """"
         Returns the probability with which a carnivore kills a herbivore \n
