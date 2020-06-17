@@ -7,10 +7,7 @@ __author__ = "Ashesh Raj Gnawali, Martin Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import pytest
-import numpy as np
-
 from biosim.island import *
-from biosim.fauna import *
 from biosim.landscape import Landscape, Lowland, Water, Highland, Desert
 
 
@@ -49,7 +46,7 @@ class TestIsland:
                         WWW"""
         island = Island(map_str)
         for cells in island.adjacent_cells(0, 0):
-            assert type(cells) == type(Water())
+            assert isinstance(cells, Water)
 
     def test_check_surrounded_by_water(self):
         """

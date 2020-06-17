@@ -7,7 +7,6 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import operator
-import random
 from biosim.fauna import Herbivore, Carnivore
 # This is needed even though it says "unused"
 
@@ -137,7 +136,7 @@ class Landscape:
             for animal in animals:
                 if animal.has_animal_already_moved is False:
                     if animal.animal_moves_bool:
-                        cell_to_migrate = random.choice(adj_cells)
+                        cell_to_migrate = np.random.choice(adj_cells)
                         if cell_to_migrate.is_migratable:
                             cell_to_migrate.add_animal(animal)
                             animal.has_animal_already_moved = True
