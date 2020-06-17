@@ -3,7 +3,7 @@
 import textwrap
 import matplotlib.pyplot as plt
 
-from biosim.simulation import BioSim
+from biosim.simulation2 import BioSim
 
 """
 Compatibility check for BioSim simulations.
@@ -53,9 +53,9 @@ if __name__ == '__main__':
                   'pop': [{'species': 'Carnivore', 'age': 5, 'weight': 20} for _ in range(40)]}]
 
     sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456,
-                 # hist_specs = {'fitness': {'max': 1.0, 'delta': 0.05},
-                 #               'age': {'max': 60.0, 'delta': 2},
-                 #               'weight': {'max': 60, 'delta': 2}},
+                 hist_specs = {'fitness': {'max': 1.0, 'delta': 0.05},
+                               'age': {'max': 60.0, 'delta': 2},
+                               'weight': {'max': 60, 'delta': 2}},
                  )
     sim.set_animal_parameters("Herbivore",
                               {"zeta": 3.2, "xi": 1.8})

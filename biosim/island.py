@@ -126,6 +126,47 @@ class Island:
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
+    @property
+    def animal_weights(self):
+        rows, cols = self.map_dims
+
+        herb_weights =[]
+        carn_weights =[]
+
+        for row in range(rows):
+            for col in range(cols):
+                herb_weights.append(self._cells[row, col].fauna_dict["Herbivore"].weight)
+                carn_weights.append(self._cells[row, col].fauna_dict["Carnivore"].weight)
+        return [herb_weights , carn_weights]
+
+    @property
+    def animals_fitness(self):
+
+        rows, cols = self.map_dims
+
+        herb_fitness = []
+        carn_fitness = []
+
+        for row in range(rows):
+            for col in range(cols):
+                herb_fitness.append(self._cells[row, col].fauna_dict["Herbivore"].animal_fitness)
+                carn_fitness.append(self._cells[row, col].fauna_dict["Carnivore"].animal_fitness)
+        return [herb_fitness, carn_fitness]
+
+    @property
+    def animal_ages(self):
+
+        rows, cols = self.map_dims
+
+        herb_age = []
+        carn_age = []
+
+        for row in range(rows):
+            for col in range(cols):
+                herb_age.append(self._cells[row, col].fauna_dict["Herbivore"].age)
+                carn_age.append(self._cells[row, col].fauna_dict["Carnivore"].age)
+        return [herb_age, carn_age]
+
 
     def reset_migration_bool_in_all_cells(self):
         """
@@ -171,6 +212,10 @@ class Island:
                 cell = self._cells[row, col]
                 num_animals += len(cell.fauna_dict[species])
         return num_animals
+
+
+
+
 
 
 # SIMULATION FOR HERBIVORES AND CARNIVORES IN ONE CELL

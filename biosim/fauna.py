@@ -63,7 +63,6 @@ class Fauna:
     def animal_fitness(self):
         """"
         Calculates the fitness of an animal based on age and weight \n
-        :math: q±(x,x1 2,φ) =1 1+e±φ(x−x1 2)
         """
         if self.weight > 0:
             q_pos = 1 / (1 + np.exp(
@@ -86,7 +85,7 @@ class Fauna:
         weight_check = self.parameters["zeta"] * (
                 self.parameters["w_birth"] + self.parameters["sigma_birth"])
 
-        if num_animals >= 2 and self.weight > weight_check:  # Removed equal in >=
+        if num_animals >= 2 and self.weight > weight_check:
             return np.random.uniform(0, 1) < min(1, (
                     self.parameters["gamma"] * self.animal_fitness * (num_animals - 1)))
         else:

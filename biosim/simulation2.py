@@ -4,17 +4,23 @@
 """
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
-import os
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import subprocess
+# -*- coding: utf-8 -*-
 
 from biosim.island import Island
 from biosim.landscape import Water, Desert, Lowland, Highland
 from biosim.fauna import Carnivore, Herbivore
 from biosim.graphics import Graphics
+from biosim.visualization1 import Plotting
+
+import numpy as np
+import time
+import pandas as pd
+import os
+import subprocess
+#import ffmpeg
+from os import path
+
 
 DEFAULT_GRAPHICS_DIR = os.path.join('results/')
 DEFAULT_GRAPHICS_NAME = 'biosim'
@@ -25,9 +31,20 @@ CONVERT_BINARY = 'magick'
 
 
 class BioSim:
-    def __init__(self, island_map, ini_pop, seed, ymax_animals=None, cmax_animals=None,
-                 img_base=None, img_fmt="png", hist_specs= None):
+    """Main BioSim class for running simulations"""
 
+    def __init__(
+            self,
+            island_map=None,
+            ini_pop=[],
+            seed=123,
+            ymax_animals=None,
+            cmax_animals=None,
+            hist_specs=None,
+            img_base=None,
+            img_fmt="png",
+            plot_graph=False,
+    ):
         """
         :param island_map: Multi-line string specifying island geography
         :param ini_pop: List of dictionaries specifying initial population
@@ -68,29 +85,24 @@ class BioSim:
         self.island_map = island_map
         self._map = Island(island_map)
         np.random.seed(seed)
-        self.add_population(ini_pop)
 
-        if ymax_animals is None:
-            self.ymax_animals = 25000
-        else:
-            self.ymax_animals = ymax_animals
+        self._ymax = ymax_animals
+        self._cmax = cmax_animals
 
-        if cmax_animals is None:
-            self.cmax_animals = {'Herbivore': 50, 'Carnivore': 20}
-        else:
-            self.cmax_animals = cmax_animals
+        self._hist_specs = hist_specs
 
-        if img_base is None:
-            self.img_base = DEFAULT_GRAPHICS_DIR + DEFAULT_GRAPHICS_NAME
-        else:
-            self.img_base = img_base
+        self.add_population(ini_pop)  # Add initial population to Island instance
 
-        self.img_fmt = img_fmt
-        self.img_counter = 0
+        self._year = 0  # Year counter
+        self._year_target = 0  # Number of simulated years total
+        self._plot_bool = plot_graph  # Visualization on/off
+        self._plot = None  # Plot figure for simulation initialized
+        self.img_base = img_base  # Str for naming saved figures
+        self._img_fmt = img_fmt  # Format saved figures
 
-        self.vis = None
-        self._year = 0
-        self.final_year = None
+        if self.img_base:  # Create images folder
+            if not path.exists("images"):
+                os.mkdir('images')
 
     def set_animal_parameters(self, species, params):
         """
@@ -123,81 +135,6 @@ class BioSim:
             raise TypeError(landscape + ' parameters cannot be assigned, there is no such '
                                         'data type')
 
-    def simulate(self, num_years, vis_years=200, img_years=None):
-        """
-        Run simulation while visualizing the result. \n
-        :param num_years: number of years to simulate \n
-        :param vis_years: years between visualization updates \n
-        :param img_years: years between visualizations saved to files \n
-        (default: vis_years) \n
-        Image files will be numbered consecutively. \n
-        """
-        if img_years is None:
-            img_years = vis_years
-
-        self.final_year = self._year + num_years
-        self.setup_graphics()
-        if self._year > 1:
-            self.vis.create_animal_graphs(self.final_year, self.ymax_animals, recreate=True)
-
-        while self._year < self.final_year:
-            if self._year % vis_years == 0:
-                self.update_graphics()
-
-            if (self._year + 1) % img_years == 0:
-                self.save_graphics()
-
-            self._map.life_cycle_in_rossumoya()
-            self._year += 1
-
-            df = self.animal_distribution
-            df.to_csv('data.csv', sep='\t', encoding='utf-8')
-
-    def setup_graphics(self):
-        """
-        Setup the graphics \n
-        """
-        map_dims = self._map.map_dims
-
-        if self.vis is None:
-            fig = plt.figure(figsize=(16,9))
-            self.vis = Graphics(self.island_map, fig, map_dims)
-
-            self.vis.create_island_graph()
-            self.vis.create_animal_graphs(self.final_year, self.ymax_animals)
-
-            self.vis.animal_distribution_graphs()
-
-    def update_graphics(self):
-        """
-        Updates graphics with current data. \n
-        """
-        df = self.animal_distribution
-        rows, cols = self._map.map_dims
-        dist_matrix_carnivore = np.array(df[['Carnivore']]).reshape(rows, cols)
-        dist_matrix_herbivore = np.array(df[['Herbivore']]).reshape(rows, cols)
-
-        # updates the line graphs
-        herb_count, carn_count = list(self.num_animals_per_species.values())
-        self.vis.update_graphs(self._year, herb_count, carn_count)
-
-        self.vis.update_herbivore_distribution(dist_matrix_herbivore)
-        self.vis.update_carnivore_distribution(dist_matrix_carnivore)
-        #plt.pause(1)
-        plt.pause(1e-6)
-        self.vis.set_year
-
-    def save_graphics(self):
-        """
-        Save the graphics \n
-        """
-        if self.img_base is None:
-            return
-
-        plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base, num=self.img_counter,
-                                                     type=self.img_fmt))
-        self.img_counter += 1
-
     def add_population(self, population):
         """
         Add a population to the island \n
@@ -206,30 +143,56 @@ class BioSim:
         """
         self._map.add_animals(population)
 
-    def make_movie(self, movie_fmt=DEFAULT_MOVIE_FORMAT):
+    def simulate(self, num_years, vis_years=1, img_years=None):
         """
-        Create MPEG4 movie from visualization images saved. \n
+        Run simulation while visualizing the result.
+        :param num_years: number of years to simulate
+        :param vis_years: years between visualization updates
+        :param img_years: years between visualizations saved to files (default: vis_years)
+        Image files will be numbered consecutively.
         """
-        if self.img_base is None:
-            raise RuntimeError('No filename defined')
+        start_time = time.time()
+        self._year_target += num_years
 
-        if movie_fmt == 'mp4':
-            try:
-                subprocess.check_call(
-                    [FFMPEG_BINARY, '-i', '{}_%05d.png'.format(self.img_base), '-y', '-profile:v',
-                     'baseline', '-level', '3.0', '-pix_fmt', 'yuv420p',
-                     '{}.{}'.format(self.img_base, movie_fmt)])
-            except subprocess.CalledProcessError as err:
-                raise RuntimeError('Error: ffmpeg failed with: {}'.format(err))
-        elif movie_fmt == 'gif':
-            try:
-                subprocess.check_call(
-                    [CONVERT_BINARY, '-delay', '1', '-loop', '0', '{}_*.png'.format(self.img_base),
-                     '{}.{}'.format(self.img_base, movie_fmt)])
-            except subprocess.CalledProcessError as err:
-                raise RuntimeError('Error: convert failed with: {}'.format(err))
-        else:
-            raise ValueError('Unknown movie format')
+        if self._plot_bool and self._plot is None:
+            self._plot = Plotting(self._map, cmax=self._cmax, ymax=self._ymax,
+                hist_specs=self._hist_specs)
+            self._map.number_of_animals_per_species()
+            self._plot.init_plot(num_years)
+            self._plot.y_herb[self._year] = self._map.number_of_animals_per_species['Herbivores']
+            self._plot.y_carn[self._year] = self._map.number_of_animals_per_species['Carnivores']
+
+        elif self._plot_bool:
+            self._plot.set_x_axis(self._year_target)
+            self._plot.y_herb += [np.nan for _ in range(num_years)]
+            self._plot.y_carn += [np.nan for _ in range(num_years)]
+
+        for _ in range(num_years):
+            self._map.life_cycle_in_rossumoya()
+            print(f"Year: {self._year}")
+            #print(f"Animals: {self._map.number_of_animals_per_species('Herbiv')}")
+            #print(f"Herbivores: {self._map.number_of_animals_per_species['Herbivores']}")
+            #print(f"Carnivore: {self._map.number_of_animals_per_species['Herbivores']}")
+            if self._plot_bool:
+                self._plot.y_herb[self._year] = self._map.number_of_animals_per_species['Herbivores']
+                self._plot.y_carn[self._year] = self._map.number_of_animals_per_species['Herbivores']
+                if self._year % vis_years == 0:
+                    self._map.number_of_animals_per_species()
+                    self._plot.update_plot()
+
+            if self.img_base is not None:
+                if img_years is None:
+                    if self._year % vis_years == 0:
+                        self._plot.save_graphics(self._img_base, self._img_fmt)
+
+                else:
+                    if self._year % img_years == 0:
+                        self._plot.save_graphics(self._img_base, self._img_fmt)
+
+        finish_time = time.time()
+
+        print("Simulation complete.")
+        print("Elapsed time: {:.6} seconds".format(finish_time - start_time))
 
     @property
     def year(self):
@@ -273,4 +236,28 @@ class BioSim:
                                   'Carnivore': animal_count['Carnivore']})
         return pd.DataFrame(animal_df)
 
-
+    # def make_movie(self, movie_fmt=DEFAULT_MOVIE_FORMAT):
+    #     """
+    #     Create MPEG4 movie from visualization images saved. \n
+    #     """
+    #     if self.img_base is None:
+    #         raise RuntimeError('No filename defined')
+    #
+    #     if movie_fmt == 'mp4':
+    #         try:
+    #             subprocess.check_call(
+    #                 [FFMPEG_BINARY, '-i', '{}_%05d.png'.format(self.img_base), '-y', '-profile:v',
+    #                  'baseline', '-level', '3.0', '-pix_fmt', 'yuv420p',
+    #                  '{}.{}'.format(self.img_base, movie_fmt)])
+    #         except subprocess.CalledProcessError as err:
+    #             raise RuntimeError('Error: ffmpeg failed with: {}'.format(err))
+    #     elif movie_fmt == 'gif':
+    #         try:
+    #             subprocess.check_call(
+    #                 [CONVERT_BINARY, '-delay', '1', '-loop', '0', '{}_*.png'.format(self.img_base),
+    #                  '{}.{}'.format(self.img_base, movie_fmt)])
+    #         except subprocess.CalledProcessError as err:
+    #             raise RuntimeError('Error: convert failed with: {}'.format(err))
+    #     else:
+    #         raise ValueError('Unknown movie format')
+    #

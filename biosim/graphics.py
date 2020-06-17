@@ -7,6 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 
 
 class Graphics:
@@ -29,6 +30,10 @@ class Graphics:
         self.herbivore_dist = None
         self.carnivore_dist = None
         self.mean_ax = None
+        self.fit_ax = None
+        self.fit_axis = None
+        self.wt_ax = None
+        self.age_ax = None
         self.herbivore_image_axis = None
         self.carnivore_image_axis = None
 
@@ -174,6 +179,31 @@ class Graphics:
                                                       pad=0.04)
 
             self.carnivore_dist.set_title('Carnivore Distribution')
+
+    def set_plots_for_first_time(self, rgb_map=None, herb_htmp_data=None, carn_htmp_data=None):
+        self.fig = plt.figure(figsize=(15, 10))
+        plt.axis('off')
+        self.fit_ax = self.fig.add_subplot(6, 3, 16)
+        self.fit_ax.title.set_text('Fitness Histogram')
+        self.fit_axis = None
+        self.age_ax = self.fig.add_subplot(6, 3, 17)
+        self.age_ax.title.set_text('Age Histogram')
+        self.wt_ax = self.fig.add_subplot(6, 3, 18)
+        self.wt_ax.title.set_text('Weight Histogram')
+
+    def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
+        self.fit_ax.clear()
+        self.fit_ax.title.set_text('Fitness Histogram')
+        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step')
+        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step')
+        self.age_ax.clear()
+        self.age_ax.title.set_text('Age Histogram')
+        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step')
+        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step')
+        self.wt_ax.clear()
+        self.wt_ax.title.set_text('Weight Histogram')
+        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step')
+        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step')
 
     def set_year(self, year):
         """
