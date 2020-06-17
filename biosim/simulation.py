@@ -86,6 +86,11 @@ class BioSim:
         else:
             self.img_base = img_base
 
+        if hist_specs is None:
+            self._hist_specs = {'weight': {'max': 80, 'delta': 2},
+                                'fitness': {'max': 1.0, 'delta': 0.05},
+                                'age': {'max': 80, 'delta': 2}}
+
         self.img_fmt = img_fmt
         self.img_counter = 0
 
