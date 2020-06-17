@@ -7,6 +7,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
 import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
 
 
 class Graphics:
@@ -77,6 +78,11 @@ class Graphics:
             self.map_graph.set_title('Island')
             self.map_graph.set_yticklabels([])
             self.map_graph.set_xticklabels([])
+        patches = []
+        for i, (landscape, l_color) in enumerate(self.map_colors.items()):
+            patch = mpatches.Patch(color=l_color, label=self.map_labels[landscape])
+            patches.append(patch)
+        self.map_graph.legend(handles=patches)
 
     def create_herbivore_graph(self, final_year, recreate=False):
         """
