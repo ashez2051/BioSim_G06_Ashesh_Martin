@@ -6,6 +6,7 @@
 */data/*
 */examples/results*
 /examples/results
+/examples/data.csv
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
