@@ -104,36 +104,6 @@ class Fauna:
         else:
             self.gives_birth = False
 
-    # def check_mating_weight_conditions(self, num_animals):
-    #     if num_animals >= 2:
-    #         weight_condition = self.parameters['zeta'] * (
-    #                 self.parameters['w_birth'] + self.parameters['sigma_birth'])
-    #         if self.weight > weight_condition:
-    #             return True
-    #         else:
-    #             return False
-    #     else:
-    #         return False
-    #
-    # def check_mother_minus_newborn_weight_conditions(self, child_weight):
-    #     if self.weight >= self.parameters['xi'] * child_weight:
-    #         # Reduce weight of mother by the weight of child * xi
-    #         self.weight -= self.parameters['xi'] * child_weight
-    #         return True
-    #     else:
-    #         return False
-    #
-    # def create_child(self, num_animals):
-    #     if self.check_mating_weight_conditions(num_animals):
-    #         prob = min(1, self.parameters['gamma'] * self.animal_fitness * (num_animals - 1))
-    #         bool_value = np.random.uniform(0, 1) < prob
-    #         if bool_value:
-    #             child = self.__class__()
-    #             if self.check_mother_minus_newborn_weight_conditions(child.weight):
-    #                 return child
-    #         else:
-    #             return None
-
     @property
     def death_probability(self):
         """

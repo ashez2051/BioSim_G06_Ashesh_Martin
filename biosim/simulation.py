@@ -41,16 +41,17 @@ class BioSim:
         If cmax_animals is None, sensible, fixed default values should be used.
         cmax_animals is a dict mapping species names to numbers, e.g.,
         {'Herbivore': 50, 'Carnivore': 20}
-        hist_specs is a dictionary with one entry per property for which a histogram shall be shown.
+        hist_specs is a dictionary with one entry per property for which a histogram
+        shall be shown. \n
         For each property, a dictionary providing the maximum value and the bin width must be
-        given, e.g.,
-        {'weight': {'max': 80, 'delta': 2}, 'fitness': {'max': 1.0, 'delta': 0.05}}
-        Permitted properties are 'weight', 'age', 'fitness'.
+        given, e.g., \n
+        {'weight': {'max': 80, 'delta': 2}, 'fitness': {'max': 1.0, 'delta': 0.05}} \n
+        Permitted properties are 'weight', 'age', 'fitness'. \n
         If img_base is None, no figures are written to file.
         Filenames are formed as
         '{}_{:05d}.{}'.format(img_base, img_no, img_fmt)
-        where img_no are consecutive image numbers starting from 0.
-        img_base should contain a path and beginning of a file name.
+        where img_no are consecutive image numbers starting from 0. \n
+        img_base should contain a path and beginning of a file name. \n
         """
 
         self.landscapes = {'W': Water, 'L': Lowland, 'H': Highland, 'D': Desert}

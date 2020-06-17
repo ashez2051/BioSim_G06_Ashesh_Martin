@@ -41,12 +41,6 @@ class Landscape:
         self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
         self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"), reverse=True)
 
-    # def update_fodder(self):
-    #     """
-    #     Method to update fodder in cells, which is overridden in Lowland and Highland \n
-    #     """
-    #     pass
-
     def get_fodder(self):
         return self.food_left
 
@@ -129,16 +123,6 @@ class Landscape:
                         newborns.append(child)
                         animal.gives_birth = False
             self.fauna_dict[species].extend(newborns)
-
-    # def new_animal_gives_birth(self):
-    #     for species, animals in self.fauna_dict.items():
-    #         newborns = []
-    #         for animal in animals:
-    #             child = animal.create_child(len(animals))
-    #             if child is not None:
-    #                 newborns.append(child)
-    #
-    #         self.fauna_dict[species].extend(newborns)
 
     def migration(self, adj_cells):
         """
