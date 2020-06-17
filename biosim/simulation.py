@@ -26,7 +26,7 @@ CONVERT_BINARY = 'magick'
 
 class BioSim:
     def __init__(self, island_map, ini_pop, seed, ymax_animals=None, cmax_animals=None,
-                 img_base=None, img_fmt="png", hist_specs= None):
+                 img_base=None, img_fmt="png", hist_specs=None):
 
         """
         :param island_map: Multi-line string specifying island geography
@@ -145,7 +145,6 @@ class BioSim:
             if self._year % vis_years == 0:
                 self.update_graphics()
 
-
             if (self._year + 1) % img_years == 0:
                 self.save_graphics()
 
@@ -162,7 +161,7 @@ class BioSim:
         map_dims = self._map.map_dims
 
         if self.vis is None:
-            fig = plt.figure(figsize=(16,9))
+            fig = plt.figure(figsize=(16, 9))
             self.vis = Graphics(self.island_map, fig, map_dims)
 
             self.vis.create_island_graph()
@@ -180,8 +179,6 @@ class BioSim:
         dist_matrix_carnivore = np.array(df[['Carnivore']]).reshape(rows, cols)
         dist_matrix_herbivore = np.array(df[['Herbivore']]).reshape(rows, cols)
 
-
-
         # updates the line graphs
         herb_count, carn_count = list(self.num_animals_per_species.values())
         self.vis.update_graphs(self._year, herb_count, carn_count)
@@ -189,9 +186,9 @@ class BioSim:
         self.vis.update_herbivore_distribution(dist_matrix_herbivore)
         self.vis.update_carnivore_distribution(dist_matrix_carnivore)
 
-        #histogram
+        # histogram
         self.vis.update_histogram(animal_weights, )
-        #plt.pause(1)
+        # plt.pause(1)
         plt.pause(1e-6)
         self.vis.set_year
 
@@ -283,16 +280,16 @@ class BioSim:
 
     @property
     def animal_weights(self):
+
+        weights = {"Herbivore": [], "Carnivore": []}
         rows, cols = self._map.map_dims
-
-        herb_weights =[]
-        carn_weights =[]
-
         for row in range(rows):
             for col in range(cols):
-                herb_weights.append(self._map.map_dims[row, col].fauna_dict["Herbivore"].weight)
-                carn_weights.append(self._map.map_dims[row, col].fauna_dict["Carnivore"].weight)
-        return [herb_weights , carn_weights]
+                for species, animals in self._map.map_dims[row, col].fauna_dict["Herbivore"]:
+                    for animal in animals:
+                        weights[species].extend(animal)
+
+        return weights
 
     @property
     def animals_fitness(self):
@@ -321,6 +318,3 @@ class BioSim:
                 herb_age.append(self._cells[row, col].fauna_dict["Herbivore"].age)
                 carn_age.append(self._cells[row, col].fauna_dict["Carnivore"].age)
         return [herb_age, carn_age]
-
-
-
