@@ -69,7 +69,7 @@ class Graphics:
 
     def create_island_graph(self):
         """
-        Creates a map for the island in subplot (2, 2, 1)
+        Creates a map for the island in subplot (3, 3, 1)
         """
         if self.map_graph is None:
             self.map_graph = self.fig.add_subplot(3, 3, 1)
@@ -83,7 +83,7 @@ class Graphics:
         Creates a line plot for herbivores by themselves
         """
         if (self.herbivore_curve is None) or recreate:
-            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan))
+            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan), "r")
             self.herbivore_curve = plot[0]
 
         else:
@@ -99,7 +99,7 @@ class Graphics:
         Creates a line plot for carnivores by themselves
         """
         if (self.carnivore_curve is None) or recreate:
-            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan))
+            plot = self.mean_ax.plot(np.arange(0, final_year), np.full(final_year, np.nan), "g")
             self.carnivore_curve = plot[0]
         else:
             x_data, y_data = self.carnivore_curve.get_data()
@@ -112,7 +112,7 @@ class Graphics:
     def update_graphs(self, year, herb_count, carn_count):
         """
         Updates graphs according to number of years and animals count
-        in subplot(2, 2, 2)
+        in subplot(3, 3, 2)
         """
         herb_ydata = self.herbivore_curve.get_ydata()
         herb_ydata[year] = herb_count
@@ -155,7 +155,7 @@ class Graphics:
 
     def update_herbivore_distribution(self, distribution):
         """
-        Updates herbivore distribution in subplot (2, 2, 3)
+        Updates herbivore distribution in subplot (3, 3, 4)
         """
         if self.herbivore_image_axis is not None:
             self.herbivore_image_axis.set_data(distribution)
@@ -173,7 +173,7 @@ class Graphics:
 
     def update_carnivore_distribution(self, distribution):
         """
-        updates Carnivore distribution subplot (2, 2, 4)
+        updates Carnivore distribution subplot (3, 3, 6)
         """
         if self.carnivore_image_axis is not None:
             self.carnivore_image_axis.set_data(distribution)
@@ -191,16 +191,16 @@ class Graphics:
     def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
         self.fit_ax.clear()
         self.fit_ax.title.set_text('Fitness Histogram')
-        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step', color="r")
-        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step', color="g")
+        self.fit_ax.hist(fit_list['Herbivore'], bins=20, histtype='step', color="g")
+        self.fit_ax.hist(fit_list['Carnivore'], bins=20, histtype='step', color="r")
         self.age_ax.clear()
         self.age_ax.title.set_text('Age Histogram')
-        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step', color="r")
-        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step', color="g")
+        self.age_ax.hist(age_list['Herbivore'], bins=20, histtype='step', color="g")
+        self.age_ax.hist(age_list['Carnivore'], bins=20, histtype='step', color="r")
         self.wt_ax.clear()
         self.wt_ax.title.set_text('Weight Histogram')
-        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step', color="r")
-        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step', color="g")
+        self.wt_ax.hist(wt_list['Herbivore'], bins=20, histtype='step', color="g")
+        self.wt_ax.hist(wt_list['Carnivore'], bins=20, histtype='step', color="r")
 
     def set_year(self, year):
         """

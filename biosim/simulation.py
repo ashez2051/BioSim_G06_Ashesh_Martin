@@ -4,6 +4,7 @@
 """
 __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
+
 import os
 
 import matplotlib.pyplot as plt
@@ -193,7 +194,7 @@ class BioSim:
 
         # histogram
         self.vis.update_histogram(fit_list=self.animals_fitness, age_list=self.animal_ages,
-                                   wt_list=self.animal_weights)
+                                  wt_list=self.animal_weights)
         # plt.pause(1)
         plt.pause(1e-6)
         self.vis.set_year
@@ -328,7 +329,7 @@ class BioSim:
         rows, cols = self._map.map_dims
         for row in range(rows):
             for col in range(cols):
-                cell =  self._map.cells[row][col]
+                cell = self._map.cells[row][col]
                 for animal in cell.fauna_dict["Herbivore"]:
                     age['Herbivore'].append(animal.age)
                 for animal in cell.fauna_dict["Carnivore"]:
