@@ -281,6 +281,9 @@ class BioSim:
 
     @property
     def animal_weights(self):
+        """
+        Returns a dictionary with weights of each animal according to the species /n
+        """
 
         weights = {"Herbivore": [], "Carnivore": []}
         rows, cols = self._map.map_dims
@@ -296,7 +299,9 @@ class BioSim:
 
     @property
     def animals_fitness(self):
-
+        """
+        Returns a dictionary with weights of each animal according to the species /n
+        """
         fitness = {"Herbivore": [], "Carnivore": []}
         rows, cols = self._map.map_dims
         for row in range(rows):
@@ -311,7 +316,9 @@ class BioSim:
 
     @property
     def animal_ages(self):
-
+        """
+        Returns a dictionary with weights of each animal according to the species /n
+        """
         age = {"Herbivore": [], "Carnivore": []}
         rows, cols = self._map.map_dims
         for row in range(rows):

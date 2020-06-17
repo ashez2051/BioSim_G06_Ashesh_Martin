@@ -6,7 +6,6 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
-from numba import njit, jit
 
 
 class Fauna:
@@ -59,7 +58,6 @@ class Fauna:
         return self.weight
 
     @property
-    # @njit(parallel=True, fastmath=True)
     def animal_fitness(self):
         """"
         Calculates the fitness of an animal based on age and weight \n
