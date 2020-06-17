@@ -8,6 +8,7 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 import numpy as np
 import operator
 import random
+from biosim.fauna import Herbivore, Carnivore
 
 
 class Landscape:
@@ -22,8 +23,7 @@ class Landscape:
         Constructor for the Landscape class
         """
         self.fauna_dict = {"Herbivore": [], "Carnivore": []}
-        self.migrated_fauna_dict = {"Herbivore": [], "Carnivore": []}
-        self.food_left = {'Herbivore': 0}
+        self.food_left = 0
 
     def add_animal(self, animal):
         """
@@ -33,13 +33,13 @@ class Landscape:
         species = animal.__class__.__name__
         self.fauna_dict[species].append(animal)
 
-    def remove_animal(self, animal):
-        """
-        Removes the animal object from the species dictionary \n
-        :param animal: Input animal object \n
-        """
-        species = animal.__class__.__name__
-        self.fauna_dict[species].remove(animal)
+    # def remove_animal(self, animal):
+    #     """
+    #     Removes the animal object from the species dictionary \n
+    #     :param animal: Input animal object \n
+    #     """
+    #     species = animal.__class__.__name__
+    #     self.fauna_dict[species].remove(animal)
 
     def sort_by_fitness(self):
         """
@@ -49,18 +49,21 @@ class Landscape:
         self.fauna_dict["Herbivore"].sort(key=operator.attrgetter("animal_fitness"))
         self.fauna_dict["Carnivore"].sort(key=operator.attrgetter("animal_fitness"), reverse=True)
 
-    def update_fodder(self):
-        """
-        Method to update fodder in cells, which is overridden in Lowland and Highland \n
-        """
-        pass
+    # def update_fodder(self):
+    #     """
+    #     Method to update fodder in cells, which is overridden in Lowland and Highland \n
+    #     """
+    #     pass
+
+    def get_fodder(self):
+        return self.food_left
 
     def animal_eats(self):
         """
         The animals in the cells feed, the herbivores feed on fodder and the carnivores \n
         on herbivores \n
         """
-        self.update_fodder()
+
         self.herbivore_eats()
         self.carnivore_eats()
 
@@ -75,14 +78,14 @@ class Landscape:
         """
         np.random.shuffle(self.fauna_dict["Herbivore"])
         for herb in self.fauna_dict["Herbivore"]:
-            if self.food_left["Herbivore"] == 0:
+            if self.food_left == 0:
                 break
-            elif self.food_left["Herbivore"] >= herb.parameters['F']:
+            elif self.food_left >= herb.parameters['F']:
                 herb.animal_weight_with_food(herb.parameters['F'])
-                self.food_left['Herbivore'] -= herb.parameters['F']
-            elif 0 < self.food_left["Herbivore"] < herb.parameters["F"]:
-                herb.animal_weight_with_food(self.food_left["Herbivore"])
-                self.food_left['Herbivore'] = 0
+                self.food_left -= herb.parameters['F']
+            elif 0 < self.food_left < herb.parameters["F"]:
+                herb.animal_weight_with_food(self.food_left)
+                self.food_left = 0
 
     def carnivore_eats(self):
         """
@@ -107,25 +110,6 @@ class Landscape:
             self.fauna_dict['Herbivore'] = [herbivore for herbivore in self.fauna_dict['Herbivore']
                                             if herbivore not in dead_animals]
 
-    # @property
-    # def remaining_food(self):
-    #     """
-    #     Gives the remaining food in a cell for different landscape types. Return ValueError \n
-    #     if the property is called on cells that are not migratable, I.E Water \n
-    #     :return: the remaining amount of food \n
-    #     """
-    #     if isinstance(self, Water):
-    #         raise ValueError("There is no fodder available in the water")
-    #     elif isinstance(self, Desert):
-    #         self.food_left = {'Herbivore': 0, 'Carnivore': self.total_herbivore_weight}
-    #     elif isinstance(self, Lowland):
-    #         self.food_left = {"Herbivore": self.parameters["f_max"],
-    #                           "Carnivore": self.total_herbivore_weight}
-    #     elif isinstance(self, Highland):
-    #         self.food_left = {"Herbivore": self.parameters["f_max"],
-    #                           "Carnivore": self.total_herbivore_weight}
-    #     return self.food_left
-
     def update_animal_weight_and_age(self):
         """
         Each year the animals ages by 1 and loses weight by a factor of eta \n
@@ -134,23 +118,33 @@ class Landscape:
             for animal in self.fauna_dict[species]:
                 animal.animal_weight_with_age()
 
-    def animal_gives_birth(self):
-        """
-        Compares the birth_probability of an animal with the randomly generated value between \n
-        0 and 1 and if it's greater, the animal gives birth. Creates the child of the same \n
-        species and decreases the weight of the animal \n
-        """
+    # def animal_gives_birth(self):
+    #     """
+    #     Compares the birth_probability of an animal with the randomly generated value between \n
+    #     0 and 1 and if it's greater, the animal gives birth. Creates the child of the same \n
+    #     species and decreases the weight of the animal \n
+    #     """
+    #     for species, animals in self.fauna_dict.items():
+    #         newborns = []
+    #         for animal in animals:
+    #             if animal.proba_animal_birth(len(animals)):
+    #                 child_species = animal.__class__
+    #                 child = child_species()
+    #                 animal.weight_update_after_birth(child)
+    #
+    #                 if animal.gives_birth:
+    #                     newborns.append(child)
+    #                     animal.gives_birth = False
+    #         self.fauna_dict[species].extend(newborns)
+
+    def new_animal_gives_birth(self):
         for species, animals in self.fauna_dict.items():
             newborns = []
             for animal in animals:
-                if animal.proba_animal_birth(len(animals)):
-                    child_species = animal.__class__
-                    child = child_species()
-                    animal.weight_update_after_birth(child)
+                child = animal.create_child(len(animals))
+                if child is not None:
+                    newborns.append(child)
 
-                    if animal.gives_birth:
-                        newborns.append(child)
-                        animal.gives_birth = False
             self.fauna_dict[species].extend(newborns)
 
     def migration(self, adj_cells):
@@ -207,17 +201,6 @@ class Landscape:
         carn_count = len(self.fauna_dict['Carnivore'])
         return {"Herbivore": herb_count, "Carnivore": carn_count}
 
-    #@property #Should this be a property?
-    def total_herbivore_weight(self):
-        """
-        Calculates the weight of all herbivores in a single cell \n
-        :return: The total weight of all herbivores in a single cell \n
-        """
-        sum_herb_weight = 0
-        for herbivore in self.fauna_dict["Herbivore"]:
-            sum_herb_weight += herbivore.weight
-        return sum_herb_weight
-
     @classmethod
     def set_parameters(cls, given_params):
         for param in given_params:
@@ -238,6 +221,9 @@ class Water(Landscape):
     def __init__(self):
         super().__init__()
 
+    def update_fodder(self):
+        pass
+
 
 class Desert(Landscape):
     """
@@ -253,8 +239,10 @@ class Desert(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.food_left['Herbivore'] = self.parameters['f_max']
-       # self.food_left["Carnivore"] = self.total_herbivore_weight
+        self.food_left = self.parameters['f_max']
+
+    def update_fodder(self):
+        pass
 
 
 class Highland(Landscape):
@@ -271,14 +259,13 @@ class Highland(Landscape):
         super().__init__()
         if given_params is not None:
             self.set_parameters(given_params)
-        self.food_left['Herbivore'] = self.parameters['f_max']
-        #self.food_left['Carnivore'] = self.total_herbivore_weight
+        self.food_left = self.parameters['f_max']
 
     def update_fodder(self):
         """
         Updates the amount of fodder back to f_max annually \n
         """
-        self.food_left["Herbivore"] = self.parameters["f_max"]
+        self.food_left = self.parameters["f_max"]
 
 
 class Lowland(Landscape):
@@ -297,11 +284,10 @@ class Lowland(Landscape):
         if given_params is not None:
             self.set_parameters(given_params)
 
-        self.food_left['Herbivore'] = self.parameters['f_max']
-        #self.food_left['Carnivore'] = self.total_herbivore_weight
+        self.food_left = self.parameters['f_max']
 
     def update_fodder(self):
         """
         Updates the amount of fodder back to f_max annually \n
         """
-        self.food_left["Herbivore"] = self.parameters["f_max"]
+        self.food_left = self.parameters["f_max"]

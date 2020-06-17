@@ -62,11 +62,8 @@ class Island:
         :return: the map edges \n
         """
         rows, cols = island_array.shape[0], island_array.shape[1]
-        island_edges = [island_array[0, :cols], island_array[rows - 1, :cols], island_array[
-                                                                              :rows - 1,
-                                                                              0], island_array[
-                                                                                  :rows - 1,
-                                                                                  cols - 1]]
+        island_edges = [island_array[0, :cols], island_array[rows - 1, :cols],
+                        island_array[:rows - 1, 0], island_array[:rows - 1, cols - 1]]
         return island_edges
 
     def check_edge_cells_is_water(self, island_array):
@@ -123,8 +120,9 @@ class Island:
         for row in range(rows):
             for col in range(cols):
                 if self._cells[row, col].is_migratable:
+                    self._cells[row, col].update_fodder()
                     self._cells[row, col].animal_eats()
-                    self._cells[row, col].animal_gives_birth()
+                    self._cells[row, col].new_animal_gives_birth()
                     self._cells[row, col].migration(self.adjacent_cells(row, col))
                     self._cells[row, col].update_animal_weight_and_age()
                     self._cells[row, col].animal_dies()
@@ -141,12 +139,12 @@ class Island:
     def add_animals(self, population):
         """
         Adds animals to the given cells on the map \n
-        :param population: a dictionary with the poulation information to be added to the island \n
+        :param population: a dictionary with the population information to be added to the island \n
         """
         for animal_group in population:
-            x = animal_group["loc"][0] -1
-            y = animal_group["loc"][1] -1
-            loc = (x,y)
+            x = animal_group["loc"][0] - 1
+            y = animal_group["loc"][1] - 1
+            loc = (x, y)
             if isinstance(self._cells[loc], Water):
                 raise ValueError("Animals cannot be placed in water")
             else:
@@ -213,17 +211,18 @@ if __name__ == "__main__":
     add_carn_population(dict_animals_carn)
     np.random.seed(1)
     for i in range(200):
+        l.update_fodder()
         l.animal_eats()  # This updates the fodder as well
-        l.animal_gives_birth()
+        l.new_animal_gives_birth()
         l.update_animal_weight_and_age()
         l.animal_dies()
 
         num_carns.append(len(l.fauna_dict["Carnivore"]))
         num_herbs.append(len(l.fauna_dict["Herbivore"]))
 
-#     print(np.mean(num_herbs))
-#     print(np.mean(num_carns))
-#
+    print(np.mean(num_herbs))
+    print(np.mean(num_carns))
+
 # plt.plot(num_herbs, 'b')
 # plt.plot(num_carns, 'r')
 # plt.show()

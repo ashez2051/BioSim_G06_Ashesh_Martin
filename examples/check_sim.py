@@ -16,8 +16,8 @@ __author__ = "Hans Ekkehard Plesser, NMBU"
 __email__ = "hans.ekkehard.plesser@nmbu.no"
 
 if __name__ == '__main__':
-    import time
-    start_time = time.time()
+    # import time
+    # start_time = time.time()
 
     plt.ion()
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     #I think the img_years is how often we save to file
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    #print("--- %s seconds ---" % (time.time() - start_time))
     plt.savefig('check_sim.pdf')
     #sim.make_movie()
 
