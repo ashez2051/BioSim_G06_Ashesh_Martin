@@ -59,12 +59,24 @@ class Graphics:
 
         return map_array
 
+
+
+    def create_histograms_setup(self):
+
+        self.fit_ax = self.fig.add_subplot(6, 3, 16)
+        self.fit_ax.title.set_text('Fitness Histogram')
+        self.age_ax = self.fig.add_subplot(6, 3, 17)
+        self.age_ax.title.set_text('Age Histogram')
+        self.wt_ax = self.fig.add_subplot(6, 3, 18)
+        self.wt_ax.title.set_text('Weight Histogram')
+
+
     def create_island_graph(self):
         """
         Creates a map for the island in subplot (2, 2, 1)
         """
         if self.map_graph is None:
-            self.map_graph = self.fig.add_subplot(2, 2, 1)
+            self.map_graph = self.fig.add_subplot(3, 3, 1)
             self.map_graph.imshow(self.create_map())
             self.map_graph.set_title('Island')
             self.map_graph.set_yticklabels([])
@@ -120,7 +132,7 @@ class Graphics:
         Creates separate line graphs for Herbivores and Carnivores
         """
         if self.mean_ax is None:
-            self.mean_ax = self.fig.add_subplot(2, 2, 2)
+            self.mean_ax = self.fig.add_subplot(3, 3, 3)
             self.mean_ax.set_ylim(0, y_lim)
 
         self.mean_ax.set_xlim(0, final_year + 1)
@@ -134,13 +146,13 @@ class Graphics:
         carnivore distribution
         """
         if self.herbivore_dist is None:
-            self.herbivore_dist = self.fig.add_subplot(2, 2, 3)
+            self.herbivore_dist = self.fig.add_subplot(3, 3, 4)
             self.herbivore_dist.set_yticklabels([])
             self.herbivore_dist.set_xticklabels([])
             self.herbivore_image_axis = None
 
         if self.carnivore_dist is None:
-            self.carnivore_dist = self.fig.add_subplot(2, 2, 4)
+            self.carnivore_dist = self.fig.add_subplot(3, 3, 6)
             self.carnivore_dist.set_yticklabels([])
             self.carnivore_dist.set_xticklabels([])
             self.carnivore_image_axis = None
@@ -180,33 +192,25 @@ class Graphics:
 
             self.carnivore_dist.set_title('Carnivore Distribution')
 
-    def set_plots_for_first_time(self, rgb_map=None, herb_htmp_data=None, carn_htmp_data=None):
-        self.fig = plt.figure(figsize=(15, 10))
-        plt.axis('off')
-        self.fit_ax = self.fig.add_subplot(6, 3, 16)
-        self.fit_ax.title.set_text('Fitness Histogram')
-        self.fit_axis = None
-        self.age_ax = self.fig.add_subplot(6, 3, 17)
-        self.age_ax.title.set_text('Age Histogram')
-        self.wt_ax = self.fig.add_subplot(6, 3, 18)
-        self.wt_ax.title.set_text('Weight Histogram')
 
     def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
         self.fit_ax.clear()
         self.fit_ax.title.set_text('Fitness Histogram')
-        self.fit_ax.hist(fit_list['Herbivore'], bins=10, histtype='step')
-        self.fit_ax.hist(fit_list['Carnivore'], bins=10, histtype='step')
+        self.fit_ax.hist(fit_list[0], bins=10, histtype='step')
+        self.fit_ax.hist(fit_list[1], bins=10, histtype='step')
         self.age_ax.clear()
         self.age_ax.title.set_text('Age Histogram')
-        self.age_ax.hist(age_list['Herbivore'], bins=10, histtype='step')
-        self.age_ax.hist(age_list['Carnivore'], bins=10, histtype='step')
+        self.age_ax.hist(age_list[0], bins=10, histtype='step')
+        self.age_ax.hist(age_list[1], bins=10, histtype='step')
         self.wt_ax.clear()
         self.wt_ax.title.set_text('Weight Histogram')
-        self.wt_ax.hist(wt_list['Herbivore'], bins=10, histtype='step')
-        self.wt_ax.hist(wt_list['Carnivore'], bins=10, histtype='step')
+        self.wt_ax.hist(wt_list[0], bins=10, histtype='step')
+        self.wt_ax.hist(wt_list[1], bins=10, histtype='step')
 
     def set_year(self, year):
         """
         Set the year on the Figure
         """
         self.fig.suptitle('Graphics for Year: ' + str(year), x=0.5)
+
+
