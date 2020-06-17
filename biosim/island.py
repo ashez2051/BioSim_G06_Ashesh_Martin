@@ -10,9 +10,6 @@ from biosim.landscape import Lowland, Water, Desert, Highland
 from biosim.fauna import Herbivore, Carnivore
 
 
-# Is needed for the fauna_dict_island
-
-
 class Island:
     """
     This class represents the given map string as an array of objects
@@ -223,6 +220,6 @@ if __name__ == "__main__":
     print(np.mean(num_herbs))
     print(np.mean(num_carns))
 
-# plt.plot(num_herbs, 'b')
-# plt.plot(num_carns, 'r')
-# plt.show()
+    # plt.plot(num_herbs, 'b')
+    # plt.plot(num_carns, 'r')
+    # plt.show()
