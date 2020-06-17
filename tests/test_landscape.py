@@ -1,9 +1,7 @@
 import pytest
-import numpy
 
-from biosim.landscape import Landscape, Lowland, Water, Highland, Desert
+from biosim.landscape import Lowland, Water, Highland, Desert
 from biosim.fauna import Herbivore, Carnivore
-import os
 
 
 class TestLandscape:
@@ -41,7 +39,6 @@ class TestLandscape:
         herb3 = Herbivore()
         lowland.add_animal(herb3)
         assert len(lowland.fauna_dict['Herbivore']) == 3
-
 
     def test_herbivore_eats_in_lowland(self, landscape_data):
         """
@@ -172,7 +169,6 @@ class TestLandscape:
         self.carn2 = lowland.fauna_dict['Carnivore'][1]
         assert self.carn1.animal_fitness > self.carn2.animal_fitness
 
-
     def test_no_birth_when_mother_loses_more_than_her_weight(self, landscape_data, mocker):
         """
         Test if animals still gives birth when setting the
@@ -183,7 +179,6 @@ class TestLandscape:
         animals_before = len(lowland.fauna_dict["Herbivore"])
         lowland.animal_gives_birth()
         assert animals_before == len(lowland.fauna_dict["Herbivore"])
-
 
     class TestWater:
         @pytest.fixture
@@ -201,7 +196,6 @@ class TestLandscape:
             Checks if water is migratable as it should not be \n
             """
             assert water.is_migratable is False
-
 
     class TestDesert:
         @pytest.fixture

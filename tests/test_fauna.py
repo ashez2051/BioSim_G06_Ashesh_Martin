@@ -156,7 +156,7 @@ class TestFauna:
 
     def test_valueerror_for_negative_weight(self):
         """
-        Tests if valueerror is being raised when a negative weight is set as input
+        Tests if value error is being raised when a negative weight is set as input
         """
         with pytest.raises(ValueError) as err:
             Herbivore(5, -20)
