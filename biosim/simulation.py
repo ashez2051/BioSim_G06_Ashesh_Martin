@@ -220,6 +220,7 @@ class BioSim:
 
     def make_movie(self, movie_fmt=DEFAULT_MOVIE_FORMAT):
         """
+        Source: Hans Ekkehard Plesser, Randviz project \n
         Create MPEG4 movie from visualization images saved. \n
         """
         if self.img_base is None:

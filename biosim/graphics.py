@@ -12,7 +12,11 @@ import matplotlib.patches as mpatches
 
 class Graphics:
     """
+    Source: Yngve Mardal Moe, Biosim material january 2020
     The graphics class contains everything that is needed to plot graphs from Rossumøya
+    :param map_layout: Multiline string of the island map
+    :param figure: Creates a blank canvas to add subplots to
+    :param map_dims: Dimensions of the map, number of rows and columns
     """
     map_colors = {"W": mcolors.to_rgba("navy"), "L": mcolors.to_rgba("forestgreen"),
                   "H": mcolors.to_rgba("springgreen"), "D": mcolors.to_rgba("navajowhite")}
@@ -195,6 +199,10 @@ class Graphics:
             self.carnivore_dist.set_title('Carnivore Distribution')
 
     def update_histogram(self, fit_list=None, age_list=None, wt_list=None):
+        """
+        Updates the histograms in the main plot. Colors are set to green for herbivores \n
+        and red for carnivores.
+        """
         self.fit_ax.clear()
         self.fit_ax.title.set_text('Fitness Histogram')
         self.fit_ax.hist(fit_list['Herbivore'], bins=20, histtype='step', color="g")
@@ -205,8 +213,8 @@ class Graphics:
         self.age_ax.hist(age_list['Carnivore'], bins=20, histtype='step', color="r")
         self.wt_ax.clear()
         self.wt_ax.title.set_text('Weight Histogram')
-        self.wt_ax.hist(wt_list['Herbivore'], bins=20, histtype='step', color="g")
-        self.wt_ax.hist(wt_list['Carnivore'], bins=20, histtype='step', color="r")
+        self.wt_ax.hist(wt_list['Herbivore'], bins=20, histtype='bar', color="g")
+        self.wt_ax.hist(wt_list['Carnivore'], bins=100, histtype='bar', color="r")
 
     def set_year(self, year):
         """

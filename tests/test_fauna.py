@@ -168,6 +168,7 @@ class TestFauna:
     def test_death_z_test(self, mocker):
 
         """
+        Source: Hans Ekkehard Plesser, Biolab project
         Probabilistic test of death function. Test the number of deaths is
         normally distributed for large number of animals. And the death probability is
         significant with a p-value of 0.01.
@@ -185,6 +186,7 @@ class TestFauna:
 
     def test_bionmial_death(self, mocker):
         """
+        Source: Hans Ekkehard Plesser, Biolab project
         Test if the death function returns statistical significant results
         under the bionomial test, with a given death probability p.
         : param p: The hypothesized probabilty
