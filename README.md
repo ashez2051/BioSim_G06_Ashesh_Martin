@@ -10,7 +10,7 @@
 This project models the population dynamics on a fictional island, Rossumøya. The code is developed by Ashesh Raj Gnawali and Martin Bø. The simulation includes a a series of interactions between the two species of animals (carnivores and herbivores) and simulates their migration, reproduction and eating behavior for 400 years.
 
 ### The Terrain
-The terrain are tile based with water covering the top, bottom and sides of the map so that it resembles an island. The water is unreachable terrain such that the herbivores and carnivores cannot migrate there. They are restricted to only entering highland, lowland and the desert. Highland has limited fodder whereas lowland is fast growing and has higher fodder value. At the end of the eyar, the available fodder is reset to the maximum value.
+The terrain are tile based with water covering the top, bottom and sides of the map so that it resembles an island. The water is unreachable terrain such that the herbivores and carnivores cannot migrate there. They are restricted to only entering highland, lowland and the desert. Highland has less amount of fodder as compared to lowland. At the end of the year, the available fodder is reset to the maximum value.
 
 ### The Animals
 Herbivores graze on lowland and highlands at a given value F and they eat in random order. Weight is gained based on how much they eat and fitness is based on a gaussian distribution.
