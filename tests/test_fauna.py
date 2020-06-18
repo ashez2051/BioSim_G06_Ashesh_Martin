@@ -12,6 +12,8 @@ import math
 import scipy.stats as stats
 from scipy.stats import binom_test
 
+ALPHA = 0.01
+
 
 class TestFauna:
     """
@@ -179,7 +181,7 @@ class TestFauna:
         var = num_animals * hypo_proba * (1 - hypo_proba)
         z = (n_died - mean) / math.sqrt(var)
         phi = 2 * stats.norm.cdf(-abs(z))
-        assert phi > 0.01
+        assert phi > ALPHA
 
     def test_bionmial_death(self, mocker):
         """
@@ -191,4 +193,4 @@ class TestFauna:
         hypo_proba = 0.5
         num_animals = 100
         num_dead = sum(self.carn_large.death_probability() for _ in range(num_animals))
-        assert binom_test(num_dead, num_animals, hypo_proba) > 0.01
+        assert binom_test(num_dead, num_animals, hypo_proba) > ALPHA
