@@ -6,6 +6,7 @@ __author__ = "Ashesh Raj Gnawali, Maritn Bø"
 __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import numpy as np
+from math import e
 
 
 class Fauna:
@@ -63,10 +64,10 @@ class Fauna:
         Calculates the fitness of an animal based on age and weight \n
         """
         if self.weight > 0:
-            q_pos = 1 / (1 + np.exp(
+            q_pos = 1 / (1 + e**(
                 self.parameters['phi_age'] * (self.age - self.parameters['a_half'])))
 
-            q_neg = 1 / (1 + np.exp(
+            q_neg = 1 / (1 + e**(
                 -1 * self.parameters['phi_weight'] * (self.weight - self.parameters['w_half'])))
 
             return q_neg * q_pos
