@@ -10,6 +10,7 @@ Welcome to biosim's documentation!
    fauna
    landscape
    island
+   graphics
    simulation
 
 
