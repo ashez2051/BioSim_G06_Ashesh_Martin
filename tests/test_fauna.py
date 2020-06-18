@@ -8,6 +8,9 @@ __email__ = "asgn@nmbu.no & mabo@nmbu.no"
 
 import pytest
 from biosim.fauna import Herbivore, Carnivore
+import math
+import scipy.stats as stats
+from scipy.stats import binom_test
 
 
 class TestFauna:
@@ -72,10 +75,10 @@ class TestFauna:
         Tests if the weight of an animal that has eaten is larger than the weight \n
         of an animal that didnt eat \n
         """
-        assert self.herb_small.animal_weight_with_food(0) < \
-               self.herb_small.animal_weight_with_food(10)
-        assert self.carn_small.animal_weight_with_food(0) < \
-               self.carn_small.animal_weight_with_food(10)
+        assert self.herb_small.animal_weight_with_food(0) < self.herb_small.animal_weight_with_food(
+            10)
+        assert self.carn_small.animal_weight_with_food(0) < self.carn_small.animal_weight_with_food(
+            10)
 
     def test_probability_of_birth_if_only_one_animal(self):
         """
@@ -159,3 +162,33 @@ class TestFauna:
         with pytest.raises(ValueError) as err:
             Herbivore(5, -20)
             assert err.type is ValueError
+
+    def test_death_z_test(self, mocker):
+
+        """
+        Probabilistic test of death function. Test the number of deaths is
+        normally distributed for large number of animals. And the death probability is
+        significant with a p-value of 0.01.
+        : param p: The hypothesized probabilty
+        """
+        mocker.patch("biosim.fauna.Fauna.death_probability", return_value=0.1)
+        hypo_proba = 0.1
+        num_animals = 100
+        n_died = sum(self.herb_small.death_probability() for _ in range(num_animals))
+        mean = num_animals * hypo_proba
+        var = num_animals * hypo_proba * (1 - hypo_proba)
+        z = (n_died - mean) / math.sqrt(var)
+        phi = 2 * stats.norm.cdf(-abs(z))
+        assert phi > 0.01
+
+    def test_bionmial_death(self, mocker):
+        """
+        Test if the death function returns statistical significant results
+        under the bionomial test, with a given death probability p.
+        : param p: The hypothesized probabilty
+        """
+        mocker.patch("biosim.fauna.Fauna.death_probability", return_value=0.5)
+        hypo_proba = 0.5
+        num_animals = 100
+        num_dead = sum(self.carn_large.death_probability() for _ in range(num_animals))
+        assert binom_test(num_dead, num_animals, hypo_proba) > 0.01
